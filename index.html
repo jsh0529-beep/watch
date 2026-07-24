@@ -56,6 +56,7 @@
   .promo-cta{margin-left:auto;flex:none;font-family:var(--disp);font-weight:600;font-size:13px;color:var(--ink-2);transition:.18s;padding-right:6px}
   @media(max-width:560px){.promo-d{font-size:11px}.promo-cta{display:none}.promo{gap:12px;padding:13px 14px}}
   @media print{.promo{display:none!important}}
+  .promo-bottom{margin-top:44px}
   .step{margin-top:32px}
   .step-h{display:flex;align-items:baseline;gap:12px;margin:0 0 13px}
   .step-n{font-family:var(--mono);font-size:12px;color:var(--gold);border:1px solid var(--gold-soft);border-radius:3px;padding:2px 7px;line-height:1}
@@ -256,7 +257,7 @@
     <span class="promo-body">
       <span class="promo-hanja">月下書齋</span>
       <span class="promo-t">월하서재 사주 풀이</span>
-      <span class="promo-d">남들이 "좋아질 거예요"라 할 때, 혜윤은 "언제, 왜"를 말합니다.</span>
+      <span class="promo-d">당신 사주, 나쁘지 않습니다. 해석이 나빴을 뿐.</span>
     </span>
     <span class="promo-cta">보러가기 →</span>
   </a>
@@ -309,6 +310,17 @@
     <div class="manual"><h4>사진으론 판정 불가 — 실물·루페 확인 항목</h4><ul id="manual"></ul></div>
     <p class="foot"><b>주의.</b> 고급 클론은 결정적 단서 상당수를 흉내 냅니다. "정합"이어도 진품 확정이 아니며, 시리얼·워런티는 브랜드 공식 채널에서 직접 조회해야 합니다.</p>
   </section>
+
+  <a class="promo promo-bottom" id="promoBanner2" target="_blank" rel="noopener">
+    <span class="promo-ad">AD</span>
+    <span class="promo-moon" aria-hidden="true"></span>
+    <span class="promo-body">
+      <span class="promo-hanja">月下書齋</span>
+      <span class="promo-t">월하서재 사주 풀이</span>
+      <span class="promo-d">시계는 진품을 가리셨으니, 이제 당신 팔자 차례입니다.</span>
+    </span>
+    <span class="promo-cta">보러가기 →</span>
+  </a>
 </div>
 
 <script>
@@ -318,7 +330,7 @@ const MODEL="claude-sonnet-4-6";
 const ACCESS_TOKEN="wa-8k2p-7f9x-3mzq";  /* GAS 스크립트 속성 ACCESS_TOKEN 과 동일해야 함 */
 const DAILY_LIMIT=3;
 const BANNER_URL="https://jsh0529-beep.github.io/saju/";  /* 월하서재 */
-document.addEventListener('DOMContentLoaded',()=>{const pb=document.getElementById('promoBanner');if(pb)pb.href=BANNER_URL;});
+document.addEventListener('DOMContentLoaded',()=>{['promoBanner','promoBanner2'].forEach(id=>{const el=document.getElementById(id);if(el)el.href=BANNER_URL;});});
 function userId(){
   try{
     let id=localStorage.getItem('wa_uid');
