@@ -30,6 +30,15 @@
   body{background:var(--bg);color:var(--ink);font-family:var(--body);line-height:1.55;-webkit-font-smoothing:antialiased;
     background-image:repeating-linear-gradient(115deg,rgba(255,255,255,0.012) 0 2px,transparent 2px 5px)}
   .wrap{max-width:960px;margin:0 auto;padding:26px 20px 80px}
+  header{position:relative}
+  .visit-badge{position:absolute;top:2px;right:0;display:flex;align-items:baseline;gap:6px;
+    font-family:var(--mono);border:1px solid var(--line);border-radius:20px;padding:5px 12px;
+    background:var(--bg2)}
+  .vb-n{font-size:14px;font-weight:600;color:var(--gold);letter-spacing:.02em}
+  .vb-l{font-size:10px;color:var(--ink-3)}
+  .vb-today{font-size:10px;color:var(--ink-2)}
+  @media(max-width:560px){.visit-badge{position:static;display:inline-flex;margin-bottom:12px}}
+  @media print{.visit-badge{display:none!important}}
   .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.32em;color:var(--gold);text-transform:uppercase;margin:0 0 10px}
   h1{font-family:var(--disp);font-weight:600;font-size:clamp(26px,4.4vw,40px);letter-spacing:-.01em;margin:0 0 6px;line-height:1.05}
   h1 .thin{color:var(--ink-3);font-weight:400}
@@ -246,6 +255,11 @@
 <body>
 <div class="wrap">
   <header>
+    <div class="visit-badge show" id="visitBadge" aria-live="polite">
+      <span class="vb-n" id="vbTotal">1,213</span>
+      <span class="vb-l">방문</span>
+      <span class="vb-today" id="vbToday"></span>
+    </div>
     <p class="eyebrow">The Watch Check · 17 Brands · 71 Models</p>
     <h1>더워치체크<span class="brand-sub">시계감별소</span></h1>
     <p class="sub">17개 브랜드 71개 모델. 브랜드·모델을 확정하면 <b>그 레퍼런스 고유의 tell 세트</b>로만 검사하고, 여러 레퍼런스의 디테일이 섞였는지(정합)도 함께 봅니다. 결정적 단서는 늘 모델 단위입니다.</p>
@@ -331,7 +345,22 @@ const MODEL="claude-sonnet-4-6";
 const ACCESS_TOKEN="wa-8k2p-7f9x-3mzq";  /* GAS 스크립트 속성 ACCESS_TOKEN 과 동일해야 함 */
 const DAILY_LIMIT=3;
 const BANNER_URL="https://jsh0529-beep.github.io/saju/";  /* 월하서재 */
-document.addEventListener('DOMContentLoaded',()=>{['promoBanner','promoBanner2'].forEach(id=>{const el=document.getElementById(id);if(el)el.href=BANNER_URL;});});
+document.addEventListener('DOMContentLoaded',()=>{
+  ['promoBanner','promoBanner2'].forEach(id=>{const el=document.getElementById(id);if(el)el.href=BANNER_URL;});
+  countVisit();
+});
+async function countVisit(){
+  try{
+    const res=await fetch(API_ENDPOINT,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},
+      body:JSON.stringify({_token:ACCESS_TOKEN,_uid:userId(),_action:"visit"})});
+    const d=await res.json();
+    if(typeof d.total==="number"){
+      document.getElementById('vbTotal').textContent=d.total.toLocaleString('ko-KR');
+      if(typeof d.today==="number"&&d.today>0)document.getElementById('vbToday').textContent='오늘 '+d.today;
+    }
+    /* d.error(구버전 GAS 등)면 기본값 1,213 그대로 둠 */
+  }catch(e){/* 네트워크 실패 시에도 기본값 유지 */}
+}
 function userId(){
   try{
     let id=localStorage.getItem('wa_uid');
