@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Watch 진품감정 참조 콘솔 · 13 Brands</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+  :root{
+    --bg:#15171B;--bg2:#1B1E23;--panel:#20242A;--line:#333942;--line-soft:#2A2F36;
+    --ink:#E9EBEE;--ink-2:#98A0AA;--ink-3:#6B727C;
+    --gold:#CBA34D;--gold-soft:#8C7433;--steel:#6E8FB4;
+    --pass:#6FB08A;--flag:#CB5F57;--amber:#C89A44;
+    --radius:4px;--mono:'IBM Plex Mono',ui-monospace,Menlo,monospace;
+    --disp:'Space Grotesk',system-ui,sans-serif;--body:system-ui,-apple-system,'Segoe UI',Roboto,'Malgun Gothic',sans-serif;
+  }
+  *{box-sizing:border-box}html,body{margin:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--body);line-height:1.55;-webkit-font-smoothing:antialiased;
+    background-image:repeating-linear-gradient(115deg,rgba(255,255,255,0.012) 0 2px,transparent 2px 5px)}
+  .wrap{max-width:960px;margin:0 auto;padding:26px 20px 80px}
+  .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.32em;color:var(--gold);text-transform:uppercase;margin:0 0 10px}
+  h1{font-family:var(--disp);font-weight:600;font-size:clamp(26px,4.4vw,40px);letter-spacing:-.01em;margin:0 0 6px;line-height:1.05}
+  h1 .thin{color:var(--ink-3);font-weight:400}
+  .sub{color:var(--ink-2);font-size:14px;max-width:64ch;margin:0}.sub b{color:var(--ink)}
+  .warnstrip{margin-top:18px;border:1px solid var(--line);border-left:2px solid var(--gold);
+    background:linear-gradient(90deg,rgba(203,163,77,0.06),transparent 60%);border-radius:var(--radius);padding:11px 14px}
+  .warnstrip span{font-size:12.5px;color:var(--ink-2)}.warnstrip b{color:var(--gold)}
+  .step{margin-top:32px}
+  .step-h{display:flex;align-items:baseline;gap:12px;margin:0 0 13px}
+  .step-n{font-family:var(--mono);font-size:12px;color:var(--gold);border:1px solid var(--gold-soft);border-radius:3px;padding:2px 7px;line-height:1}
+  .step-t{font-family:var(--disp);font-size:16px;font-weight:600;margin:0}
+  .step-d{font-size:12.5px;color:var(--ink-3);margin-left:auto}
+  .chips{display:flex;flex-wrap:wrap;gap:8px}
+  .chip{appearance:none;cursor:pointer;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+    padding:9px 14px;color:var(--ink-2);font-family:var(--disp);font-weight:600;font-size:13.5px;transition:.15s}
+  .chip:hover{border-color:#454c56;color:var(--ink)}
+  .chip[aria-pressed="true"]{border-color:var(--gold);background:linear-gradient(180deg,rgba(203,163,77,0.09),var(--panel));color:var(--ink)}
+  .chip:focus-visible{outline:2px solid var(--steel);outline-offset:2px}
+  .chip .cap{font-family:var(--mono);font-weight:400;font-size:10.5px;color:var(--ink-3);margin-left:6px}
+  .chip[aria-pressed="true"] .cap{color:var(--gold)}
+  #models{margin-top:10px;display:none}#models.show{display:flex}
+  .specbar{margin-top:11px;border:1px dashed var(--line);border-radius:var(--radius);padding:11px 14px;display:none;flex-wrap:wrap;gap:6px 22px}
+  .specbar.show{display:flex}
+  .spec .k{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;color:var(--ink-3);text-transform:uppercase;display:block}
+  .spec .v{color:var(--ink);font-family:var(--mono);font-size:13px}
+  .slots{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+  .slot{position:relative;border:1px dashed var(--line);border-radius:var(--radius);background:var(--panel);aspect-ratio:1;overflow:hidden;cursor:pointer;transition:.15s}
+  .slot:hover{border-color:var(--gold-soft)}
+  .slot input{position:absolute;inset:0;opacity:0;cursor:pointer}
+  .slot .ph{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:8px;text-align:center;pointer-events:none}
+  .slot .ph .lab{font-size:12px;color:var(--ink-2)}.slot .ph .req{font-family:var(--mono);font-size:9.5px;letter-spacing:.06em;color:var(--ink-3);text-transform:uppercase}
+  .slot .plus{font-size:20px;color:var(--ink-3);font-family:var(--mono)}
+  .slot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .slot .tag{position:absolute;left:0;right:0;bottom:0;background:rgba(10,11,13,.78);color:var(--ink);font-family:var(--mono);font-size:10px;padding:4px 6px}
+  .slot.filled{border-style:solid}
+  .coverage{display:none;margin-top:14px;border:1px solid var(--line);border-radius:var(--radius);padding:13px 15px;background:var(--bg2)}
+  .coverage.show{display:block}
+  .cov-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
+  .cov-t{font-family:var(--disp);font-weight:600;font-size:13px}
+  .cov-n{font-family:var(--mono);font-size:12px;color:var(--gold)}
+  .bar{height:4px;background:var(--line-soft);border-radius:2px;margin:9px 0 10px;overflow:hidden}
+  .bar i{display:block;height:100%;background:linear-gradient(90deg,var(--gold-soft),var(--gold));transition:width .3s}
+  .cov-msg{font-size:12.5px;color:var(--ink-2);margin:0 0 8px}
+  .cov-msg.ok{color:var(--pass);margin:0}
+  .cov-list{display:flex;flex-direction:column;gap:6px}
+  .cov-row{font-size:12.5px;color:var(--ink-2)}
+  .cov-row b{color:var(--ink);font-family:var(--disp)}
+  .cov-row span{font-family:var(--mono);font-size:11px;color:var(--gold);margin-left:5px}
+  .cov-row em{display:block;font-style:normal;font-size:11.5px;color:var(--ink-3);margin-top:1px}
+  .vtag{font-family:var(--mono);font-size:9.5px;letter-spacing:.05em;padding:1px 6px;border-radius:3px;margin-left:6px;vertical-align:1px;border:1px solid}
+  .vtag.pass{color:var(--pass);border-color:#33573f}.vtag.flag{color:var(--flag);border-color:#5c322e}
+  .vtag.uncertain{color:var(--steel);border-color:#33465a}.vtag.soft{opacity:.72}
+  .rtag{font-family:var(--mono);font-size:9.5px;color:var(--ink-3);border:1px dashed var(--line);border-radius:3px;padding:1px 6px;margin-left:5px;vertical-align:1px}
+  .dot.soft{opacity:.5}
+  .scorepanel{margin-top:20px;border:1px solid var(--line);border-radius:var(--radius);padding:18px;background:var(--bg2)}
+  .sp-h{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin:0 0 4px}
+  .sp-t{font-family:var(--disp);font-weight:600;font-size:13.5px;margin:0}
+  .sp-sub{font-size:11.5px;color:var(--ink-3);margin:0 0 14px}
+  .gauge{margin:0 0 13px}
+  .g-lab{display:flex;justify-content:space-between;align-items:baseline;font-size:12px;margin-bottom:5px}
+  .g-lab b{font-family:var(--disp);font-weight:600;color:var(--ink)}
+  .g-lab span{font-family:var(--mono);font-size:12px}
+  .g-bar{position:relative;height:9px;background:#191C21;border:1px solid var(--line-soft);border-radius:2px;overflow:hidden}
+  .g-bar i{display:block;height:100%;transition:width .45s ease}
+  .g-bar i.neg{background:linear-gradient(90deg,#7a3a35,var(--flag))}
+  .g-bar i.pos{background:linear-gradient(90deg,var(--gold-soft),var(--gold))}
+  .g-bar i.unr{background:repeating-linear-gradient(45deg,#3a424c 0 5px,#2c333b 5px 10px)}
+  .g-cap{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--steel);opacity:.85}
+  .g-note{font-size:11px;color:var(--ink-3);margin:4px 0 0}
+  .veto{margin:2px 0 14px;border:1px solid #5c322e;border-left-width:2px;border-radius:var(--radius);
+    background:rgba(203,95,87,.08);padding:10px 13px;font-size:12.5px;color:#e5a49e}
+  .veto b{color:var(--flag)}
+  .voi{margin-top:14px;border-top:1px solid var(--line-soft);padding-top:13px}
+  .voi h5{font-family:var(--disp);font-size:12.5px;margin:0 0 7px;color:var(--ink)}
+  .voi ol{margin:0;padding-left:17px}
+  .voi li{font-size:12.5px;color:var(--ink-2);margin:4px 0}
+  .voi li b{color:var(--ink)}
+  .voi li span{font-family:var(--mono);font-size:11px;color:var(--gold);margin-left:5px}
+  .voi .none{font-size:12.5px;color:var(--pass);margin:0}
+  .nolabel{margin-top:12px;font-size:11.5px;color:var(--ink-3);border-top:1px dashed var(--line-soft);padding-top:10px}
+  .nolabel b{color:var(--ink-2)}
+  .retake{display:none;margin-top:16px;border:1px solid var(--gold-soft);border-left-width:2px;border-radius:var(--radius);
+    background:linear-gradient(90deg,rgba(203,163,77,.07),transparent 65%);padding:14px 16px}
+  .retake.show{display:block}
+  .retake h4{font-family:var(--disp);font-size:13px;margin:0 0 8px;color:var(--gold)}
+  .retake ul{margin:0;padding-left:18px}
+  .retake li{font-size:12.5px;color:var(--ink-2);margin:4px 0}
+  .retake li b{color:var(--ink)}
+  .retake li em{font-style:normal;color:var(--ink-3);font-size:11.5px}
+  .runrow{margin-top:20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+  .run{appearance:none;cursor:pointer;font-family:var(--disp);font-weight:600;font-size:15px;background:var(--gold);color:#1a1400;border:none;border-radius:var(--radius);padding:13px 26px;transition:.15s}
+  .run:hover{background:#d8b25e}.run:disabled{background:#3a3f47;color:var(--ink-3);cursor:not-allowed}
+  .run:focus-visible{outline:2px solid var(--steel);outline-offset:2px}
+  .runhint{font-size:12px;color:var(--ink-3);font-family:var(--mono)}
+  .results{margin-top:38px;display:none}.results.show{display:block;animation:fade .4s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  .verdict{display:grid;grid-template-columns:auto 1fr;gap:26px;align-items:center;border:1px solid var(--line);border-radius:var(--radius);padding:22px;background:var(--bg2)}
+  .seal-wrap{width:150px;height:150px;position:relative;flex:none}
+  .seal{position:absolute;inset:0;clip-path:polygon(30% 0,70% 0,100% 30%,100% 70%,70% 100%,30% 100%,0 70%,0 30%);
+    background:repeating-linear-gradient(125deg,rgba(255,255,255,.05) 0 1px,transparent 1px 4px),radial-gradient(circle at 50% 40%,#2c323a,#1c2026);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+  .seal-ring{position:absolute;inset:0;clip-path:polygon(30% 0,70% 0,100% 30%,100% 70%,70% 100%,30% 100%,0 70%,0 30%);box-shadow:inset 0 0 0 2px var(--seal-c,var(--steel));pointer-events:none}
+  .screw{position:absolute;width:9px;height:9px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#cfd3d8,#6a7079 60%,#3a3f46);box-shadow:0 0 0 1px rgba(0,0,0,.4);left:50%;top:50%;margin:-4.5px}
+  .screw::after{content:"";position:absolute;inset:2px;border-top:1px solid rgba(20,20,20,.7);top:50%}
+  .seal .lean{font-family:var(--disp);font-weight:700;font-size:14px;color:var(--seal-c,var(--steel));padding:0 10px;line-height:1.15}
+  .seal .conf{font-family:var(--mono);font-size:11px;color:var(--ink-2);margin-top:5px}.seal .conf b{color:var(--ink);font-size:15px}
+  .vref{font-family:var(--mono);font-size:12px;color:var(--gold);letter-spacing:.05em;margin:0 0 8px}
+  .vsum{font-size:14px;color:var(--ink);margin:0 0 12px}
+  .tallies{display:flex;gap:8px;flex-wrap:wrap}
+  .tally{font-family:var(--mono);font-size:11px;padding:3px 9px;border-radius:20px;border:1px solid var(--line)}
+  .tally.p{color:var(--pass);border-color:#33573f}.tally.f{color:var(--flag);border-color:#5c322e}.tally.u{color:var(--steel);border-color:#33465a}
+  .checks{margin-top:22px;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
+  .crow{display:grid;grid-template-columns:26px 1fr auto;gap:12px;padding:13px 15px;border-top:1px solid var(--line-soft);align-items:start}
+  .crow:first-child{border-top:none}
+  .crow .dot{width:11px;height:11px;border-radius:50%;margin-top:5px}
+  .dot.pass{background:var(--pass);box-shadow:0 0 8px rgba(111,176,138,.4)}.dot.flag{background:var(--flag);box-shadow:0 0 8px rgba(203,95,87,.4)}.dot.uncertain{background:var(--steel);opacity:.7}
+  .crow .lab{font-family:var(--disp);font-weight:600;font-size:14px;margin:0 0 2px}
+  .crow .exp{font-size:12px;color:var(--ink-3);margin:0 0 5px}.crow .obs{font-size:13px;color:var(--ink-2);margin:0}
+  .crow .wt{font-family:var(--mono);font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);border:1px solid var(--line);border-radius:3px;padding:2px 6px;white-space:nowrap;margin-top:3px}
+  .wt.high{color:var(--gold);border-color:var(--gold-soft)}
+  .manual{margin-top:16px;border:1px dashed var(--line);border-radius:var(--radius);padding:14px 16px}
+  .manual h4{font-family:var(--disp);font-size:13px;margin:0 0 8px}
+  .manual ul{margin:0;padding-left:18px}.manual li{font-size:12.5px;color:var(--ink-2);margin:3px 0}.manual li b{color:var(--ink)}
+  .foot{margin-top:20px;font-size:12px;color:var(--ink-3);border-top:1px solid var(--line-soft);padding-top:14px}.foot b{color:var(--ink-2)}
+  .err{display:none;margin-top:18px;border:1px solid #5c322e;border-radius:var(--radius);background:rgba(203,95,87,.07);padding:13px 15px;color:#e5a49e;font-size:13px}.err.show{display:block}
+  .spinner{width:15px;height:15px;border:2px solid var(--ink-3);border-top-color:var(--gold);border-radius:50%;display:inline-block;animation:spin .7s linear infinite;vertical-align:-2px}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  @media(max-width:680px){.slots{grid-template-columns:repeat(2,1fr)}.verdict{grid-template-columns:1fr;justify-items:center;text-align:center}.tallies{justify-content:center}.step-d{display:none}}
+  @media(prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <p class="eyebrow">Luxury Watch · Reference-Based Check · 13 Brands</p>
+    <h1>진품감정 <span class="thin">참조 콘솔</span></h1>
+    <p class="sub">브랜드·모델을 확정하면 <b>그 레퍼런스 고유의 tell 세트</b>로만 검사하고, 여러 레퍼런스의 디테일이 섞였는지(정합)도 함께 봅니다. 결정적 단서는 늘 모델 단위입니다.</p>
+    <div class="warnstrip"><span><b>참조용 도구입니다.</b> 사진 기반 보조 판정일 뿐 공식 감정이 아닙니다. 확정은 브랜드 부티크·정식 서비스센터의 실물·루페 검사로 하세요.</span></div>
+  </header>
+
+  <section class="step">
+    <div class="step-h"><span class="step-n">01</span><h2 class="step-t">브랜드 · 모델 확정</h2><span class="step-d">잘못 고르면 정상 사양을 가품으로 오판</span></div>
+    <div class="chips" id="brands"></div>
+    <div class="chips" id="models"></div>
+    <div class="specbar" id="specbar"></div>
+  </section>
+
+  <section class="step">
+    <div class="step-h"><span class="step-n">02</span><h2 class="step-t">사진 업로드</h2><span class="step-d" id="slotHint"></span></div>
+    <div class="slots" id="slots"></div>
+    <div class="coverage" id="coverage"></div>
+  </section>
+
+  <section class="step">
+    <div class="step-h"><span class="step-n">03</span><h2 class="step-t">감정 실행</h2></div>
+    <div class="runrow"><button class="run" id="run" disabled>감정 시작</button><span class="runhint" id="runhint">브랜드·모델 선택 + 사진 1장 이상</span></div>
+    <div class="err" id="err"></div>
+  </section>
+
+  <section class="results" id="results">
+    <div class="verdict">
+      <div class="seal-wrap"><div class="seal" id="seal"><div class="lean" id="lean">—</div><div class="conf" id="conf"></div></div><div class="seal-ring" id="sealring"></div></div>
+      <div><p class="vref" id="vref"></p><p class="vsum" id="vsum"></p><div class="tallies" id="tallies"></div></div>
+    </div>
+    <div class="scorepanel" id="scorepanel"></div>
+    <div class="checks" id="checks"></div>
+    <div class="retake" id="retake"></div>
+    <div class="manual"><h4>사진으론 판정 불가 — 실물·루페 확인 항목</h4><ul id="manual"></ul></div>
+    <p class="foot"><b>주의.</b> 고급 클론은 결정적 단서 상당수를 흉내 냅니다. "정합"이어도 진품 확정이 아니며, 시리얼·워런티는 브랜드 공식 채널에서 직접 조회해야 합니다.</p>
+  </section>
+</div>
+
+<script>
+/* ===== GAS 릴레이 연결 완료 (API 키는 GAS 스크립트 속성에 보관) ===== */
+const API_ENDPOINT="https://script.google.com/macros/s/AKfycby8q_S2MZjnoQXB0NjB35GQzH82wXItxFG2IDe4RNcM_USV0TQCZUvaCcI_IdH_wV8LGA/exec";
+const MODEL="claude-sonnet-4-6";
+const H="high",M="med",L="low";
+
+/* 브랜드 → 모델 → tell 세트. note: 레퍼런스 정합용 참고 문구(선택) */
+const DATA={
+  ap:{name:"Audemars Piguet",cap:"AP",slotHint:"케이스백·무브가 결정적",models:{
+    ro3120:{label:"Royal Oak 15400 (3120)",spec:{Cal:"3120",Jewels:"40",Freq:"3Hz"},checks:[
+      {id:"rotor",lab:"로터 구조·각인",wt:H,exp:"솔리드 22K 골드 로터+가문 문장 양각. 로터로 무브가 비치지 않음."},
+      {id:"jewels",lab:"주얼 각인",wt:H,exp:"40주얼. 'THIRTY-TWO JEWELS'면 이상."},
+      {id:"balance",lab:"레귤레이터 암",wt:H,exp:"프리스프렁 — ±레귤레이터 암 없음(있으면 즉시 가품)."},
+      {id:"finish",lab:"무브 피니싱",wt:M,exp:"제네바 스트라이프+펄라주, AP·SWISS 각인 예리."},
+      {id:"tapisserie",lab:"타피스리",wt:M,exp:"그랜드 타피스리 기요셰."},
+      {id:"dial",lab:"다이얼 로고",wt:M,exp:"어플라이드 마커, SWISS MADE 6시."},
+      {id:"bezel",lab:"베젤 8각 스크류",wt:L,exp:"8각 스크류 정렬·슬롯 일관."}],
+      manual:[["케이스 두께","약 9.8mm."],["레귤레이터 암","보이면 가품."],["클라스프 각인","루페."],["시리얼","AP 조회."]]},
+    ro4302:{label:"Royal Oak 15500·15510 (4302)",spec:{Cal:"4302",Jewels:"32",Freq:"4Hz"},checks:[
+      {id:"rotor",lab:"로터 구조·각인",wt:H,exp:"투각 22K 골드 'AP' 로터 — 로터 사이로 무브가 비치는 게 정상."},
+      {id:"jewels",lab:"주얼 각인",wt:H,exp:"32주얼('THIRTY-TWO JEWELS' 정상)."},
+      {id:"balance",lab:"레귤레이터 암",wt:H,exp:"프리스프렁 — 레귤레이터 암 없음."},
+      {id:"finish",lab:"무브 피니싱",wt:M,exp:"제네바 스트라이프+베벨, 대형 무브가 케이스백을 크게 채움."},
+      {id:"tapisserie",lab:"타피스리",wt:M,exp:"그랜드 타피스리 기요셰."},
+      {id:"dial",lab:"다이얼 로고",wt:M,exp:"어플라이드 화이트골드 마커. 15510은 미닛트랙 정렬 개선."},
+      {id:"bezel",lab:"베젤 8각 스크류",wt:L,exp:"8각 스크류 정렬."}],
+      manual:[["케이스 두께","약 10.4mm."],["레귤레이터 암","보이면 가품."],["클라스프 각인","루페."],["시리얼","AP 조회."]]},
+    offshore:{label:"Royal Oak Offshore",spec:{Type:"크로노",Cal:"3126/3840"},checks:[
+      {id:"rotor",lab:"로터·무브 피니싱",wt:H,exp:"골드 로터+AP, 제네바 스트라이프·베벨 정교."},
+      {id:"subdial",lab:"크로노 서브다이얼",wt:H,exp:"배치·간격 정확, 마커 침범 없음."},
+      {id:"chronoFn",lab:"크로노 작동",wt:H,exp:"작동+리셋 정확."},
+      {id:"tapisserie",lab:"메가 타피스리",wt:M,exp:"오프쇼어 특유 큰 격자 기요셰."},
+      {id:"bezel",lab:"베젤·푸셔 가드",wt:M,exp:"8각 스크류 정렬, 푸셔 가드/러버 마감."},
+      {id:"dial",lab:"다이얼 로고",wt:L,exp:"어플라이드 마커·로고."}],
+      manual:[["케이스 두께·푸셔","실물."],["클라스프 각인","루페."],["시리얼","AP 조회."]]},
+    auto:{label:"Royal Oak 자동추정",spec:{Mode:"3120/4302 추정"},detect:true,checks:[
+      {id:"rotor",lab:"로터 구조",wt:H,exp:"3120=솔리드+가문문장, 4302=투각 'AP'. 먼저 판별."},
+      {id:"jewels",lab:"주얼 각인",wt:H,exp:"3120=40, 4302=32. 로터와 일치."},
+      {id:"balance",lab:"레귤레이터 암",wt:H,exp:"둘 다 프리스프렁 — 암 없음."},
+      {id:"finish",lab:"무브 피니싱",wt:M,exp:"제네바 스트라이프·베벨, 각인 예리."},
+      {id:"tapisserie",lab:"타피스리",wt:M,exp:"그랜드 타피스리 기요셰."},
+      {id:"dial",lab:"다이얼 로고",wt:M,exp:"어플라이드 마커."},
+      {id:"bezel",lab:"베젤 8각 스크류",wt:L,exp:"8각 스크류 정렬."}],
+      manual:[["케이스 두께","레퍼런스 일치."],["레귤레이터 암","보이면 가품."],["시리얼","AP 조회."]]}
+  }},
+
+  rolex:{name:"Rolex",cap:"ROLEX",slotHint:"크리스탈·레하우트·사이클롭스가 핵심(스포츠=솔리드백)",
+    note:"스포츠 로렉스는 전부 솔리드 케이스백. 투명백이면 가품.",models:{
+    sub:{label:"Submariner (다이버)",spec:{Back:"솔리드",Mvmt:"3230/3235"},checks:[
+      {id:"crownEtch",lab:"크리스탈 왕관 각인",wt:H,exp:"6시 크리스탈 미세 코로넷 각인(2002~), 루페로만 보임."},
+      {id:"cyclops",lab:"사이클롭스",wt:H,exp:"데이트 모델은 2.5배 확대·창을 채움. 노데이트(124060)는 사이클롭스·데이트 없음 — 있으면 이상."},
+      {id:"rehaut",lab:"레하우트 각인",wt:H,exp:"'ROLEX' 반복+6시 시리얼(2008~), 날카롭고 정렬 정확."},
+      {id:"noDisplayBack",lab:"솔리드 케이스백",wt:H,exp:"투명백/케이스백 각인 보이면 가품."},
+      {id:"serial",lab:"시리얼",wt:M,exp:"깊고 선명, 빛에 반짝."},
+      {id:"sweep",lab:"초침 스윕",wt:M,exp:"자동 부드러운 스윕. 똑딱=쿼츠=가품."},
+      {id:"bezelLume",lab:"베젤·야광",wt:L,exp:"세라크롬 베젤 색·크로마라이트 블루."}],
+      manual:[["베젤 클릭","백플레이 없음."],["무게·시리얼","Rolex 조회."]]},
+    gmt:{label:"GMT-Master II",spec:{Back:"솔리드",Cal:"3285"},checks:[
+      {id:"crownEtch",lab:"크리스탈 왕관 각인",wt:H,exp:"6시 크리스탈 미세 왕관 각인(2002~)."},
+      {id:"rehaut",lab:"레하우트 각인",wt:H,exp:"'ROLEX' 반복+시리얼, 정렬 정확."},
+      {id:"noDisplayBack",lab:"솔리드 케이스백",wt:H,exp:"투명백 보이면 가품."},
+      {id:"bezelGmt",lab:"24시 세라크롬 베젤",wt:H,exp:"펩시/배트맨 등 색 전환 자연, 폰트·정렬 정확. 색 바래거나 어긋나면 가품."},
+      {id:"gmt24",lab:"24시침 독립 조정",wt:M,exp:"24시침 독립 조정 가능(진품 기능). 안 되면 가품."},
+      {id:"serial",lab:"시리얼",wt:M,exp:"깊고 선명."},
+      {id:"sweep",lab:"초침 스윕",wt:L,exp:"부드러운 스윕."}],
+      manual:[["베젤 클릭·24시침","독립 조정."],["무게·시리얼","조회."]]},
+    dj:{label:"Datejust·Day-Date",spec:{Back:"솔리드",Mvmt:"자동"},checks:[
+      {id:"crownEtch",lab:"크리스탈 왕관 각인",wt:H,exp:"6시 크리스탈 미세 왕관 각인."},
+      {id:"cyclops",lab:"사이클롭스",wt:H,exp:"날짜 2.5배 확대·창을 채움. ~1.5배면 가품."},
+      {id:"rehaut",lab:"레하우트 각인",wt:H,exp:"'ROLEX' 반복+시리얼, 정렬 정확."},
+      {id:"serial",lab:"시리얼",wt:M,exp:"깊고 선명."},
+      {id:"dialText",lab:"요일/날짜 폰트",wt:M,exp:"인덱스·데이(데이데이트 요일 디스크) 폰트 완벽, 정렬 정확."},
+      {id:"bracelet",lab:"브레이슬릿·베젤",wt:L,exp:"쥬빌리/프레지던트 마감, 플루티드 베젤 정밀."}],
+      manual:[["요일/날짜 스냅","정확 전환."],["무게·시리얼","조회."]]},
+    daytona:{label:"Daytona (크로노)",spec:{Back:"솔리드·무각인",Cal:"4130 · 72h"},checks:[
+      {id:"subdial",lab:"서브다이얼 배치",wt:H,exp:"3·6·9시 균등·동일 크기, 마커 침범 없음. 너무 벌어지면 클론."},
+      {id:"chronoFn",lab:"크로노 작동·리셋",wt:H,exp:"작동+리셋 시 초침 정확히 12시 복귀. 미작동/오정렬=가품."},
+      {id:"noDisplayBack",lab:"솔리드·무각인 백",wt:H,exp:"데이토나는 솔리드백·무각인(Winner 24 예외). 투명백=가품."},
+      {id:"crownEtch",lab:"크리스탈 왕관 각인",wt:M,exp:"6시 크리스탈 왕관 각인(2002~)."},
+      {id:"bezelTachy",lab:"타키미터 베젤",wt:M,exp:"타키 폰트 두께 정확(가품은 두꺼움), 세라믹 충전 깔끔."},
+      {id:"pusher",lab:"푸셔 감",wt:M,exp:"컬럼휠(4130) 특유의 또렷한 푸셔."},
+      {id:"serial",lab:"시리얼",wt:L,exp:"러그 사이 시리얼 선명."}],
+      manual:[["크로노 리셋","0점 복귀."],["푸셔·무게","실물."],["시리얼","조회."]]}
+  }},
+
+  patek:{name:"Patek Philippe",cap:"PP",slotHint:"투명백 무브·다이얼 프린팅이 결정적",
+    note:"파텍은 나사를 블루잉하지 않음. 파란 나사=강한 의심.",models:{
+    n5711:{label:"Nautilus 5711 (시/분/초·데이트)",spec:{Cal:"324 / 26-330",Back:"투명"},note:"5711은 3시 데이트만. 파워리저브·문페이즈 서브다이얼이 있으면 5711이 아니라 5712.",checks:[
+      {id:"seal",lab:"무브 실(Seal)",wt:H,exp:"파텍 실(더블 P, 2009~)/이전 제네바 실. 없거나 조잡=이상."},
+      {id:"screwsBlued",lab:"나사 블루잉 여부",wt:H,exp:"파란 나사가 보이면 강한 의심(파텍은 블루잉 안 함)."},
+      {id:"movementFinish",lab:"무브 피니싱",wt:H,exp:"코트 드 제네브·서큘러 그레이닝·폴리시드 나사·골드 로터."},
+      {id:"dialEmboss",lab:"가로 엠보싱·데이트",wt:M,exp:"가로 엠보싱 전체 정밀, 3시 데이트 중앙 정렬."},
+      {id:"printing",lab:"다이얼 프린팅",wt:M,exp:"로고·텍스트 무결점."},
+      {id:"hallmark",lab:"케이스 각인",wt:M,exp:"러그 'PPC'·금속각인."},
+      {id:"bracelet",lab:"브레이슬릿 통합",wt:L,exp:"링크 통합 매끈, 유격 없음."}],
+      manual:[["시리얼 아카이브","대조."],["서류·무게","확인."]]},
+    n5712:{label:"Nautilus 5712 (파워리저브/문페이즈)",spec:{Cal:"240 PS IRM C LU",Back:"투명"},note:"5712는 비대칭 레이아웃 — 좌측 스몰세컨드·문페이즈, 파워리저브 인디케이터, 우측 포인터 데이트. 단순 3시 데이트면 5712 아님.",checks:[
+      {id:"seal",lab:"무브 실(Seal)",wt:H,exp:"파텍 실. 마이크로로터 무브."},
+      {id:"screwsBlued",lab:"나사 블루잉 여부",wt:H,exp:"파란 나사=의심."},
+      {id:"dialLayout",lab:"비대칭 다이얼 레이아웃",wt:H,exp:"좌측 스몰세컨드+문페이즈, 파워리저브, 우측 포인터 데이트가 정확해야."},
+      {id:"movementFinish",lab:"무브 피니싱",wt:M,exp:"코트 드 제네브·서큘러 그레이닝·골드 마이크로로터."},
+      {id:"printing",lab:"다이얼 프린팅",wt:M,exp:"로고·텍스트 무결점."},
+      {id:"hallmark",lab:"케이스 각인",wt:M,exp:"금속각인·PPC."},
+      {id:"bracelet",lab:"브레이슬릿 통합",wt:L,exp:"링크 통합 매끈."}],
+      manual:[["시리얼 아카이브","대조."],["서류·무게","확인."]]},
+    aqua5167:{label:"Aquanaut 5167",spec:{Cal:"324",Strap:"컴포지트"},note:"5167은 엠보싱 그리드 다이얼+컴포지트 러버 스트랩.",checks:[
+      {id:"seal",lab:"무브 실(Seal)",wt:H,exp:"파텍 실(더블 P)."},
+      {id:"screwsBlued",lab:"나사 블루잉 여부",wt:H,exp:"파란 나사=의심."},
+      {id:"movementFinish",lab:"무브 피니싱",wt:H,exp:"코트 드 제네브·골드 로터, 핸드 피니싱."},
+      {id:"dialEmboss",lab:"엠보싱 그리드·데이트",wt:M,exp:"엠보싱 그리드 다이얼 정밀, 3시 데이트 정렬."},
+      {id:"strap",lab:"컴포지트 스트랩",wt:M,exp:"컴포지트 러버 스트랩 통합·질감 정확."},
+      {id:"printing",lab:"다이얼 프린팅",wt:M,exp:"로고·텍스트 무결점."},
+      {id:"hallmark",lab:"케이스 각인",wt:L,exp:"금속각인·시리얼."}],
+      manual:[["시리얼 아카이브","대조."],["서류·무게","확인."]]},
+    calatrava:{label:"Calatrava (드레스)",spec:{Cal:"215/324",Back:"솔리드/투명"},checks:[
+      {id:"seal",lab:"무브 실(Seal)",wt:H,exp:"파텍 실/제네바 실."},
+      {id:"screwsBlued",lab:"나사 블루잉 여부",wt:H,exp:"파란 나사=의심."},
+      {id:"movementFinish",lab:"무브 피니싱",wt:H,exp:"코트 드 제네브·서큘러 그레이닝·골드 로터."},
+      {id:"printing",lab:"다이얼·로고",wt:M,exp:"어플라이드 로고/마커·인쇄 무결점."},
+      {id:"hands",lab:"핸즈 마감",wt:M,exp:"푀이/바통 핸즈 마감 정교."},
+      {id:"hallmark",lab:"케이스 각인",wt:M,exp:"금속각인·시리얼."},
+      {id:"proportions",lab:"케이스 비례",wt:L,exp:"얇고 균형 잡힌 비례."}],
+      manual:[["시리얼 아카이브","대조."],["서류·무게","확인."]]}
+  }},
+
+  omega:{name:"Omega",cap:"Ω",slotHint:"모델별 밸브·무브·크리스탈 각인이 핵심",models:{
+    seamaster:{label:"Seamaster Diver 300M",spec:{Mvmt:"2500/8800/8900",Valve:"헬륨밸브 10시"},checks:[
+      {id:"heliumValve",lab:"헬륨밸브 위치",wt:H,exp:"밸브 하단(왼쪽) 가장자리가 10시 마커와 정렬. 10시 중앙/아래면 가품 다수."},
+      {id:"crystalEtch",lab:"크리스탈 로고 각인",wt:H,exp:"크리스탈 중앙 오메가 로고 각인. 대부분 복제품엔 없음."},
+      {id:"balanceWheel",lab:"밸런스 휠 색상",wt:H,exp:"코액시얼 밸런스 휠 검정. 은/회색이면 진품 아님."},
+      {id:"movement",lab:"무브·초침",wt:M,exp:"코액시얼 마스터 크로노미터. 스윕(쿼츠 똑딱=가품)."},
+      {id:"wavePattern",lab:"웨이브 다이얼",wt:M,exp:"눌러 찍은 촘촘·균일 웨이브. 인쇄된 듯 거칠면 이상."},
+      {id:"serial",lab:"시리얼",wt:M,exp:"7~8자리 러그/케이스백 선명."},
+      {id:"printing",lab:"프린팅 품질",wt:L,exp:"무결점, 오타 없음."}],
+      manual:[["밸브 작동","부드럽게."],["워런티 카드","홀로그램/QR."],["무게","묵직."]]},
+    speedmaster:{label:"Speedmaster (크로노)",spec:{Cal:"3861/1861"},checks:[
+      {id:"subdialSpacing",lab:"서브다이얼 간격",wt:H,exp:"간격 정확 — 너무 벌어져 3·9시 마커 자르면 가품(ST19/Valjoux 클론)."},
+      {id:"movement",lab:"무브·크로노",wt:H,exp:"정품 칼리버, 크로노 정상 작동."},
+      {id:"crystalEtch",lab:"크리스탈 로고 각인",wt:M,exp:"크리스탈 중앙 오메가 로고 각인."},
+      {id:"casebackEmboss",lab:"케이스백 해마",wt:M,exp:"히포캄푸스 엠보싱·각인 선명."},
+      {id:"printing",lab:"다이얼 프린팅",wt:M,exp:"정밀, 오타 없음."},
+      {id:"serial",lab:"시리얼",wt:L,exp:"위치·폰트 정확."}],
+      manual:[["크로노 작동","정상."],["워런티·무게","확인."]]},
+    aquaterra:{label:"Aqua Terra (밸브 없음)",spec:{Mvmt:"8800/8900",Valve:"없음"},checks:[
+      {id:"crystalEtch",lab:"크리스탈 로고 각인",wt:H,exp:"크리스탈 중앙 오메가 로고 각인."},
+      {id:"balanceWheel",lab:"밸런스 휠 색상",wt:H,exp:"코액시얼 밸런스 휠 검정. 은/회색이면 진품 아님."},
+      {id:"teakDial",lab:"티크 다이얼 패턴",wt:H,exp:"수직 '티크' 라인이 촘촘·균일·정밀. 거칠면 이상."},
+      {id:"movement",lab:"무브·초침",wt:M,exp:"코액시얼 마스터 크로노미터, 스윕."},
+      {id:"noValve",lab:"헬륨밸브 부재",wt:M,exp:"아쿠아테라엔 헬륨밸브 없음. 밸브 있으면 모델 불일치."},
+      {id:"serial",lab:"시리얼",wt:M,exp:"러그/케이스백 선명."},
+      {id:"printing",lab:"프린팅 품질",wt:L,exp:"무결점."}],
+      manual:[["워런티 카드","홀로그램/QR."],["무게","묵직."]]}
+  }},
+
+  cartier:{name:"Cartier",cap:"Ct",slotHint:"로마숫자 시크릿 사인·크라운 카보숑이 핵심",
+    note:"다이얼·무브(쿼츠/오토)·케이스 조합이 실제 레퍼런스와 일치해야.",models:{
+    santos:{label:"Santos",spec:{Sig:"시크릿 사인(대개 X)",Crown:"블루 카보숑"},checks:[
+      {id:"secretSig",lab:"시크릿 사인",wt:H,exp:"로마숫자 안 'CARTIER' 미세 각인(산토스는 대개 X). 없으면 강한 의심."},
+      {id:"cabochon",lab:"크라운 카보숑",wt:H,exp:"진짜 블루 사파이어/스피넬 카보숑(세팅). 유리·플라스틱=가품."},
+      {id:"railTrack",lab:"레일트랙 분 스케일",wt:M,exp:"더블 라인 분 스케일 정밀·균일."},
+      {id:"romanNumerals",lab:"로마숫자",wt:M,exp:"날카롭고 폰트·간격 일관."},
+      {id:"hands",lab:"블루 스틸 핸즈",wt:M,exp:"블루 스틸 소드 핸즈, 색·마감 정교."},
+      {id:"bezelScrews",lab:"베젤 스크류·각인",wt:M,exp:"노출 스크류 정렬·마감, 케이스 각인 선명."},
+      {id:"modelMatch",lab:"구성 일치",wt:L,exp:"다이얼·무브·케이스 조합이 레퍼런스와 일치."}],
+      manual:[["케이스백 시리얼","대조."],["사파이어·무게","확인."]]},
+    tank:{label:"Tank",spec:{Sig:"시크릿 사인(대개 VII)",Crown:"블루 카보숑"},checks:[
+      {id:"secretSig",lab:"시크릿 사인",wt:H,exp:"로마숫자 안 'CARTIER' 미세 각인(탱크는 대개 VII). 없으면 강한 의심."},
+      {id:"cabochon",lab:"크라운 카보숑",wt:H,exp:"진짜 블루 카보숑, 세팅. 유리·플라스틱=가품."},
+      {id:"railTrack",lab:"레일트랙 분 스케일",wt:M,exp:"분 스케일 정밀·균일."},
+      {id:"romanNumerals",lab:"로마숫자",wt:M,exp:"폰트·정렬 완벽, 두께 일관."},
+      {id:"hands",lab:"블루 스틸 핸즈",wt:M,exp:"블루 스틸 소드 핸즈."},
+      {id:"brancard",lab:"브랑카(케이스 바)",wt:M,exp:"탱크 특유 세로 브랑카 비례·마감."},
+      {id:"modelMatch",lab:"구성 일치",wt:L,exp:"다이얼·무브·케이스 일치."}],
+      manual:[["케이스백 각인","대조."],["사파이어·무게","확인."]]}
+  }},
+
+  panerai:{name:"Panerai",cap:"PAM",slotHint:"크라운 가드·샌드위치 다이얼·인쇄가 핵심",models:{
+    luminor:{label:"Luminor",spec:{Guard:"크라운 가드",Dial:"샌드위치"},checks:[
+      {id:"crownGuard",lab:"크라운 가드 브리지",wt:H,exp:"레버가 부드럽게 열리고 스냅 잠금. 비율상 잠금 안 풀어도 감을 수 있어야 함. 크라운 얇거나 못 감으면 가품."},
+      {id:"sandwichDial",lab:"샌드위치 다이얼",wt:H,exp:"2겹(숫자가 하부 야광층까지 뚫림)의 깊이감. 인쇄/접착 마커면 이상(단 소시지 다이얼 모델도 있음)."},
+      {id:"printing",lab:"다이얼 인쇄",wt:H,exp:"'PANERAI'·'AUTOMATIC 300m' 텍스트 얇고 균일. 두껍고 뭉툭=가품."},
+      {id:"subsecond",lab:"9시 스몰세컨드",wt:M,exp:"9시 마커 없어 좌측 서브다이얼이 가장자리에 더 붙음. 9시 마커 있고 안쪽=가품."},
+      {id:"movement",lab:"무브(P.시리즈)",wt:M,exp:"레퍼런스에 맞는 P.시리즈, Panerai 각인."},
+      {id:"crystal",lab:"크리스탈",wt:M,exp:"'피시아이' 왜곡 없이 측면에서도 또렷."},
+      {id:"serial",lab:"케이스백 시리얼",wt:L,exp:"BB/OP 시리얼 선명."}],
+      manual:[["브리지 작동·수밀","실물."],["야광·무게·시리얼","확인."]]},
+    radiomir:{label:"Radiomir",spec:{Lugs:"와이어 러그",Guard:"없음"},checks:[
+      {id:"noCrownGuard",lab:"크라운 가드 부재",wt:H,exp:"라디오미르는 크라운 가드 없음(와이어 러그+원형 크라운). 있으면 모델 불일치."},
+      {id:"wireLugs",lab:"와이어 러그",wt:H,exp:"용접/일체형 와이어 러그, 형태·마감 정확."},
+      {id:"sandwichDial",lab:"샌드위치/소시지",wt:M,exp:"레퍼런스별 다이얼 깊이감."},
+      {id:"printing",lab:"다이얼 인쇄",wt:M,exp:"텍스트 얇고 균일."},
+      {id:"movement",lab:"무브",wt:M,exp:"레퍼런스에 맞는 무브, Panerai 각인."},
+      {id:"serial",lab:"시리얼",wt:L,exp:"각인 선명."}],
+      manual:[["야광·무게","확인."],["시리얼","대조."]]}
+  }},
+
+  rm:{name:"Richard Mille",cap:"RM",slotHint:"무브 입체 스켈레톤·스플라인 스크류가 핵심",models:{
+    tonneau:{label:"RM 토노 (RM011/035 등)",spec:{Case:"토노·Ti/카본",Mvmt:"스켈레톤"},checks:[
+      {id:"movementDepth",lab:"무브 입체 스켈레톤",wt:H,exp:"브리지·기어가 3D로 깊게 스켈레톤. 납작/압축(일반무브+장식판)=가품."},
+      {id:"splineScrews",lab:"스플라인 스크류",wt:H,exp:"5점 별 Grade5 티타늄, 모서리 날카롭고 동일 깊이 대칭. 버/뭉갬=가품."},
+      {id:"material",lab:"소재·케이스 마감",wt:H,exp:"Ti 무광/카본 TPT(비반복 결). 결이 다른 개체와 똑같으면 가품."},
+      {id:"weight",lab:"무게(가벼움)",wt:M,exp:"RM은 매우 가벼움. 스틸처럼 묵직하면 오히려 의심."},
+      {id:"engraving",lab:"레이저 각인",wt:M,exp:"RM 레퍼런스·시리얼 크리스프·정렬. 'RM' 폰트/포맷 어긋나면 이상."},
+      {id:"movementType",lab:"무브 방식 일치",wt:M,exp:"오토/수동이 레퍼런스와 일치. 쿼츠=가품."},
+      {id:"font",lab:"다이얼 폰트",wt:L,exp:"RM 특유 폰트·핸즈 정렬."}],
+      manual:[["서류 홀로그램·시리얼","대조."],["소재 촉감/열전도","카본은 따뜻·가벼움."],["전문가 감정","사진만으론 한계 큼 — 강권."]]}
+  }},
+
+  tag:{name:"TAG Heuer",cap:"TAG",slotHint:"무브·레퍼런스 일치와 각인 품질",
+    note:"케이스백 레퍼런스·무브·다이얼 표기가 서로 일치해야. 'Quartz'인데 CAL(오토) 표기 등 모순=가품.",models:{
+    carrera:{label:"Carrera (Heuer 02)",spec:{Cal:"Heuer 02",Back:"투명(대개)"},checks:[
+      {id:"modelMatch",lab:"레퍼런스·무브 일치",wt:H,exp:"케이스백 레퍼런스가 실제 사양과 일치. 표기 모순=가품."},
+      {id:"columnWheel",lab:"컬럼휠·로터",wt:H,exp:"투명백으로 컬럼휠 보임. 로터 'TAG HEUER' 각인·스켈레톤. 안 보이거나 조잡=이상."},
+      {id:"chronoFn",lab:"크로노 작동",wt:H,exp:"작동, 푸셔 또렷. 미작동=가품."},
+      {id:"dialPrint",lab:"다이얼 인쇄·인덱스",wt:M,exp:"'TAG Heuer'·'CARRERA'·SWISS MADE 예리, 어플라이드 인덱스 고정."},
+      {id:"crownLogo",lab:"크라운 방패 로고",wt:M,exp:"방패 로고가 스틸에 엠보싱(부착/접착 아님)."},
+      {id:"serial",lab:"케이스백 시리얼",wt:M,exp:"깊고 선명(ref WBxxx와 구분). TAG DB 대조."},
+      {id:"bezel",lab:"타키미터",wt:L,exp:"각인 간격 균일."}],
+      manual:[["시리얼 TAG DB","조회."],["사파이어·무게","확인."]]},
+    monaco:{label:"Monaco (사각 크로노)",spec:{Case:"사각",Type:"크로노"},checks:[
+      {id:"modelMatch",lab:"레퍼런스·무브 일치",wt:H,exp:"레퍼런스·무브·다이얼 조합 일치. 모순=가품."},
+      {id:"caseCorners",lab:"사각 모서리",wt:H,exp:"모서리 날카롭고 면 평평. 둥글거나 베젤 유격=가품."},
+      {id:"chronoFn",lab:"크로노 작동",wt:H,exp:"작동, 서브다이얼·푸셔 정상."},
+      {id:"dialPrint",lab:"다이얼 인쇄",wt:M,exp:"'MONACO'·로고·서브다이얼 인쇄 예리·정렬."},
+      {id:"crownLogo",lab:"크라운 방패 로고",wt:M,exp:"방패 로고 엠보싱."},
+      {id:"serial",lab:"케이스백 시리얼",wt:M,exp:"선명, TAG DB 대조."},
+      {id:"crystal",lab:"크리스탈",wt:L,exp:"사파이어."}],
+      manual:[["시리얼 조회","TAG DB."],["무게","확인."]]}
+  }},
+
+  tudor:{name:"Tudor",cap:"TUDOR",slotHint:"베젤·크라운(로즈)·다이얼 인쇄, 무브(가능시)",
+    note:"BB/58/GMT/크로노 등 레퍼런스별로 베젤·다이얼·브레이슬릿이 달라야. 다른 ref 디테일이 섞이면 의심.",models:{
+    blackbay:{label:"Black Bay / 58",spec:{Mvmt:"MT56xx / ETA",Type:"다이버"},checks:[
+      {id:"dialPrint",lab:"다이얼 인쇄",wt:H,exp:"'TUDOR'·'GENEVE'·'CHRONOMETER' 텍스트 얇고 크리스프·균일. 두껍고 뭉툭=가품."},
+      {id:"bezelPip",lab:"12시 pip·베젤 숫자",wt:H,exp:"12시 위 pip(야광 점)이 작고 정확히 돔형·경계 안. 크거나 삐져나오면 가품. 숫자 샤프."},
+      {id:"crownRose",lab:"크라운 튜더 로즈",wt:H,exp:"크라운 측면 튜더 로즈 각인이 샤프·깊게 엠보싱. 얇거나 조잡=가품."},
+      {id:"movement",lab:"무브(MT56xx)",wt:M,exp:"인하우스 MT56xx(실리콘 밸런스 스프링)면 강한 진품 신호, 로터 거의 무음. ETA 2824 세대는 무브만으론 판정 약함."},
+      {id:"caseback",lab:"케이스백 각인",wt:M,exp:"튜더 로고·ref·시리얼 정밀. 가품은 더 깊고 작게."},
+      {id:"bezelAction",lab:"베젤 작동·색",wt:M,exp:"단방향·또렷한 클릭·정렬, 인서트 색 정확."},
+      {id:"serial",lab:"시리얼",wt:L,exp:"케이스 측면 시리얼 선명."}],
+      manual:[["로터 무음·부드러움","실물."],["무게·시리얼","튜더 조회."],["클라스프 각인","루페."]]},
+    bbgmt:{label:"Black Bay GMT",spec:{Cal:"MT5652",Type:"GMT"},checks:[
+      {id:"dialPrint",lab:"다이얼 인쇄",wt:H,exp:"텍스트 얇고 크리스프·균일. 두껍고 뭉툭=가품."},
+      {id:"bezelGmt",lab:"24시 베젤 색·정렬",wt:H,exp:"펩시 등 색·폰트·정렬 정확. 색 바래거나 어긋나면 가품."},
+      {id:"crownRose",lab:"크라운 튜더 로즈",wt:H,exp:"로즈 각인 샤프·엠보싱."},
+      {id:"gmtFn",lab:"GMT 기능",wt:M,exp:"24시침 기능·독립 조정. 미작동=가품."},
+      {id:"movement",lab:"무브(MT5652)",wt:M,exp:"인하우스 MT5652, 로터 무음."},
+      {id:"caseback",lab:"케이스백 각인",wt:M,exp:"로고·ref·시리얼 정밀."},
+      {id:"serial",lab:"시리얼",wt:L,exp:"선명."}],
+      manual:[["로터·무게","실물."],["시리얼","조회."]]}
+  }},
+
+  breitling:{name:"Breitling",cap:"BRT",slotHint:"슬라이드룰 베젤·서브다이얼·무브(가능시)",
+    note:"모델번호는 문자+5자리(A=스틸). 케이스백 모델·시리얼이 실제 사양과 일치·철자 정확해야.",models:{
+    navitimer:{label:"Navitimer",spec:{Cal:"01",Bezel:"슬라이드룰"},checks:[
+      {id:"slideRule",lab:"슬라이드룰 베젤",wt:H,exp:"부드럽게 작동, 해시가 안쪽 스케일과 갭 없이 맞음. 화살표·빨간 '10' 완벽 대칭. 어긋나면 가품."},
+      {id:"subdial",lab:"서브다이얼",wt:H,exp:"균등·비례, 미닛트랙/외곽 인덱스 침범 없음. 마진 인덱스에 붙으면 가품."},
+      {id:"dateWheel",lab:"데이트 휠",wt:M,exp:"다이얼과 거의 플러시, 숫자 크리스프. '싱크홀'처럼 꺼지면 가품."},
+      {id:"logo",lab:"윙드 앵커 로고",wt:M,exp:"팁에 미세 갭, 깃털선이 날개 끝에 못 미침. 각인 크리스프."},
+      {id:"swissMade",lab:"SWISS MADE",wt:M,exp:"6시 서브다이얼 아래 컴팩트·박스형·중앙. 늘어나거나 눌리면 이상."},
+      {id:"movement",lab:"무브(칼 01)",wt:M,exp:"컬럼휠·버티컬 클러치·COSC·70h, 거의 무음. 쿼츠/시끄러운 똑딱=가품."},
+      {id:"serial",lab:"모델·시리얼",wt:L,exp:"문자+5자리 모델·시리얼 선명, 철자 정확."}],
+      manual:[["슬라이드룰 작동","실물."],["안티글레어·무게","확인."],["시리얼","조회."]]}
+  }},
+
+  iwc:{name:"IWC",cap:"IWC",slotHint:"케이스백 각인·무브·다이얼 정밀도",
+    note:"레퍼런스(IWxxxxxx)가 다이얼·소재·스트랩과 일치해야. 불일치=부품교체/가품.",models:{
+    portugieser:{label:"Portugieser",spec:{Freq:"3Hz(계열)",Back:"투명 다수"},checks:[
+      {id:"dialTicks",lab:"초 트랙 틱 수",wt:H,exp:"마커 사이 3틱(3Hz, 초당 3비트). 4틱이면 무브 불일치=가품."},
+      {id:"casebackEngrave",lab:"케이스백/무브 각인",wt:H,exp:"머신컷으로 균일·깊고 샤프('IWC Schaffhausen','Probus Scafusia'). 레이저로 얕고 납작하면 가품."},
+      {id:"movement",lab:"무브 칼리버",wt:H,exp:"인하우스/개조 스위스, 플레이트 칼리버 각인이 ref와 일치. 조잡한 중국/일제 베이스=가품."},
+      {id:"dialPrint",lab:"다이얼 프린팅",wt:M,exp:"폰트 두께 균일·엣지 깨끗, 서브다이얼(블루) 깊고 균일, 넘버 임보싱."},
+      {id:"crownLogo",lab:"크라운 로고",wt:M,exp:"IWC 로고, 부드러운 조작."},
+      {id:"serial",lab:"시리얼",wt:M,exp:"케이스백 외링/러그/무브, ref와 별개. 대조."},
+      {id:"hands",lab:"핸즈·인덱스",wt:L,exp:"정렬·마감 정교."}],
+      manual:[["무브 칼리버 각인","대조."],["금/플래티넘 순도각인","확인."],["무게·시리얼","조회."]]},
+    pilot:{label:"Pilot's Watch / 크로노",spec:{Type:"파일럿",Mvmt:"오토/크로노"},checks:[
+      {id:"numeralAlign",lab:"숫자 정렬(7)",wt:H,exp:"숫자 정렬 — 특히 7의 아랫선이 아워 마커 중앙에 와야. 어긋나면 무브 불일치=가품."},
+      {id:"casebackEngrave",lab:"케이스백 각인",wt:H,exp:"머신컷 균일·깊음. 레이저 얕음=가품."},
+      {id:"subdialSpacing",lab:"서브다이얼 간격",wt:M,exp:"오토 크로노 간격 넓음. 너무 중앙에 몰리거나 작으면 클론(쿼츠)."},
+      {id:"movement",lab:"무브 칼리버",wt:M,exp:"ref에 맞는 칼리버·각인. 빅파일럿 파워리저브는 실제 동력 연동."},
+      {id:"dialPrint",lab:"다이얼 프린팅",wt:M,exp:"폰트 균일, 인쇄 크리스프."},
+      {id:"crownLogo",lab:"크라운 로고",wt:M,exp:"로고·조작."},
+      {id:"serial",lab:"시리얼",wt:L,exp:"대조."}],
+      manual:[["무브 각인","대조."],["파워리저브 실동작","확인."],["무게·시리얼","조회."]]}
+  }},
+
+  vacheron:{name:"Vacheron Constantin",cap:"VC",slotHint:"말티즈 크로스·무브 마감·클라스프",
+    note:"레퍼런스별 베젤·다이얼·브레이슬릿 일관. 케이스백 'VACHEROM' 등 철자 오류=명백 가품.",models:{
+    overseas:{label:"Overseas",spec:{Cal:"5100",Case:"41mm·투명백"},checks:[
+      {id:"maltese",lab:"말티즈 크로스",wt:H,exp:"다이얼·크라운·클라스프·무브의 말티즈 크로스가 샤프·정밀. 흐리거나 두께 불균일=가품."},
+      {id:"movementFinish",lab:"무브 마감·각인",wt:H,exp:"사파이어백으로 무브 마감·각인 정교(일부 제네바 실). 조잡/접착=가품."},
+      {id:"caseFinish",lab:"케이스·베젤",wt:M,exp:"6노치 말티즈 베젤, 브러시+폴리시 대비 정확. 약 41mm×11mm."},
+      {id:"clasp",lab:"클라스프",wt:M,exp:"폴딩 클라스프가 양쪽 버튼 동시로 열림, 링크 각인·시리얼. 뻑뻑/벌크=가품."},
+      {id:"dial",lab:"다이얼",wt:M,exp:"레터링 크리스프, 기요셰는 각인(인쇄 아님), 인덱스 접착 흔적 없음."},
+      {id:"serial",lab:"시리얼",wt:M,exp:"케이스백/러그 시리얼 깊고 균일. 철자·번호 대조."},
+      {id:"weight",lab:"무게",wt:L,exp:"브레이슬릿 포함 약 150g, 묵직."}],
+      manual:[["시리얼/디지털 인증서","대조."],["퀵스위치 스트랩","확인."],["무게","묵직."]]}
+  }},
+
+  lange:{name:"A. Lange & Söhne",cap:"ALS",slotHint:"사파이어백 무브(수공 각인·독일은)가 결정적",
+    note:"대부분 수동와인딩(오디세우스·오토 작소니아 예외). 로터에 스티커/조잡한 로터면 명백 가품.",models:{
+    lange1:{label:"Lange 1",spec:{Cal:"L121.1",Wind:"수동"},checks:[
+      {id:"balanceCock",lab:"밸런스 콕 수공 각인",wt:H,exp:"플로럴 수공 각인(개체마다 미세하게 다름). 기계적/균일하면 가품."},
+      {id:"germanSilver",lab:"저먼실버 3/4 플레이트",wt:H,exp:"저먼실버 3/4 플레이트+글라스휘테 리빙, 미처리라 금빛 파티나. 로듐/거친 리빙=가품."},
+      {id:"movementParts",lab:"샤통·블루 나사·스완넥",wt:H,exp:"골드 샤통(나사고정)+써멀 블루 나사(경면 헤드)+스완넥 레귤레이터. 없거나 조잡=가품."},
+      {id:"outsizeDate",lab:"아웃사이즈 데이트·레이아웃",wt:M,exp:"두 창 플러시·정렬, 판 사이 갭 없음. 시간 오프센터(~7시), 스몰세컨드(~5시)."},
+      {id:"caliberEngrave",lab:"칼리버 각인·시리얼",wt:M,exp:"무브 칼리버 각인(L121.1)·시리얼 깊고 균일. 대조."},
+      {id:"manualWind",lab:"수동와인딩",wt:M,exp:"로터 없음. 로터/스티커 보이면 명백 가품."},
+      {id:"dialAlign",lab:"다이얼 정렬·마감",wt:L,exp:"인덱스·핸즈 정렬·마감 완벽, 접착 흔적 없음."}],
+      manual:[["시리얼","대조."],["무게(귀금속)","묵직."],["전문가 감정","강권."]]},
+    a1815:{label:"1815",spec:{Wind:"수동",Dial:"레일웨이 트랙"},checks:[
+      {id:"balanceCock",lab:"밸런스 콕 수공 각인",wt:H,exp:"플로럴 수공 각인, 개체별 유니크."},
+      {id:"germanSilver",lab:"저먼실버 3/4 플레이트",wt:H,exp:"저먼실버 3/4 플레이트+글라스휘테 리빙, 금빛 파티나."},
+      {id:"movementParts",lab:"샤통·블루 나사·베벨",wt:H,exp:"골드 샤통(시간전용 대개 4개)+블루 나사+핸드 베벨."},
+      {id:"dialDNA",lab:"다이얼 DNA",wt:M,exp:"슈맹 드 페(레일웨이) 분 트랙, 아라비아 숫자, 925 실버 다이얼, 블루/골드 랜싯 핸즈, 스몰세컨드."},
+      {id:"caliberEngrave",lab:"칼리버 각인·시리얼",wt:M,exp:"칼리버 각인(L051/L941 등)·시리얼 대조."},
+      {id:"manualWind",lab:"수동와인딩",wt:M,exp:"수동와인딩. 로터/스티커=가품."},
+      {id:"printing",lab:"인쇄·각인",wt:L,exp:"무결점, 철자 오류 없음."}],
+      manual:[["시리얼","대조."],["무게","묵직."],["전문가 감정","강권."]]}
+  }}
+};
+
+const SLOTS=[
+  {id:"front",lab:"다이얼·정면",req:"필수급"},
+  {id:"back",lab:"케이스백·무브",req:"필수급"},
+  {id:"side",lab:"측면·시리얼",req:"권장"},
+  {id:"clasp",lab:"클라스프·크라운",req:"권장"},
+  {id:"macro1",lab:"매크로 확대 ①",req:"불명 줄이기"},
+  {id:"macro2",lab:"매크로 확대 ②",req:"불명 줄이기"}
+];
+const MACROS=["macro1","macro2"];
+
+/* 체크포인트 id → 그 근거가 찍혀야 하는 사진 슬롯 */
+const NEEDS={
+  rotor:"back",jewels:"back",balance:"back",finish:"back",movement:"back",movementFinish:"back",
+  movementDepth:"back",movementParts:"back",movementType:"back",seal:"back",screwsBlued:"back",
+  germanSilver:"back",balanceCock:"back",columnWheel:"back",caseback:"back",casebackEngrave:"back",
+  casebackEmboss:"back",noDisplayBack:"back",caliberEngrave:"back",manualWind:"back",balanceWheel:"back",
+  dial:"front",dialText:"front",dialPrint:"front",dialEmboss:"front",dialLayout:"front",dialTicks:"front",
+  dialDNA:"front",dialAlign:"front",printing:"front",tapisserie:"front",romanNumerals:"front",railTrack:"front",
+  secretSig:"front",subdial:"front",subdialSpacing:"front",subsecond:"front",numeralAlign:"front",
+  wavePattern:"front",teakDial:"front",sandwichDial:"front",dateWheel:"front",outsizeDate:"front",
+  logo:"front",swissMade:"front",maltese:"front",hands:"front",cyclops:"front",crystal:"front",
+  crystalEtch:"front",crownEtch:"front",rehaut:"front",bezel:"front",bezelLume:"front",bezelGmt:"front",
+  bezelTachy:"front",bezelPip:"front",bezelAction:"front",slideRule:"front",chronoFn:"front",gmt24:"front",
+  gmtFn:"front",sweep:"front",pusher:"front",font:"front",proportions:"front",brancard:"front",
+  caseCorners:"front",modelMatch:"front",
+  serial:"side",heliumValve:"side",noValve:"side",crownGuard:"side",noCrownGuard:"side",wireLugs:"side",
+  splineScrews:"side",hallmark:"side",material:"side",engraving:"side",caseFinish:"side",weight:"side",
+  cabochon:"clasp",crownLogo:"clasp",crownRose:"clasp",clasp:"clasp",bracelet:"clasp",strap:"clasp",bezelScrews:"clasp"
+};
+const needOf=id=>NEEDS[id]||"front";
+const slotLab=id=>(SLOTS.find(s=>s.id===id)||{}).lab||id;
+
+const wtLab={high:"고배점",med:"중배점",low:"저배점"};
+const VLAB={pass:"정합",weak_pass:"약한 정합",weak_flag:"약한 이상",flag:"이상",uncertain:"불명"};
+const RLAB={no_photo:"해당 부위 미촬영",low_res:"화질·각도 부족",not_photographable:"사진으로는 원리상 불가"};
+
+let brandKey=null,modelKey=null;const imgs={};
+
+/* ---------- 브랜드/모델 선택 ---------- */
+const brandsEl=document.getElementById('brands');
+Object.keys(DATA).forEach(k=>{const b=document.createElement('button');b.className='chip';b.setAttribute('aria-pressed','false');b.dataset.k=k;
+  b.innerHTML=`${DATA[k].name}<span class="cap">${DATA[k].cap}</span>`;b.onclick=()=>selectBrand(k);brandsEl.appendChild(b);});
+const modelsEl=document.getElementById('models'),specbar=document.getElementById('specbar'),slotHintEl=document.getElementById('slotHint');
+
+function selectBrand(k){
+  brandKey=k;modelKey=null;
+  [...brandsEl.children].forEach(c=>c.setAttribute('aria-pressed',c.dataset.k===k?'true':'false'));
+  slotHintEl.textContent=DATA[k].slotHint;modelsEl.innerHTML='';modelsEl.className='chips show';
+  const ms=DATA[k].models;
+  Object.keys(ms).forEach(mk=>{const b=document.createElement('button');b.className='chip';b.setAttribute('aria-pressed','false');b.dataset.k=mk;
+    b.textContent=ms[mk].label;b.onclick=()=>selectModel(mk);modelsEl.appendChild(b);});
+  specbar.className='specbar';coverage();refreshRun();
+}
+function selectModel(mk){
+  modelKey=mk;[...modelsEl.children].forEach(c=>c.setAttribute('aria-pressed',c.dataset.k===mk?'true':'false'));
+  const sp=DATA[brandKey].models[mk].spec;specbar.className='specbar show';
+  specbar.innerHTML=Object.keys(sp).map(key=>`<div class="spec"><span class="k">${key}</span><span class="v">${sp[key]}</span></div>`).join('');
+  coverage();refreshRun();
+}
+
+/* ---------- 사진 업로드 ---------- */
+const slotsEl=document.getElementById('slots');
+SLOTS.forEach(s=>{const d=document.createElement('label');d.className='slot';d.dataset.id=s.id;
+  d.innerHTML=`<input type="file" accept="image/*"/><div class="ph"><span class="plus">+</span><span class="lab">${s.lab}</span><span class="req">${s.req}</span></div>`;
+  d.querySelector('input').addEventListener('change',e=>onFile(e,s));slotsEl.appendChild(d);});
+
+/* 업로드 시 긴 변 1600px로 리사이즈 — 과도한 축소로 디테일이 뭉개지는 걸 막음 */
+function prep(file){
+  return new Promise(res=>{
+    const rd=new FileReader();
+    rd.onload=()=>{
+      const img=new Image();
+      img.onload=()=>{
+        const MAX=1600,r=Math.min(1,MAX/Math.max(img.width,img.height));
+        if(r>=1){res({url:rd.result,b64:rd.result.split(',')[1],media:file.type||'image/jpeg',w:img.width,h:img.height});return;}
+        const c=document.createElement('canvas');c.width=Math.round(img.width*r);c.height=Math.round(img.height*r);
+        c.getContext('2d').drawImage(img,0,0,c.width,c.height);
+        const url=c.toDataURL('image/jpeg',0.92);
+        res({url,b64:url.split(',')[1],media:'image/jpeg',w:c.width,h:c.height});
+      };
+      img.src=rd.result;
+    };
+    rd.readAsDataURL(file);
+  });
+}
+async function onFile(e,s){
+  const f=e.target.files[0];if(!f)return;
+  const o=await prep(f);imgs[s.id]=o;
+  const slot=slotsEl.querySelector(`[data-id="${s.id}"]`);slot.classList.add('filled');
+  slot.querySelector('.ph')?.remove();slot.querySelector('img')?.remove();
+  const img=new Image();img.src=o.url;slot.appendChild(img);
+  let tag=slot.querySelector('.tag');if(!tag){tag=document.createElement('span');tag.className='tag';slot.appendChild(tag);}
+  tag.textContent=s.lab;coverage();refreshRun();
+}
+
+/* ---------- 사전 커버리지: 지금 사진으로 몇 개나 볼 수 있나 ---------- */
+const covEl=document.getElementById('coverage');
+function coverage(){
+  if(!brandKey||!modelKey){covEl.className='coverage';return;}
+  const prof=DATA[brandKey].models[modelKey];
+  const have=new Set(Object.keys(imgs));
+  const hasMacro=MACROS.some(m=>have.has(m));
+  const missing={};let ok=0;
+  prof.checks.forEach(c=>{
+    const n=needOf(c.id);
+    if(have.has(n)||hasMacro)ok++;
+    else (missing[n]=missing[n]||[]).push(c);
+  });
+  const total=prof.checks.length,pct=Math.round(ok/total*100);
+  let html=`<div class="cov-head"><span class="cov-t">사전 커버리지</span><span class="cov-n">${ok}/${total} 항목 · ${pct}%</span></div>`;
+  html+=`<div class="bar"><i style="width:${pct}%"></i></div>`;
+  const keys=Object.keys(missing);
+  if(keys.length){
+    html+=`<p class="cov-msg">아래 사진을 올리면 불명이 줄어듭니다.</p><div class="cov-list">`;
+    keys.forEach(k=>{
+      const hi=missing[k].filter(c=>c.wt===H).length;
+      html+=`<div class="cov-row"><b>${slotLab(k)}</b> <span>+${missing[k].length}항목${hi?` · 고배점 ${hi}`:''}</span><em>${missing[k].map(c=>c.lab).join(' · ')}</em></div>`;
+    });
+    html+=`</div>`;
+  }else{
+    html+=`<p class="cov-msg ok">모든 체크포인트의 근거 부위가 촬영됐습니다. 남는 불명은 화질·각도 문제일 가능성이 큽니다.</p>`;
+  }
+  covEl.innerHTML=html;covEl.className='coverage show';
+}
+
+const runBtn=document.getElementById('run'),runHint=document.getElementById('runhint');
+function refreshRun(){const ok=brandKey&&modelKey&&Object.keys(imgs).length>0;runBtn.disabled=!ok;
+  runHint.textContent=ok?`${DATA[brandKey].name} · ${Object.keys(imgs).length}장 준비됨`:'브랜드·모델 선택 + 사진 1장 이상';}
+
+/* ---------- 프롬프트 ---------- */
+function buildPrompt(prof,activeChecks,skipped){
+  const brand=DATA[brandKey].name,brandNote=DATA[brandKey].note;
+  let p=`너는 명품 시계 사진 기반 진품감정 "참조" 보조 도구다. 확정 감정이 아니라, 사진에서 보이는 근거로 단서를 점검한다.\n\n`;
+  p+=`[대상] ${brand} · ${prof.label}\n`;
+  if(prof.detect)p+=`먼저 다이얼·케이스백으로 세부 레퍼런스/칼리버를 추정하고 그 기준으로 판단하라.\n`;
+  p+=`반드시 이 브랜드/모델 고유 기준으로만 판단하라. 다른 모델 기준을 섞지 마라.\n`;
+  p+=`[레퍼런스 정합] 다이얼·베젤·무브·브레이슬릿이 하나의 레퍼런스로 일관되는지 보고, 서로 다른 레퍼런스 디테일이 섞였으면 해당 체크포인트를 이상으로 반영하라.\n`;
+  if(brandNote)p+=`[브랜드 참고] ${brandNote}\n`;
+  if(prof.note)p+=`[모델 참고] ${prof.note}\n`;
+  p+=`\n[판정 원칙 — 중요]\n`;
+  p+=`1) 사진을 확대해서 끝까지 본 뒤 판단하라. 부위가 프레임에 있는데 흐릿하다는 이유만으로 곧바로 불명 처리하지 마라.\n`;
+  p+=`2) 확신이 부족해도 어느 쪽으로 기우는 근거가 조금이라도 있으면 weak_pass 또는 weak_flag를 써라. 불명(uncertain)은 정말 근거가 0일 때만 쓴다.\n`;
+  p+=`3) 어떤 사진에서 근거를 얻었는지 상관없다. 매크로 사진에 해당 부위가 찍혀 있으면 그것으로 판단하라.\n`;
+  p+=`4) 불명일 때는 reason을 반드시 채워라: no_photo(해당 부위가 어느 사진에도 없음) / low_res(부위는 보이나 화질·각도 부족) / not_photographable(작동감·무게 등 사진으로 확인 불가능한 항목).\n`;
+  p+=`5) observation에는 실제로 사진에서 관찰한 내용을 써라. 불명이면 무엇이 어떻게 찍혀야 판정 가능한지 한 문장으로 써라.\n`;
+  if(skipped.length)p+=`\n[참고] 다음 항목은 근거 부위가 촬영되지 않아 이번 회차에서 제외됐다: ${skipped.map(c=>c.lab).join(', ')}\n`;
+  p+=`\n각 체크포인트의 정상 기준:\n`;
+  activeChecks.forEach(c=>{p+=`- ${c.id}: ${c.exp}\n`});
+  const ids=activeChecks.map(c=>c.id);
+  p+=`\nverdict는 다음 중 하나: pass(정상 사양과 일치) / weak_pass(대체로 일치하나 확신 부족) / weak_flag(어긋나 보이나 확신 부족) / flag(명확히 불일치·이상) / uncertain(근거 전무).\n`;
+  p+=`체크포인트 id: ${ids.join(', ')}\n\n오직 아래 JSON만 출력(코드펜스·군더더기 금지). observation은 한국어 1~2문장. summary는 2~3문장 종합 참조 의견. confidence는 사진 근거 충실도 0~100 정수.\n`;
+  p+=`{"reference":"<추정/확정 모델>","checkpoints":[`+ids.map(id=>`{"id":"${id}","verdict":"pass|weak_pass|weak_flag|flag|uncertain","reason":"no_photo|low_res|not_photographable|","observation":"..."}`).join(',')+`],"summary":"...","confidence":0}`;
+  return p;
+}
+
+/* ---------- 실행 ---------- */
+const errEl=document.getElementById('err');
+runBtn.addEventListener('click',async()=>{
+  errEl.className='err';runBtn.disabled=true;const orig=runBtn.textContent;runBtn.innerHTML='<span class="spinner"></span> 감정 중…';
+  const prof=DATA[brandKey].models[modelKey];
+  const have=new Set(Object.keys(imgs)),hasMacro=MACROS.some(m=>have.has(m));
+  /* 근거 부위가 아예 안 찍힌 항목은 질의에서 빼고, 결과에선 '미촬영'으로 따로 안내 */
+  const active=prof.checks.filter(c=>have.has(needOf(c.id))||hasMacro);
+  const skipped=prof.checks.filter(c=>!(have.has(needOf(c.id))||hasMacro));
+  if(!active.length){errEl.textContent="업로드한 사진으로 볼 수 있는 체크포인트가 없습니다. 다이얼 정면이나 케이스백 사진을 추가하세요.";errEl.className='err show';
+    runBtn.disabled=false;runBtn.textContent=orig;refreshRun();return;}
+  const content=[{type:"text",text:buildPrompt(prof,active,skipped)}];
+  SLOTS.forEach(s=>{if(imgs[s.id]){content.push({type:"text",text:`[사진: ${s.lab}]`});content.push({type:"image",source:{type:"base64",media_type:imgs[s.id].media,data:imgs[s.id].b64}});}});
+  try{
+    const res=await fetch(API_ENDPOINT,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({model:MODEL,max_tokens:2400,messages:[{role:"user",content}]})});
+    if(!res.ok)throw new Error("API 응답 오류 ("+res.status+")");
+    const data=await res.json();
+    const raw=(data.content||[]).filter(b=>b.type==="text").map(b=>b.text).join("\n");
+    render(prof,JSON.parse(raw.replace(/```json/g,'').replace(/```/g,'').trim()),skipped);
+  }catch(err){errEl.textContent="감정 실패: "+err.message+" — 사진을 확인하고 재시도하세요. (GAS 릴레이 응답 문제일 수 있습니다.)";errEl.className='err show';}
+  finally{runBtn.disabled=false;runBtn.textContent=orig;refreshRun();}
+});
+
+/* ---------- 결과 ---------- */
+function render(prof,p,skipped){
+  const byId={};(p.checkpoints||[]).forEach(c=>byId[c.id]=c);
+  const skipIds=new Set(skipped.map(c=>c.id));
+  const checksEl=document.getElementById('checks');checksEl.innerHTML='';
+  let pass=0,flag=0,unc=0,highFlag=false,weakFlagHigh=false;
+  const retake={},scored={},reasons={};
+
+  prof.checks.forEach(def=>{
+    let c,v,reason='';
+    if(skipIds.has(def.id)){v='uncertain';reason='no_photo';c={observation:`${slotLab(needOf(def.id))} 사진이 없어 판정하지 못했습니다.`};}
+    else{c=byId[def.id]||{verdict:'uncertain',reason:'no_photo',observation:'판단할 사진 근거 없음.'};v=c.verdict||'uncertain';reason=c.reason||'';}
+
+    scored[def.id]=v;reasons[def.id]=reason;
+    if(v==='pass')pass++;
+    else if(v==='weak_pass')pass++;
+    else if(v==='flag'){flag++;if(def.wt===H)highFlag=true;}
+    else if(v==='weak_flag'){flag++;if(def.wt===H)weakFlagHigh=true;}
+    else{unc++;
+      if(reason!=='not_photographable'){const k=needOf(def.id)+'|'+(reason||'no_photo');(retake[k]=retake[k]||[]).push(def);}
+    }
+
+    const cls=v==='pass'||v==='weak_pass'?'pass':(v==='flag'||v==='weak_flag'?'flag':'uncertain');
+    const soft=(v==='weak_pass'||v==='weak_flag')?' soft':'';
+    const row=document.createElement('div');row.className='crow';
+    row.innerHTML=`<span class="dot ${cls}${soft}"></span>
+      <div><p class="lab">${def.lab} <span class="vtag ${cls}${soft}">${VLAB[v]||v}</span>${v==='uncertain'&&reason?`<span class="rtag">${RLAB[reason]||reason}</span>`:''}</p>
+      <p class="exp">기준: ${def.exp}</p><p class="obs">${c.observation||''}</p></div>
+      <span class="wt ${def.wt===H?'high':''}">${wtLab[def.wt]}</span>`;
+    checksEl.appendChild(row);
+  });
+
+  /* ===== 근거 무게 산정 (확률 아님) =====
+     가중치: 고배점 5 / 중배점 2 / 저배점 1.  pass=+1w, weak_pass=+0.5w, weak_flag=-0.5w, flag=-1w
+     ▸ 확률로 환산하지 않는 이유: 캘리브레이션 데이터가 없고, 고배점 이상 1건은
+       나머지 정합 근거 전부를 무효화하는 거부권 성격이라 가산 평균이 성립하지 않음. */
+  const WVAL={high:5,med:2,low:1};
+  let posW=0,negW=0,maxW=0,uncW=0;
+  const unresolved=[];
+  prof.checks.forEach(def=>{
+    const w=WVAL[def.wt];maxW+=w;
+    const r=scored[def.id];
+    if(r==='pass')posW+=w; else if(r==='weak_pass')posW+=w*0.5;
+    else if(r==='flag')negW+=w; else if(r==='weak_flag')negW+=w*0.5;
+    else{uncW+=w;unresolved.push({def,w,reason:reasons[def.id]||''});}
+  });
+  const pct=x=>Math.round(x/maxW*1000)/10;
+  const posP=pct(posW),negP=pct(negW),uncP=pct(uncW);
+  const PHOTO_CAP=85; /* 사진만으로 도달 가능한 정합 상한 — 슈퍼클론은 외형·무브 상당수를 복제함 */
+
+  let lean,color;
+  if(highFlag){lean="가품 지표";color="var(--flag)";}
+  else if(weakFlagHigh||flag>0){lean="주의 · 부분 불일치";color="var(--amber)";}
+  else if(posP>=55){lean="진품 정합 (참조)";color="var(--gold)";}
+  else{lean="판정 보류";color="var(--steel)";}
+  document.getElementById('lean').textContent=lean;document.getElementById('lean').style.color=color;
+  document.getElementById('sealring').style.setProperty('--seal-c',color);
+  const conf=Math.max(0,Math.min(100,parseInt(p.confidence)||0));
+  document.getElementById('conf').innerHTML=`<b>${conf}</b> / 100 근거충실도`;
+  document.getElementById('vref').textContent=`${DATA[brandKey].name}  ·  ${p.reference||prof.label}`;
+  document.getElementById('vsum').textContent=p.summary||'';
+  document.getElementById('tallies').innerHTML=`<span class="tally p">정합 ${pass}</span><span class="tally f">이상 ${flag}</span><span class="tally u">불명 ${unc}</span>`;
+
+  /* ----- 근거 무게 패널 ----- */
+  const sp=document.getElementById('scorepanel');
+  let h=`<div class="sp-h"><p class="sp-t">근거의 무게</p></div>
+    <p class="sp-sub">진품일 "확률"이 아닙니다. 검증된 진위 라벨 데이터로 보정한 적이 없으므로 확률로 읽지 마세요. 아래는 이번 사진이 어느 쪽으로 얼마나 근거를 제공했는지를 가중치(고배점 5·중배점 2·저배점 1)로 환산한 값입니다.</p>`;
+
+  if(highFlag||weakFlagHigh){
+    const vlist=prof.checks.filter(d=>d.wt===H&&(scored[d.id]==='flag'||scored[d.id]==='weak_flag'));
+    h+=`<div class="veto"><b>거부권 항목 ${vlist.length}건.</b> ${vlist.map(d=>d.lab).join(', ')} — 이 항목들은 다른 근거가 아무리 정합해도 상쇄되지 않습니다. 두 막대를 비교해 판단하지 마세요.</div>`;
+  }
+
+  h+=`<div class="gauge"><div class="g-lab"><b>이상 근거</b><span style="color:var(--flag)">${negP}%</span></div>
+    <div class="g-bar"><i class="neg" style="width:${negP}%"></i></div></div>`;
+
+  h+=`<div class="gauge"><div class="g-lab"><b>정합 근거</b><span style="color:var(--gold)">${posP}%</span></div>
+    <div class="g-bar"><i class="pos" style="width:${Math.min(posP,100)}%"></i><span class="g-cap" style="left:${PHOTO_CAP}%"></span></div>
+    <p class="g-note">세로 선(${PHOTO_CAP}%)은 사진 기반 판정의 상한입니다. 고급 클론은 외형과 무브 마감 상당수를 복제하므로, 정합 근거가 아무리 쌓여도 사진만으로는 진품 확정에 도달하지 못합니다.</p></div>`;
+
+  h+=`<div class="gauge"><div class="g-lab"><b>미해결</b><span style="color:var(--ink-2)">${uncP}%</span></div>
+    <div class="g-bar"><i class="unr" style="width:${uncP}%"></i></div></div>`;
+
+  /* ----- 정보가치: 어떤 항목 하나가 결론을 가장 크게 바꾸나 ----- */
+  const voi=unresolved.filter(u=>u.reason!=='not_photographable').sort((a,b)=>b.w-a.w).slice(0,3);
+  h+=`<div class="voi"><h5>다음 한 가지를 확인하면 결론이 가장 크게 움직입니다</h5>`;
+  if(voi.length){
+    h+=`<ol>`+voi.map(u=>{
+      const swing=pct(u.w);
+      const how=u.reason==='low_res'?`${slotLab(needOf(u.def.id))}를 매크로로 확대 재촬영`:`${slotLab(needOf(u.def.id))} 사진 추가`;
+      return `<li><b>${u.def.lab}</b><span>±${swing}%p</span><br>${how}${u.def.wt===H?' · <b>고배점(거부권)</b>':''}</li>`;
+    }).join('')+`</ol>`;
+  }else{
+    h+=`<p class="none">사진으로 확인 가능한 항목은 모두 해소됐습니다. 남은 것은 실물 확인 항목입니다.</p>`;
+  }
+  h+=`</div>`;
+
+  h+=`<p class="nolabel"><b>왜 확률을 쓰지 않나.</b> ① 진위가 확인된 데이터로 보정된 적이 없고, ② 고배점 이상 1건이 나머지를 무효화하는 비대칭 구조라 평균이 성립하지 않으며, ③ 구입 경로·가격 같은 사전 정보를 사진이 알지 못합니다. 세 조건이 갖춰지지 않은 상태의 확률 표기는 근거 없는 확신을 만듭니다.</p>`;
+  sp.innerHTML=h;
+
+  /* 불명 해소 안내 */
+  const rt=document.getElementById('retake'),keys=Object.keys(retake);
+  if(keys.length){
+    let html=`<h4>불명 ${unc}개 중 ${keys.reduce((a,k)=>a+retake[k].length,0)}개는 사진을 다시 올리면 해결됩니다</h4><ul>`;
+    keys.forEach(k=>{
+      const [slot,rsn]=k.split('|');const list=retake[k];
+      const tip=rsn==='low_res'
+        ? `${slotLab(slot)}를 <b>매크로 슬롯에 확대 촬영</b>해 다시 올리세요(화면 반사 없이, 초점 고정)`
+        : `<b>${slotLab(slot)}</b> 사진을 추가하세요`;
+      html+=`<li>${tip} → <em>${list.map(c=>c.lab).join(' · ')}</em></li>`;
+    });
+    html+=`</ul>`;rt.innerHTML=html;rt.className='retake show';
+  }else rt.className='retake';
+
+  const mEl=document.getElementById('manual');mEl.innerHTML='';
+  prof.manual.forEach(([k,v])=>{const li=document.createElement('li');li.innerHTML=`<b>${k}</b> — ${v}`;mEl.appendChild(li);});
+  drawScrews();
+  const results=document.getElementById('results');results.className='results show';results.scrollIntoView({behavior:'smooth',block:'start'});
+}
+function drawScrews(){const seal=document.getElementById('seal');if(seal.querySelector('.screw'))return;const R=58;
+  for(let i=0;i<8;i++){const ang=(i/8)*2*Math.PI-Math.PI/2+Math.PI/8;const s=document.createElement('span');s.className='screw';s.style.transform=`translate(${Math.cos(ang)*R}px,${Math.sin(ang)*R}px)`;seal.appendChild(s);}}
+</script>
+</body>
+</html>
