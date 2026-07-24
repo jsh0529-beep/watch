@@ -228,7 +228,7 @@
     <p class="eyebrow">Luxury Watch · Reference-Based Check · 17 Brands</p>
     <h1>진품감정 <span class="thin">참조 콘솔</span></h1>
     <p class="sub">17개 브랜드 71개 모델. 브랜드·모델을 확정하면 <b>그 레퍼런스 고유의 tell 세트</b>로만 검사하고, 여러 레퍼런스의 디테일이 섞였는지(정합)도 함께 봅니다. 결정적 단서는 늘 모델 단위입니다.</p>
-    <div class="warnstrip"><span><b>참조용 도구입니다.</b> 사진 기반 보조 판정일 뿐 공식 감정이 아닙니다. 확정은 브랜드 부티크·정식 서비스센터의 실물·루페 검사로 하세요.</span></div>
+    <div class="warnstrip"><span><b>참조용 도구입니다.</b> 사진 기반 보조 판정일 뿐 공식 감정이 아닙니다. 1인당 하루 3회 이용할 수 있습니다. 확정은 브랜드 부티크·정식 서비스센터의 실물·루페 검사로 하세요.</span></div>
   </header>
 
   <section class="step">
@@ -286,6 +286,14 @@
 const API_ENDPOINT="https://script.google.com/macros/s/AKfycby8q_S2MZjnoQXB0NjB35GQzH82wXItxFG2IDe4RNcM_USV0TQCZUvaCcI_IdH_wV8LGA/exec";
 const MODEL="claude-sonnet-4-6";
 const ACCESS_TOKEN="wa-8k2p-7f9x-3mzq";  /* GAS 스크립트 속성 ACCESS_TOKEN 과 동일해야 함 */
+const DAILY_LIMIT=3;
+function userId(){
+  try{
+    let id=localStorage.getItem('wa_uid');
+    if(!id){id='u'+Date.now().toString(36)+Math.random().toString(36).slice(2,10);localStorage.setItem('wa_uid',id);}
+    return id;
+  }catch(e){return 'u-nostore';}
+}
 const H="high",M="med",L="low";
 
 /* 브랜드 → 모델 → tell 세트. note: 레퍼런스 정합용 참고 문구(선택) */
@@ -1148,9 +1156,14 @@ detBtn.addEventListener('click',async()=>{
     content.push({type:"image",source:{type:"base64",media_type:imgs[sl.id].media,data:imgs[sl.id].b64}});}});
   try{
     const res=await fetch(API_ENDPOINT,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},
-      body:JSON.stringify({_token:ACCESS_TOKEN,model:MODEL,max_tokens:600,messages:[{role:"user",content}]})});
+      body:JSON.stringify({_token:ACCESS_TOKEN,_uid:userId(),model:MODEL,max_tokens:600,messages:[{role:"user",content}]})});
     if(!res.ok)throw new Error("API 오류 ("+res.status+")");
     const data=await res.json();
+    if(data.error&&data.error.code==='rate_limited'){
+      detRes.className='det-result show miss';
+      detRes.innerHTML=`<p class="det-r1">오늘 이용 횟수를 모두 사용했습니다</p><p class="det-r2">하루 ${DAILY_LIMIT}회까지 이용할 수 있습니다. 내일 다시 시도해 주세요.</p>`;
+      return;
+    }
     const raw=(data.content||[]).filter(b=>b.type==="text").map(b=>b.text).join("\n");
     const r=JSON.parse(raw.replace(/```json/g,'').replace(/```/g,'').trim());
     const cf=Math.max(0,Math.min(100,parseInt(r.confidence)||0));
@@ -1219,9 +1232,13 @@ runBtn.addEventListener('click',async()=>{
   const content=[{type:"text",text:buildPrompt(prof,active,skipped)}];
   SLOTS.forEach(s=>{if(imgs[s.id]){content.push({type:"text",text:`[사진: ${s.lab}]`});content.push({type:"image",source:{type:"base64",media_type:imgs[s.id].media,data:imgs[s.id].b64}});}});
   try{
-    const res=await fetch(API_ENDPOINT,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({_token:ACCESS_TOKEN,model:MODEL,max_tokens:2400,messages:[{role:"user",content}]})});
+    const res=await fetch(API_ENDPOINT,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({_token:ACCESS_TOKEN,_uid:userId(),model:MODEL,max_tokens:2400,messages:[{role:"user",content}]})});
     if(!res.ok)throw new Error("API 응답 오류 ("+res.status+")");
     const data=await res.json();
+    if(data.error&&data.error.code==='rate_limited'){
+      errEl.textContent="오늘 감정 횟수("+DAILY_LIMIT+"회)를 모두 사용했습니다. 내일 다시 이용해 주세요.";
+      errEl.className='err show';return;
+    }
     const raw=(data.content||[]).filter(b=>b.type==="text").map(b=>b.text).join("\n");
     render(prof,JSON.parse(raw.replace(/```json/g,'').replace(/```/g,'').trim()),skipped);
   }catch(err){errEl.textContent="감정 실패: "+err.message+" — 사진을 확인하고 재시도하세요. (GAS 릴레이 응답 문제일 수 있습니다.)";errEl.className='err show';}
