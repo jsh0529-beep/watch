@@ -3,15 +3,15 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>진품감정 참조 콘솔 · 17 Brands</title>
-<meta name="description" content="브랜드·모델을 확정하고 그 레퍼런스 고유의 단서로만 검사하는 사진 기반 진품감정 참조 도구. 17개 브랜드 71개 모델." />
+<title>더워치체크 The Watch Check · 시계감별소</title>
+<meta name="description" content="더워치체크 — AI 사진 감별 시계감별소. 브랜드·모델을 확정하고 그 레퍼런스 고유의 단서로만 검사합니다. 17개 브랜드 71개 모델. 참고용." />
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png" />
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
 <link rel="apple-touch-icon" href="apple-touch-icon.png" />
 <meta name="theme-color" content="#15171B" />
 <meta property="og:type" content="website" />
-<meta property="og:title" content="진품감정 참조 콘솔" />
-<meta property="og:description" content="17개 브랜드 71개 모델. 레퍼런스 고유 단서로만 검사하는 사진 기반 보조 판정 도구." />
+<meta property="og:title" content="더워치체크 · 시계감별소" />
+<meta property="og:description" content="AI 사진 감별 시계감별소. 17개 브랜드 71개 모델, 레퍼런스 고유 단서로만 검사합니다." />
 <meta property="og:image" content="https://jsh0529-beep.github.io/watch/cover.png" />
 <meta property="og:url" content="https://jsh0529-beep.github.io/watch/" />
 <meta name="twitter:card" content="summary_large_image" />
@@ -33,6 +33,7 @@
   .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.32em;color:var(--gold);text-transform:uppercase;margin:0 0 10px}
   h1{font-family:var(--disp);font-weight:600;font-size:clamp(26px,4.4vw,40px);letter-spacing:-.01em;margin:0 0 6px;line-height:1.05}
   h1 .thin{color:var(--ink-3);font-weight:400}
+  .brand-sub{display:block;font-family:var(--disp);font-weight:500;font-size:14px;letter-spacing:.34em;color:var(--gold);margin-top:7px;text-transform:none}
   .sub{color:var(--ink-2);font-size:14px;max-width:64ch;margin:0}.sub b{color:var(--ink)}
   .warnstrip{margin-top:18px;border:1px solid var(--line);border-left:2px solid var(--gold);
     background:linear-gradient(90deg,rgba(203,163,77,0.06),transparent 60%);border-radius:var(--radius);padding:11px 14px}
@@ -245,8 +246,8 @@
 <body>
 <div class="wrap">
   <header>
-    <p class="eyebrow">Luxury Watch · Reference-Based Check · 17 Brands</p>
-    <h1>진품감정 <span class="thin">참조 콘솔</span></h1>
+    <p class="eyebrow">The Watch Check · 17 Brands · 71 Models</p>
+    <h1>더워치체크<span class="brand-sub">시계감별소</span></h1>
     <p class="sub">17개 브랜드 71개 모델. 브랜드·모델을 확정하면 <b>그 레퍼런스 고유의 tell 세트</b>로만 검사하고, 여러 레퍼런스의 디테일이 섞였는지(정합)도 함께 봅니다. 결정적 단서는 늘 모델 단위입니다.</p>
     <div class="warnstrip"><span><b>참조용 도구입니다.</b> 사진 기반 보조 판정일 뿐 공식 감정이 아닙니다. 1인당 하루 3회 이용할 수 있습니다. 확정은 브랜드 부티크·정식 서비스센터의 실물·루페 검사로 하세요.</span></div>
   </header>
@@ -1438,7 +1439,7 @@ function render(prof,p,skipped){
   const mEl=document.getElementById('manual');mEl.innerHTML='';
   prof.manual.forEach(([k,v])=>{const li=document.createElement('li');li.innerHTML=`<b>${k}</b> — ${v}`;mEl.appendChild(li);});
   document.getElementById('printMeta').textContent=
-    `진품감정 참조 콘솔 · ${DATA[brandKey].name} ${prof.label} · 생산시기 ${eraLab} · ${new Date().toLocaleDateString('ko-KR')} · 사진 기반 참조용, 공식 감정 아님`;
+    `더워치체크 시계감별소 · ${DATA[brandKey].name} ${prof.label} · 생산시기 ${eraLab} · ${new Date().toLocaleDateString('ko-KR')} · 사진 기반 참조용, 공식 감정 아님`;
   drawScrews();
   const results=document.getElementById('results');results.className='results show';results.scrollIntoView({behavior:'smooth',block:'start'});
 }
