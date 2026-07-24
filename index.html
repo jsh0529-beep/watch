@@ -3,15 +3,15 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>진품감정 참조 콘솔 · 13 Brands</title>
-<meta name="description" content="브랜드·모델을 확정하고 그 레퍼런스 고유의 단서로만 검사하는 사진 기반 진품감정 참조 도구. 13개 브랜드 30개 모델." />
+<title>진품감정 참조 콘솔 · 17 Brands</title>
+<meta name="description" content="브랜드·모델을 확정하고 그 레퍼런스 고유의 단서로만 검사하는 사진 기반 진품감정 참조 도구. 17개 브랜드 71개 모델." />
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png" />
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
 <link rel="apple-touch-icon" href="apple-touch-icon.png" />
 <meta name="theme-color" content="#15171B" />
 <meta property="og:type" content="website" />
 <meta property="og:title" content="진품감정 참조 콘솔" />
-<meta property="og:description" content="13개 브랜드 30개 모델. 레퍼런스 고유 단서로만 검사하는 사진 기반 보조 판정 도구." />
+<meta property="og:description" content="17개 브랜드 71개 모델. 레퍼런스 고유 단서로만 검사하는 사진 기반 보조 판정 도구." />
 <meta property="og:image" content="https://jsh0529-beep.github.io/watch/cover.png" />
 <meta property="og:url" content="https://jsh0529-beep.github.io/watch/" />
 <meta name="twitter:card" content="summary_large_image" />
@@ -198,9 +198,9 @@
 <body>
 <div class="wrap">
   <header>
-    <p class="eyebrow">Luxury Watch · Reference-Based Check · 13 Brands</p>
+    <p class="eyebrow">Luxury Watch · Reference-Based Check · 17 Brands</p>
     <h1>진품감정 <span class="thin">참조 콘솔</span></h1>
-    <p class="sub">브랜드·모델을 확정하면 <b>그 레퍼런스 고유의 tell 세트</b>로만 검사하고, 여러 레퍼런스의 디테일이 섞였는지(정합)도 함께 봅니다. 결정적 단서는 늘 모델 단위입니다.</p>
+    <p class="sub">17개 브랜드 71개 모델. 브랜드·모델을 확정하면 <b>그 레퍼런스 고유의 tell 세트</b>로만 검사하고, 여러 레퍼런스의 디테일이 섞였는지(정합)도 함께 봅니다. 결정적 단서는 늘 모델 단위입니다.</p>
     <div class="warnstrip"><span><b>참조용 도구입니다.</b> 사진 기반 보조 판정일 뿐 공식 감정이 아닙니다. 확정은 브랜드 부티크·정식 서비스센터의 실물·루페 검사로 하세요.</span></div>
   </header>
 
@@ -255,25 +255,34 @@ const H="high",M="med",L="low";
 
 /* 브랜드 → 모델 → tell 세트. note: 레퍼런스 정합용 참고 문구(선택) */
 const DATA={
-  ap:{name:"Audemars Piguet",cap:"AP",slotHint:"케이스백·무브가 결정적",models:{
+  ap:{name:"Audemars Piguet",cap:"AP",slotHint:"케이스백·무브가 결정적",
+    note:"로터 형태로 세대가 갈림 — 3120=솔리드+가문문장(40주얼), 4302=투각 'AP'(32주얼). 둘을 바꿔 보면 정상 사양을 이상으로 오판함.",models:{
     ro3120:{label:"Royal Oak 15400 (3120)",spec:{Cal:"3120",Jewels:"40",Freq:"3Hz"},checks:[
-      {id:"rotor",lab:"로터 구조·각인",wt:H,exp:"솔리드 22K 골드 로터+가문 문장 양각. 로터로 무브가 비치지 않음."},
+      {id:"rotor",lab:"로터 구조·각인",wt:H,exp:"솔리드 22K 골드 로터+가문 문장(새·별·탑) 양각. 로터로 무브가 비치지 않음."},
       {id:"jewels",lab:"주얼 각인",wt:H,exp:"40주얼. 'THIRTY-TWO JEWELS'면 이상."},
       {id:"balance",lab:"레귤레이터 암",wt:H,exp:"프리스프렁 — ±레귤레이터 암 없음(있으면 즉시 가품)."},
       {id:"finish",lab:"무브 피니싱",wt:M,exp:"제네바 스트라이프+펄라주, AP·SWISS 각인 예리."},
       {id:"tapisserie",lab:"타피스리",wt:M,exp:"그랜드 타피스리 기요셰."},
       {id:"dial",lab:"다이얼 로고",wt:M,exp:"어플라이드 마커, SWISS MADE 6시."},
       {id:"bezel",lab:"베젤 8각 스크류",wt:L,exp:"8각 스크류 정렬·슬롯 일관."}],
-      manual:[["케이스 두께","약 9.8mm."],["레귤레이터 암","보이면 가품."],["클라스프 각인","루페."],["시리얼","AP 조회."]]},
+      manual:[["케이스 두께","약 9.8mm."],["레귤레이터 암","보이면 가품."],["시리얼","AP 조회."]]},
     ro4302:{label:"Royal Oak 15500·15510 (4302)",spec:{Cal:"4302",Jewels:"32",Freq:"4Hz"},checks:[
-      {id:"rotor",lab:"로터 구조·각인",wt:H,exp:"투각 22K 골드 'AP' 로터 — 로터 사이로 무브가 비치는 게 정상."},
+      {id:"rotor",lab:"로터 구조·각인",wt:H,exp:"투각(openworked) 22K 골드 'AP' 로터 — 로터 사이로 무브가 비치는 게 정상."},
       {id:"jewels",lab:"주얼 각인",wt:H,exp:"32주얼('THIRTY-TWO JEWELS' 정상)."},
       {id:"balance",lab:"레귤레이터 암",wt:H,exp:"프리스프렁 — 레귤레이터 암 없음."},
       {id:"finish",lab:"무브 피니싱",wt:M,exp:"제네바 스트라이프+베벨, 대형 무브가 케이스백을 크게 채움."},
       {id:"tapisserie",lab:"타피스리",wt:M,exp:"그랜드 타피스리 기요셰."},
       {id:"dial",lab:"다이얼 로고",wt:M,exp:"어플라이드 화이트골드 마커. 15510은 미닛트랙 정렬 개선."},
       {id:"bezel",lab:"베젤 8각 스크류",wt:L,exp:"8각 스크류 정렬."}],
-      manual:[["케이스 두께","약 10.4mm."],["레귤레이터 암","보이면 가품."],["클라스프 각인","루페."],["시리얼","AP 조회."]]},
+      manual:[["케이스 두께","약 10.4mm."],["레귤레이터 암","보이면 가품."],["시리얼","AP 조회."]]},
+    ro15202:{label:"Royal Oak 15202 점보 (2121)",spec:{Cal:"2121",Case:"39mm·8.1mm"},note:"점보는 초박형. 다이얼에 AP 로고가 6시에 위치하는 세대가 있으니 레퍼런스 확인.",checks:[
+      {id:"proportions",lab:"초박형 비례",wt:H,exp:"39mm·두께 약 8.1mm의 극단적 박형. 두꺼우면 다른 모델이거나 가품."},
+      {id:"rotor",lab:"로터·무브 두께",wt:H,exp:"2121 초박 무브 + 얇은 골드 로터. 무브가 두껍고 평범하면 이상."},
+      {id:"balance",lab:"레귤레이터 암",wt:H,exp:"레귤레이터 암 없음."},
+      {id:"tapisserie",lab:"쁘띠 타피스리",wt:M,exp:"점보는 더 작은 격자(쁘띠 타피스리). 격자가 크면 다른 모델."},
+      {id:"dial",lab:"로고 위치·마커",wt:M,exp:"세대별 AP 로고 위치가 다름. 어플라이드 마커 정교."},
+      {id:"bezel",lab:"베젤 8각 스크류",wt:L,exp:"8각 스크류 정렬."}],
+      manual:[["두께 실측","약 8.1mm."],["시리얼","AP 조회."]]},
     offshore:{label:"Royal Oak Offshore",spec:{Type:"크로노",Cal:"3126/3840"},checks:[
       {id:"rotor",lab:"로터·무브 피니싱",wt:H,exp:"골드 로터+AP, 제네바 스트라이프·베벨 정교."},
       {id:"subdial",lab:"크로노 서브다이얼",wt:H,exp:"배치·간격 정확, 마커 침범 없음."},
@@ -281,8 +290,23 @@ const DATA={
       {id:"tapisserie",lab:"메가 타피스리",wt:M,exp:"오프쇼어 특유 큰 격자 기요셰."},
       {id:"bezel",lab:"베젤·푸셔 가드",wt:M,exp:"8각 스크류 정렬, 푸셔 가드/러버 마감."},
       {id:"dial",lab:"다이얼 로고",wt:L,exp:"어플라이드 마커·로고."}],
-      manual:[["케이스 두께·푸셔","실물."],["클라스프 각인","루페."],["시리얼","AP 조회."]]},
-    auto:{label:"Royal Oak 자동추정",spec:{Mode:"3120/4302 추정"},detect:true,checks:[
+      manual:[["두께·푸셔","실물."],["시리얼","AP 조회."]]},
+    code1159:{label:"Code 11.59",spec:{Case:"원형+8각 미들",Back:"투명"},checks:[
+      {id:"caseArch",lab:"복합 케이스 구조",wt:H,exp:"원형 베젤+8각 미들케이스 결합, 러그가 케이스에 개방형으로 용접. 단순 원형이면 가품."},
+      {id:"crystal",lab:"돔형 사파이어",wt:H,exp:"양면 볼록 돔 크리스탈 — 왜곡 없이 다이얼 끝까지 또렷."},
+      {id:"rotor",lab:"로터·무브 피니싱",wt:H,exp:"골드 로터+AP, 인하우스 무브 마감 정교."},
+      {id:"dial",lab:"다이얼·로고",wt:M,exp:"어플라이드 골드 로고·마커, 인쇄 아님."},
+      {id:"finish",lab:"케이스 마감",wt:M,exp:"폴리시/새틴 경계 예리."}],
+      manual:[["두께·무게","실물."],["시리얼","AP 조회."]]},
+    common:{label:"기타 모델 (브랜드 공통)",spec:{Mode:"AP 공통 단서"},common:true,checks:[
+      {id:"rotor",lab:"로터·각인",wt:H,exp:"AP는 22K 골드 로터에 AP 각인/가문 문장. 도금·조잡한 로터, 스티커면 가품."},
+      {id:"balance",lab:"레귤레이터 암",wt:H,exp:"현행 인하우스 무브는 프리스프렁 — ±레귤레이터 암이 보이면 즉시 가품."},
+      {id:"finish",lab:"무브 피니싱",wt:H,exp:"제네바 스트라이프·펄라주·다이아 베벨. AUDEMARS PIGUET·SWISS 각인 얇고 예리."},
+      {id:"dial",lab:"다이얼 마커·로고",wt:M,exp:"어플라이드 마커·로고(인쇄 아님), 폰트 선명, 접착 흔적 없음."},
+      {id:"engraving",lab:"케이스 각인·시리얼",wt:M,exp:"케이스백/러그 각인 깊고 균일."},
+      {id:"modelMatch",lab:"레퍼런스 정합",wt:M,exp:"다이얼·베젤·무브·브레이슬릿이 하나의 레퍼런스로 일관."}],
+      manual:[["두께 실측","레퍼런스 스펙과 대조."],["레귤레이터 암","보이면 가품."],["시리얼","AP 부티크 조회."]]},
+    auto:{label:"Royal Oak 세대 자동추정",spec:{Mode:"3120/4302 추정"},detect:true,checks:[
       {id:"rotor",lab:"로터 구조",wt:H,exp:"3120=솔리드+가문문장, 4302=투각 'AP'. 먼저 판별."},
       {id:"jewels",lab:"주얼 각인",wt:H,exp:"3120=40, 4302=32. 로터와 일치."},
       {id:"balance",lab:"레귤레이터 암",wt:H,exp:"둘 다 프리스프렁 — 암 없음."},
@@ -290,14 +314,14 @@ const DATA={
       {id:"tapisserie",lab:"타피스리",wt:M,exp:"그랜드 타피스리 기요셰."},
       {id:"dial",lab:"다이얼 로고",wt:M,exp:"어플라이드 마커."},
       {id:"bezel",lab:"베젤 8각 스크류",wt:L,exp:"8각 스크류 정렬."}],
-      manual:[["케이스 두께","레퍼런스 일치."],["레귤레이터 암","보이면 가품."],["시리얼","AP 조회."]]}
+      manual:[["두께","레퍼런스 일치."],["레귤레이터 암","보이면 가품."],["시리얼","AP 조회."]]}
   }},
 
-  rolex:{name:"Rolex",cap:"ROLEX",slotHint:"크리스탈·레하우트·사이클롭스가 핵심(스포츠=솔리드백)",
-    note:"스포츠 로렉스는 전부 솔리드 케이스백. 투명백이면 가품.",models:{
-    sub:{label:"Submariner (다이버)",spec:{Back:"솔리드",Mvmt:"3230/3235"},checks:[
+  rolex:{name:"Rolex",cap:"ROLEX",slotHint:"크리스탈·레하우트·사이클롭스가 핵심(솔리드백)",
+    note:"현행 로렉스는 전부 솔리드 케이스백. 투명백이면 가품. 결정적 단서 다수가 브랜드 공통(6시 크리스탈 왕관 각인·레하우트 각인).",models:{
+    sub:{label:"Submariner",spec:{Back:"솔리드",Mvmt:"3230/3235"},checks:[
       {id:"crownEtch",lab:"크리스탈 왕관 각인",wt:H,exp:"6시 크리스탈 미세 코로넷 각인(2002~), 루페로만 보임."},
-      {id:"cyclops",lab:"사이클롭스",wt:H,exp:"데이트 모델은 2.5배 확대·창을 채움. 노데이트(124060)는 사이클롭스·데이트 없음 — 있으면 이상."},
+      {id:"cyclops",lab:"사이클롭스",wt:H,exp:"데이트 모델은 2.5배 확대·창을 채움. 노데이트(124060)는 사이클롭스·데이트 없음."},
       {id:"rehaut",lab:"레하우트 각인",wt:H,exp:"'ROLEX' 반복+6시 시리얼(2008~), 날카롭고 정렬 정확."},
       {id:"noDisplayBack",lab:"솔리드 케이스백",wt:H,exp:"투명백/케이스백 각인 보이면 가품."},
       {id:"serial",lab:"시리얼",wt:M,exp:"깊고 선명, 빛에 반짝."},
@@ -308,51 +332,76 @@ const DATA={
       {id:"crownEtch",lab:"크리스탈 왕관 각인",wt:H,exp:"6시 크리스탈 미세 왕관 각인(2002~)."},
       {id:"rehaut",lab:"레하우트 각인",wt:H,exp:"'ROLEX' 반복+시리얼, 정렬 정확."},
       {id:"noDisplayBack",lab:"솔리드 케이스백",wt:H,exp:"투명백 보이면 가품."},
-      {id:"bezelGmt",lab:"24시 세라크롬 베젤",wt:H,exp:"펩시/배트맨 등 색 전환 자연, 폰트·정렬 정확. 색 바래거나 어긋나면 가품."},
-      {id:"gmt24",lab:"24시침 독립 조정",wt:M,exp:"24시침 독립 조정 가능(진품 기능). 안 되면 가품."},
+      {id:"bezelGmt",lab:"24시 세라크롬 베젤",wt:H,exp:"펩시/배트맨 등 색 전환 자연, 폰트·정렬 정확."},
+      {id:"gmt24",lab:"24시침 독립 조정",wt:M,exp:"24시침 독립 조정 가능. 안 되면 가품."},
       {id:"serial",lab:"시리얼",wt:M,exp:"깊고 선명."},
       {id:"sweep",lab:"초침 스윕",wt:L,exp:"부드러운 스윕."}],
-      manual:[["베젤 클릭·24시침","독립 조정."],["무게·시리얼","조회."]]},
+      manual:[["베젤 클릭·24시침","독립 조정."],["시리얼","조회."]]},
     dj:{label:"Datejust·Day-Date",spec:{Back:"솔리드",Mvmt:"자동"},checks:[
       {id:"crownEtch",lab:"크리스탈 왕관 각인",wt:H,exp:"6시 크리스탈 미세 왕관 각인."},
       {id:"cyclops",lab:"사이클롭스",wt:H,exp:"날짜 2.5배 확대·창을 채움. ~1.5배면 가품."},
       {id:"rehaut",lab:"레하우트 각인",wt:H,exp:"'ROLEX' 반복+시리얼, 정렬 정확."},
       {id:"serial",lab:"시리얼",wt:M,exp:"깊고 선명."},
-      {id:"dialText",lab:"요일/날짜 폰트",wt:M,exp:"인덱스·데이(데이데이트 요일 디스크) 폰트 완벽, 정렬 정확."},
+      {id:"dialText",lab:"요일/날짜 폰트",wt:M,exp:"인덱스·요일 디스크 폰트 완벽, 정렬 정확."},
       {id:"bracelet",lab:"브레이슬릿·베젤",wt:L,exp:"쥬빌리/프레지던트 마감, 플루티드 베젤 정밀."}],
-      manual:[["요일/날짜 스냅","정확 전환."],["무게·시리얼","조회."]]},
-    daytona:{label:"Daytona (크로노)",spec:{Back:"솔리드·무각인",Cal:"4130 · 72h"},checks:[
+      manual:[["요일/날짜 스냅","정확 전환."],["시리얼","조회."]]},
+    daytona:{label:"Daytona (크로노)",spec:{Back:"솔리드·무각인",Cal:"4130/4131"},checks:[
       {id:"subdial",lab:"서브다이얼 배치",wt:H,exp:"3·6·9시 균등·동일 크기, 마커 침범 없음. 너무 벌어지면 클론."},
       {id:"chronoFn",lab:"크로노 작동·리셋",wt:H,exp:"작동+리셋 시 초침 정확히 12시 복귀. 미작동/오정렬=가품."},
-      {id:"noDisplayBack",lab:"솔리드·무각인 백",wt:H,exp:"데이토나는 솔리드백·무각인(Winner 24 예외). 투명백=가품."},
+      {id:"noDisplayBack",lab:"솔리드·무각인 백",wt:H,exp:"데이토나는 솔리드백·무각인. 투명백=가품."},
       {id:"crownEtch",lab:"크리스탈 왕관 각인",wt:M,exp:"6시 크리스탈 왕관 각인(2002~)."},
       {id:"bezelTachy",lab:"타키미터 베젤",wt:M,exp:"타키 폰트 두께 정확(가품은 두꺼움), 세라믹 충전 깔끔."},
-      {id:"pusher",lab:"푸셔 감",wt:M,exp:"컬럼휠(4130) 특유의 또렷한 푸셔."},
+      {id:"pusher",lab:"푸셔 감",wt:M,exp:"컬럼휠 특유의 또렷한 푸셔."},
       {id:"serial",lab:"시리얼",wt:L,exp:"러그 사이 시리얼 선명."}],
-      manual:[["크로노 리셋","0점 복귀."],["푸셔·무게","실물."],["시리얼","조회."]]}
+      manual:[["크로노 리셋","0점 복귀."],["푸셔·무게","실물."],["시리얼","조회."]]},
+    explorer:{label:"Explorer I·II",spec:{Back:"솔리드",Dial:"3·6·9 숫자"},note:"익스플로러 I은 날짜·사이클롭스 없음. 날짜창이 있으면 II이거나 다른 모델.",checks:[
+      {id:"crownEtch",lab:"크리스탈 왕관 각인",wt:H,exp:"6시 크리스탈 미세 왕관 각인(2002~)."},
+      {id:"rehaut",lab:"레하우트 각인",wt:H,exp:"'ROLEX' 반복+시리얼, 정렬 정확."},
+      {id:"noDisplayBack",lab:"솔리드 케이스백",wt:H,exp:"투명백 보이면 가품."},
+      {id:"dial369",lab:"3·6·9 숫자 조형",wt:H,exp:"익스플로러 특유 3·6·9 아라비아 숫자가 야광 충전·정렬 정확. 익스플로러 I은 날짜 없음."},
+      {id:"serial",lab:"시리얼",wt:M,exp:"깊고 선명."},
+      {id:"sweep",lab:"초침 스윕",wt:M,exp:"부드러운 스윕."}],
+      manual:[["무게·시리얼","조회."],["II는 24시침","작동 확인."]]},
+    ymsd:{label:"Yacht-Master·Sea-Dweller",spec:{Back:"솔리드",Type:"다이버"},checks:[
+      {id:"crownEtch",lab:"크리스탈 왕관 각인",wt:H,exp:"6시 크리스탈 미세 왕관 각인."},
+      {id:"rehaut",lab:"레하우트 각인",wt:H,exp:"'ROLEX' 반복+시리얼, 정렬 정확."},
+      {id:"noDisplayBack",lab:"솔리드 케이스백",wt:H,exp:"투명백=가품."},
+      {id:"bezelType",lab:"베젤 사양",wt:H,exp:"요트마스터=양방향 회전 양각 숫자 베젤, 씨드웰러=단방향 세라크롬. 사양이 뒤바뀌면 이상."},
+      {id:"cyclops",lab:"사이클롭스",wt:M,exp:"씨드웰러 43mm(126600~)는 사이클롭스 있음. 구형 딥씨/씨드웰러는 없음 — 레퍼런스 확인."},
+      {id:"serial",lab:"시리얼",wt:M,exp:"깊고 선명."}],
+      manual:[["헬륨밸브","씨드웰러 좌측 확인."],["시리얼","조회."]]},
+    common:{label:"기타 모델 (브랜드 공통)",spec:{Mode:"Rolex 공통 단서"},common:true,checks:[
+      {id:"crownEtch",lab:"크리스탈 왕관 각인",wt:H,exp:"2002년 이후 전 모델 6시 사파이어에 미세 코로넷 레이저 각인. 루페로만 보이며 복제 거의 불가."},
+      {id:"rehaut",lab:"레하우트 각인",wt:H,exp:"2008년 이후 'ROLEX' 반복 각인+6시 시리얼. 날카롭고 마커와 정렬."},
+      {id:"noDisplayBack",lab:"솔리드 케이스백",wt:H,exp:"현행 로렉스는 솔리드백. 투명백이면 가품."},
+      {id:"cyclops",lab:"사이클롭스",wt:M,exp:"날짜 모델은 2.5배 확대로 창을 채움. ~1.5배면 가품."},
+      {id:"sweep",lab:"초침 스윕",wt:M,exp:"자동무브 부드러운 스윕. 똑딱=쿼츠=가품."},
+      {id:"serial",lab:"시리얼 각인",wt:M,exp:"깊고 선명해 빛에 반짝. 얕고 뭉개지면 이상."},
+      {id:"finish",lab:"케이스·브레이슬릿",wt:L,exp:"브러싱 곱고 일관, 유격 없음."}],
+      manual:[["무게","묵직·균형."],["베젤 클릭","백플레이 없음."],["시리얼","Rolex 공식 조회."]]}
   }},
 
   patek:{name:"Patek Philippe",cap:"PP",slotHint:"투명백 무브·다이얼 프린팅이 결정적",
-    note:"파텍은 나사를 블루잉하지 않음. 파란 나사=강한 의심.",models:{
-    n5711:{label:"Nautilus 5711 (시/분/초·데이트)",spec:{Cal:"324 / 26-330",Back:"투명"},note:"5711은 3시 데이트만. 파워리저브·문페이즈 서브다이얼이 있으면 5711이 아니라 5712.",checks:[
+    note:"파텍은 나사를 블루잉하지 않음 — 파란 나사가 보이면 강한 의심. 2009년 이후 무브에 파텍 실(더블 P).",models:{
+    n5711:{label:"Nautilus 5711",spec:{Cal:"324 / 26-330"},note:"5711은 3시 데이트만. 파워리저브·문페이즈가 있으면 5712.",checks:[
       {id:"seal",lab:"무브 실(Seal)",wt:H,exp:"파텍 실(더블 P, 2009~)/이전 제네바 실. 없거나 조잡=이상."},
-      {id:"screwsBlued",lab:"나사 블루잉 여부",wt:H,exp:"파란 나사가 보이면 강한 의심(파텍은 블루잉 안 함)."},
+      {id:"screwsBlued",lab:"나사 블루잉 여부",wt:H,exp:"파란 나사가 보이면 강한 의심."},
       {id:"movementFinish",lab:"무브 피니싱",wt:H,exp:"코트 드 제네브·서큘러 그레이닝·폴리시드 나사·골드 로터."},
       {id:"dialEmboss",lab:"가로 엠보싱·데이트",wt:M,exp:"가로 엠보싱 전체 정밀, 3시 데이트 중앙 정렬."},
       {id:"printing",lab:"다이얼 프린팅",wt:M,exp:"로고·텍스트 무결점."},
       {id:"hallmark",lab:"케이스 각인",wt:M,exp:"러그 'PPC'·금속각인."},
       {id:"bracelet",lab:"브레이슬릿 통합",wt:L,exp:"링크 통합 매끈, 유격 없음."}],
       manual:[["시리얼 아카이브","대조."],["서류·무게","확인."]]},
-    n5712:{label:"Nautilus 5712 (파워리저브/문페이즈)",spec:{Cal:"240 PS IRM C LU",Back:"투명"},note:"5712는 비대칭 레이아웃 — 좌측 스몰세컨드·문페이즈, 파워리저브 인디케이터, 우측 포인터 데이트. 단순 3시 데이트면 5712 아님.",checks:[
+    n5712:{label:"Nautilus 5712 (PR/문페이즈)",spec:{Cal:"240 PS IRM C LU"},note:"좌측 스몰세컨드+문페이즈, 파워리저브, 우측 포인터 데이트의 비대칭 배치.",checks:[
       {id:"seal",lab:"무브 실(Seal)",wt:H,exp:"파텍 실. 마이크로로터 무브."},
       {id:"screwsBlued",lab:"나사 블루잉 여부",wt:H,exp:"파란 나사=의심."},
-      {id:"dialLayout",lab:"비대칭 다이얼 레이아웃",wt:H,exp:"좌측 스몰세컨드+문페이즈, 파워리저브, 우측 포인터 데이트가 정확해야."},
-      {id:"movementFinish",lab:"무브 피니싱",wt:M,exp:"코트 드 제네브·서큘러 그레이닝·골드 마이크로로터."},
+      {id:"dialLayout",lab:"비대칭 다이얼 배치",wt:H,exp:"좌측 스몰세컨드+문페이즈, 파워리저브, 우측 포인터 데이트가 정확해야."},
+      {id:"movementFinish",lab:"무브 피니싱",wt:M,exp:"코트 드 제네브·골드 마이크로로터."},
       {id:"printing",lab:"다이얼 프린팅",wt:M,exp:"로고·텍스트 무결점."},
       {id:"hallmark",lab:"케이스 각인",wt:M,exp:"금속각인·PPC."},
       {id:"bracelet",lab:"브레이슬릿 통합",wt:L,exp:"링크 통합 매끈."}],
       manual:[["시리얼 아카이브","대조."],["서류·무게","확인."]]},
-    aqua5167:{label:"Aquanaut 5167",spec:{Cal:"324",Strap:"컴포지트"},note:"5167은 엠보싱 그리드 다이얼+컴포지트 러버 스트랩.",checks:[
+    aqua5167:{label:"Aquanaut 5167",spec:{Cal:"324",Strap:"컴포지트"},checks:[
       {id:"seal",lab:"무브 실(Seal)",wt:H,exp:"파텍 실(더블 P)."},
       {id:"screwsBlued",lab:"나사 블루잉 여부",wt:H,exp:"파란 나사=의심."},
       {id:"movementFinish",lab:"무브 피니싱",wt:H,exp:"코트 드 제네브·골드 로터, 핸드 피니싱."},
@@ -361,18 +410,36 @@ const DATA={
       {id:"printing",lab:"다이얼 프린팅",wt:M,exp:"로고·텍스트 무결점."},
       {id:"hallmark",lab:"케이스 각인",wt:L,exp:"금속각인·시리얼."}],
       manual:[["시리얼 아카이브","대조."],["서류·무게","확인."]]},
-    calatrava:{label:"Calatrava (드레스)",spec:{Cal:"215/324",Back:"솔리드/투명"},checks:[
+    calatrava:{label:"Calatrava (드레스)",spec:{Cal:"215/324"},checks:[
       {id:"seal",lab:"무브 실(Seal)",wt:H,exp:"파텍 실/제네바 실."},
       {id:"screwsBlued",lab:"나사 블루잉 여부",wt:H,exp:"파란 나사=의심."},
-      {id:"movementFinish",lab:"무브 피니싱",wt:H,exp:"코트 드 제네브·서큘러 그레이닝·골드 로터."},
+      {id:"movementFinish",lab:"무브 피니싱",wt:H,exp:"코트 드 제네브·서큘러 그레이닝·폴리시드 나사·골드 로터."},
       {id:"printing",lab:"다이얼·로고",wt:M,exp:"어플라이드 로고/마커·인쇄 무결점."},
       {id:"hands",lab:"핸즈 마감",wt:M,exp:"푀이/바통 핸즈 마감 정교."},
       {id:"hallmark",lab:"케이스 각인",wt:M,exp:"금속각인·시리얼."},
       {id:"proportions",lab:"케이스 비례",wt:L,exp:"얇고 균형 잡힌 비례."}],
-      manual:[["시리얼 아카이브","대조."],["서류·무게","확인."]]}
+      manual:[["시리얼 아카이브","대조."],["서류·무게","확인."]]},
+    complications:{label:"Complications (연차달력·크로노 등)",spec:{Type:"컴플리케이션"},checks:[
+      {id:"seal",lab:"무브 실(Seal)",wt:H,exp:"파텍 실. 복잡기구 무브 마감이 최상급."},
+      {id:"screwsBlued",lab:"나사 블루잉 여부",wt:H,exp:"파란 나사=의심."},
+      {id:"complicationFn",lab:"복잡기구 실작동",wt:H,exp:"연차달력·문페이즈·크로노가 실제로 연동 작동. 장식용 더미 서브다이얼이면 가품."},
+      {id:"movementFinish",lab:"무브 피니싱",wt:H,exp:"코트 드 제네브·핸드 베벨·폴리시드 나사, 골드 로터."},
+      {id:"dialLayout",lab:"다이얼 배치",wt:M,exp:"서브다이얼·창 배치가 해당 레퍼런스와 정확히 일치."},
+      {id:"printing",lab:"다이얼 프린팅",wt:M,exp:"무결점, 철자 오류 없음."},
+      {id:"hallmark",lab:"케이스 각인",wt:M,exp:"금속각인·시리얼."}],
+      manual:[["기능 실작동","달력·문페이즈 확인."],["아카이브 조회","파텍 기록."]]},
+    common:{label:"기타 모델 (브랜드 공통)",spec:{Mode:"Patek 공통 단서"},common:true,checks:[
+      {id:"seal",lab:"무브 실(Seal)",wt:H,exp:"2009년 이후 무브에 파텍 실(더블 P), 그 이전은 제네바 실. 없거나 조잡하면 강한 의심."},
+      {id:"screwsBlued",lab:"나사 블루잉 여부",wt:H,exp:"파텍은 나사를 블루잉하지 않음. 파란 나사가 보이면 강한 의심."},
+      {id:"movementFinish",lab:"무브 피니싱",wt:H,exp:"코트 드 제네브·서큘러 그레이닝·폴리시드 나사머리·골드 로터. 핸드 피니싱 정교."},
+      {id:"printing",lab:"다이얼 프린팅",wt:M,exp:"로고·텍스트·마커 무결점, 번짐·철자 오류 없음."},
+      {id:"hallmark",lab:"케이스 각인",wt:M,exp:"러그 'PPC' 및 금속각인(Au750/Pt950 등)."},
+      {id:"modelMatch",lab:"레퍼런스 정합",wt:M,exp:"다이얼·무브·케이스·스트랩이 하나의 레퍼런스로 일관."}],
+      manual:[["시리얼 아카이브","파텍 기록 대조."],["Certificate of Origin","서류 확인."],["무게","묵직."]]}
   }},
 
-  omega:{name:"Omega",cap:"Ω",slotHint:"모델별 밸브·무브·크리스탈 각인이 핵심",models:{
+  omega:{name:"Omega",cap:"Ω",slotHint:"크리스탈 각인·코액시얼 무브가 핵심",
+    note:"코액시얼 무브의 밸런스 휠은 검정. 크리스탈 중앙에 오메가 로고 각인이 있는 세대가 다수.",models:{
     seamaster:{label:"Seamaster Diver 300M",spec:{Mvmt:"2500/8800/8900",Valve:"헬륨밸브 10시"},checks:[
       {id:"heliumValve",lab:"헬륨밸브 위치",wt:H,exp:"밸브 하단(왼쪽) 가장자리가 10시 마커와 정렬. 10시 중앙/아래면 가품 다수."},
       {id:"crystalEtch",lab:"크리스탈 로고 각인",wt:H,exp:"크리스탈 중앙 오메가 로고 각인. 대부분 복제품엔 없음."},
@@ -381,7 +448,15 @@ const DATA={
       {id:"wavePattern",lab:"웨이브 다이얼",wt:M,exp:"눌러 찍은 촘촘·균일 웨이브. 인쇄된 듯 거칠면 이상."},
       {id:"serial",lab:"시리얼",wt:M,exp:"7~8자리 러그/케이스백 선명."},
       {id:"printing",lab:"프린팅 품질",wt:L,exp:"무결점, 오타 없음."}],
-      manual:[["밸브 작동","부드럽게."],["워런티 카드","홀로그램/QR."],["무게","묵직."]]},
+      manual:[["밸브 작동","부드럽게."],["워런티 카드","홀로그램/QR."]]},
+    planetocean:{label:"Planet Ocean",spec:{Mvmt:"8900/9900",Valve:"헬륨밸브"},checks:[
+      {id:"crystalEtch",lab:"크리스탈 로고 각인",wt:H,exp:"크리스탈 중앙 오메가 로고 각인."},
+      {id:"balanceWheel",lab:"밸런스 휠 색상",wt:H,exp:"코액시얼 밸런스 휠 검정."},
+      {id:"bezelInsert",lab:"세라믹 베젤·야광 pip",wt:H,exp:"세라믹 인서트에 리퀴드메탈/세라믹 충전 숫자, 12시 야광 pip 경계 안. 도장처럼 보이면 이상."},
+      {id:"movement",lab:"무브·초침",wt:M,exp:"코액시얼 마스터 크로노미터, 스윕."},
+      {id:"heliumValve",lab:"헬륨밸브",wt:M,exp:"좌측 헬륨밸브 위치·작동 정확."},
+      {id:"serial",lab:"시리얼",wt:M,exp:"러그/케이스백 선명."}],
+      manual:[["베젤 클릭","단방향."],["워런티","확인."]]},
     speedmaster:{label:"Speedmaster (크로노)",spec:{Cal:"3861/1861"},checks:[
       {id:"subdialSpacing",lab:"서브다이얼 간격",wt:H,exp:"간격 정확 — 너무 벌어져 3·9시 마커 자르면 가품(ST19/Valjoux 클론)."},
       {id:"movement",lab:"무브·크로노",wt:H,exp:"정품 칼리버, 크로노 정상 작동."},
@@ -390,19 +465,35 @@ const DATA={
       {id:"printing",lab:"다이얼 프린팅",wt:M,exp:"정밀, 오타 없음."},
       {id:"serial",lab:"시리얼",wt:L,exp:"위치·폰트 정확."}],
       manual:[["크로노 작동","정상."],["워런티·무게","확인."]]},
-    aquaterra:{label:"Aqua Terra (밸브 없음)",spec:{Mvmt:"8800/8900",Valve:"없음"},checks:[
+    aquaterra:{label:"Aqua Terra",spec:{Mvmt:"8800/8900",Valve:"없음"},checks:[
       {id:"crystalEtch",lab:"크리스탈 로고 각인",wt:H,exp:"크리스탈 중앙 오메가 로고 각인."},
-      {id:"balanceWheel",lab:"밸런스 휠 색상",wt:H,exp:"코액시얼 밸런스 휠 검정. 은/회색이면 진품 아님."},
+      {id:"balanceWheel",lab:"밸런스 휠 색상",wt:H,exp:"코액시얼 밸런스 휠 검정."},
       {id:"teakDial",lab:"티크 다이얼 패턴",wt:H,exp:"수직 '티크' 라인이 촘촘·균일·정밀. 거칠면 이상."},
       {id:"movement",lab:"무브·초침",wt:M,exp:"코액시얼 마스터 크로노미터, 스윕."},
       {id:"noValve",lab:"헬륨밸브 부재",wt:M,exp:"아쿠아테라엔 헬륨밸브 없음. 밸브 있으면 모델 불일치."},
       {id:"serial",lab:"시리얼",wt:M,exp:"러그/케이스백 선명."},
       {id:"printing",lab:"프린팅 품질",wt:L,exp:"무결점."}],
-      manual:[["워런티 카드","홀로그램/QR."],["무게","묵직."]]}
+      manual:[["워런티 카드","홀로그램/QR."],["무게","묵직."]]},
+    constellation:{label:"Constellation",spec:{Type:"드레스",Case:"클로 케이스"}, checks:[
+      {id:"claws",lab:"그리페(클로) 구조",wt:H,exp:"케이스 좌우 4개 발톱(그리페)이 베젤을 물고 있는 구조가 정확·대칭. 장식만 붙은 형태면 이상."},
+      {id:"crystalEtch",lab:"크리스탈 로고 각인",wt:H,exp:"크리스탈 중앙 오메가 로고 각인(해당 세대)."},
+      {id:"balanceWheel",lab:"밸런스 휠 색상",wt:H,exp:"코액시얼 모델은 밸런스 휠 검정."},
+      {id:"casebackStar",lab:"케이스백 천문대",wt:M,exp:"제네바 천문대와 8개 별 메달리온 엠보싱 정교."},
+      {id:"printing",lab:"다이얼·인덱스",wt:M,exp:"어플라이드 인덱스·로고, 인쇄 무결점."},
+      {id:"serial",lab:"시리얼",wt:M,exp:"선명."}],
+      manual:[["워런티","확인."],["무게","묵직."]]},
+    common:{label:"기타 모델 (브랜드 공통)",spec:{Mode:"Omega 공통 단서"},common:true,checks:[
+      {id:"crystalEtch",lab:"크리스탈 로고 각인",wt:H,exp:"다수 현행 모델은 사파이어 크리스탈 중앙에 오메가 로고 각인. 복제품엔 대개 없음."},
+      {id:"balanceWheel",lab:"밸런스 휠 색상",wt:H,exp:"코액시얼 무브는 밸런스 휠이 검정. 은/회색이면 진품 아님."},
+      {id:"movement",lab:"무브·초침",wt:H,exp:"코액시얼/마스터 크로노미터 구조. 초침 부드러운 스윕(쿼츠 똑딱=가품, 쿼츠 모델 제외)."},
+      {id:"printing",lab:"다이얼 프린팅",wt:M,exp:"인쇄·각인 무결점, 오타 없음, 어플라이드 로고 고정."},
+      {id:"serial",lab:"시리얼 각인",wt:M,exp:"7~8자리 시리얼이 러그/케이스백에 선명, 위치·폰트 정확."},
+      {id:"modelMatch",lab:"레퍼런스 정합",wt:M,exp:"다이얼·베젤·무브·밸브 유무가 해당 레퍼런스와 일치."}],
+      manual:[["워런티 카드","홀로그램/QR·시리얼 일치."],["무게","묵직."],["시리얼","오메가 조회."]]}
   }},
 
   cartier:{name:"Cartier",cap:"Ct",slotHint:"로마숫자 시크릿 사인·크라운 카보숑이 핵심",
-    note:"다이얼·무브(쿼츠/오토)·케이스 조합이 실제 레퍼런스와 일치해야.",models:{
+    note:"로마숫자 안에 'CARTIER' 미세 시크릿 각인. 크라운 카보숑은 진짜 스톤이어야 함.",models:{
     santos:{label:"Santos",spec:{Sig:"시크릿 사인(대개 X)",Crown:"블루 카보숑"},checks:[
       {id:"secretSig",lab:"시크릿 사인",wt:H,exp:"로마숫자 안 'CARTIER' 미세 각인(산토스는 대개 X). 없으면 강한 의심."},
       {id:"cabochon",lab:"크라운 카보숑",wt:H,exp:"진짜 블루 사파이어/스피넬 카보숑(세팅). 유리·플라스틱=가품."},
@@ -411,7 +502,7 @@ const DATA={
       {id:"hands",lab:"블루 스틸 핸즈",wt:M,exp:"블루 스틸 소드 핸즈, 색·마감 정교."},
       {id:"bezelScrews",lab:"베젤 스크류·각인",wt:M,exp:"노출 스크류 정렬·마감, 케이스 각인 선명."},
       {id:"modelMatch",lab:"구성 일치",wt:L,exp:"다이얼·무브·케이스 조합이 레퍼런스와 일치."}],
-      manual:[["케이스백 시리얼","대조."],["사파이어·무게","확인."]]},
+      manual:[["케이스백 시리얼","대조."],["퀵스위치 스트랩","확인."]]},
     tank:{label:"Tank",spec:{Sig:"시크릿 사인(대개 VII)",Crown:"블루 카보숑"},checks:[
       {id:"secretSig",lab:"시크릿 사인",wt:H,exp:"로마숫자 안 'CARTIER' 미세 각인(탱크는 대개 VII). 없으면 강한 의심."},
       {id:"cabochon",lab:"크라운 카보숑",wt:H,exp:"진짜 블루 카보숑, 세팅. 유리·플라스틱=가품."},
@@ -420,19 +511,45 @@ const DATA={
       {id:"hands",lab:"블루 스틸 핸즈",wt:M,exp:"블루 스틸 소드 핸즈."},
       {id:"brancard",lab:"브랑카(케이스 바)",wt:M,exp:"탱크 특유 세로 브랑카 비례·마감."},
       {id:"modelMatch",lab:"구성 일치",wt:L,exp:"다이얼·무브·케이스 일치."}],
-      manual:[["케이스백 각인","대조."],["사파이어·무게","확인."]]}
+      manual:[["케이스백 각인","대조."],["사파이어·무게","확인."]]},
+    ballon:{label:"Ballon Bleu",spec:{Crown:"카보숑+가드",Case:"돔형 원형"},note:"위조가 매우 많은 모델. 크라운 가드가 케이스에 통합된 곡선이 핵심.",checks:[
+      {id:"secretSig",lab:"시크릿 사인",wt:H,exp:"로마숫자(대개 X 또는 VII) 안 'CARTIER' 미세 각인."},
+      {id:"crownGuardArc",lab:"크라운 가드 아치",wt:H,exp:"크라운을 감싸는 아치가 케이스와 한 몸처럼 매끄럽게 이어지고, 크라운·카보숑이 아치 안에 정확히 안착. 덧붙인 듯 어색하면 가품."},
+      {id:"cabochon",lab:"크라운 카보숑",wt:H,exp:"진짜 블루 스톤 카보숑. 유리·플라스틱=가품."},
+      {id:"romanNumerals",lab:"로마숫자 원근",wt:M,exp:"돔 다이얼을 따라 숫자 크기가 자연스럽게 변함. 균일하게 납작하면 이상."},
+      {id:"railTrack",lab:"레일트랙",wt:M,exp:"분 스케일 정밀·균일."},
+      {id:"hands",lab:"블루 스틸 핸즈",wt:M,exp:"블루 스틸 소드 핸즈."},
+      {id:"modelMatch",lab:"구성 일치",wt:L,exp:"다이얼·무브(쿼츠/오토)·케이스 조합 일치."}],
+      manual:[["케이스백 시리얼","대조."],["무게","묵직."]]},
+    panthere:{label:"Panthère",spec:{Type:"쿼츠 다수",Bracelet:"링크"},checks:[
+      {id:"secretSig",lab:"시크릿 사인",wt:H,exp:"로마숫자 안 'CARTIER' 미세 각인."},
+      {id:"cabochon",lab:"크라운 카보숑",wt:H,exp:"진짜 블루 카보숑."},
+      {id:"bracelet",lab:"링크 브레이슬릿",wt:H,exp:"팬더 특유 납작한 링크가 유격 없이 유연하게 흐름. 뻑뻑하거나 덜컹거리면 가품."},
+      {id:"romanNumerals",lab:"로마숫자",wt:M,exp:"폰트·정렬 완벽."},
+      {id:"railTrack",lab:"레일트랙",wt:M,exp:"분 스케일 균일."},
+      {id:"modelMatch",lab:"구성 일치",wt:M,exp:"다이얼·무브·케이스 조합 일치."}],
+      manual:[["링크 유격","실물."],["시리얼","대조."]]},
+    common:{label:"기타 모델 (브랜드 공통)",spec:{Mode:"Cartier 공통 단서"},common:true,checks:[
+      {id:"secretSig",lab:"시크릿 사인",wt:H,exp:"로마숫자 하나(대개 VII 또는 X) 안에 육안으로 거의 안 보이는 'CARTIER' 미세 각인. 없으면 강한 의심."},
+      {id:"cabochon",lab:"크라운 카보숑",wt:H,exp:"크라운의 블루 카보숑이 진짜 스톤(사파이어/스피넬)이고 제대로 세팅. 유리·플라스틱·접착=가품."},
+      {id:"romanNumerals",lab:"로마숫자",wt:M,exp:"날카롭고 폰트·두께·간격 일관, 삐뚤지 않음."},
+      {id:"railTrack",lab:"레일트랙 분 스케일",wt:M,exp:"까르띠에 특유 더블 라인 분 스케일이 정밀·균일."},
+      {id:"hands",lab:"블루 스틸 핸즈",wt:M,exp:"블루 스틸 소드 핸즈, 색·마감 정교."},
+      {id:"modelMatch",lab:"구성 일치",wt:M,exp:"다이얼·무브(쿼츠/오토)·케이스 조합이 실제 레퍼런스와 일치."}],
+      manual:[["케이스백 각인·시리얼","대조."],["사파이어 크리스탈","스크래치 저항."],["무게","묵직."]]}
   }},
 
-  panerai:{name:"Panerai",cap:"PAM",slotHint:"크라운 가드·샌드위치 다이얼·인쇄가 핵심",models:{
+  panerai:{name:"Panerai",cap:"PAM",slotHint:"크라운 가드·샌드위치 다이얼·인쇄가 핵심",
+    note:"PAM 번호와 케이스·다이얼·무브 사양이 일치해야 함.",models:{
     luminor:{label:"Luminor",spec:{Guard:"크라운 가드",Dial:"샌드위치"},checks:[
       {id:"crownGuard",lab:"크라운 가드 브리지",wt:H,exp:"레버가 부드럽게 열리고 스냅 잠금. 비율상 잠금 안 풀어도 감을 수 있어야 함. 크라운 얇거나 못 감으면 가품."},
-      {id:"sandwichDial",lab:"샌드위치 다이얼",wt:H,exp:"2겹(숫자가 하부 야광층까지 뚫림)의 깊이감. 인쇄/접착 마커면 이상(단 소시지 다이얼 모델도 있음)."},
-      {id:"printing",lab:"다이얼 인쇄",wt:H,exp:"'PANERAI'·'AUTOMATIC 300m' 텍스트 얇고 균일. 두껍고 뭉툭=가품."},
-      {id:"subsecond",lab:"9시 스몰세컨드",wt:M,exp:"9시 마커 없어 좌측 서브다이얼이 가장자리에 더 붙음. 9시 마커 있고 안쪽=가품."},
+      {id:"sandwichDial",lab:"샌드위치 다이얼",wt:H,exp:"2겹(숫자가 하부 야광층까지 뚫림)의 깊이감. 인쇄/접착 마커면 이상."},
+      {id:"printing",lab:"다이얼 인쇄",wt:H,exp:"텍스트 얇고 균일. 두껍고 뭉툭=가품."},
+      {id:"subsecond",lab:"9시 스몰세컨드",wt:M,exp:"9시 마커 없어 좌측 서브다이얼이 가장자리에 더 붙음."},
       {id:"movement",lab:"무브(P.시리즈)",wt:M,exp:"레퍼런스에 맞는 P.시리즈, Panerai 각인."},
       {id:"crystal",lab:"크리스탈",wt:M,exp:"'피시아이' 왜곡 없이 측면에서도 또렷."},
       {id:"serial",lab:"케이스백 시리얼",wt:L,exp:"BB/OP 시리얼 선명."}],
-      manual:[["브리지 작동·수밀","실물."],["야광·무게·시리얼","확인."]]},
+      manual:[["브리지 작동","실물."],["야광·무게","확인."]]},
     radiomir:{label:"Radiomir",spec:{Lugs:"와이어 러그",Guard:"없음"},checks:[
       {id:"noCrownGuard",lab:"크라운 가드 부재",wt:H,exp:"라디오미르는 크라운 가드 없음(와이어 러그+원형 크라운). 있으면 모델 불일치."},
       {id:"wireLugs",lab:"와이어 러그",wt:H,exp:"용접/일체형 와이어 러그, 형태·마감 정확."},
@@ -440,133 +557,369 @@ const DATA={
       {id:"printing",lab:"다이얼 인쇄",wt:M,exp:"텍스트 얇고 균일."},
       {id:"movement",lab:"무브",wt:M,exp:"레퍼런스에 맞는 무브, Panerai 각인."},
       {id:"serial",lab:"시리얼",wt:L,exp:"각인 선명."}],
-      manual:[["야광·무게","확인."],["시리얼","대조."]]}
+      manual:[["야광·무게","확인."],["시리얼","대조."]]},
+    submersible:{label:"Submersible",spec:{Bezel:"단방향 회전",Type:"다이버"},checks:[
+      {id:"crownGuard",lab:"크라운 가드 브리지",wt:H,exp:"레버 작동·비율 정확, 잠금 안 풀어도 감을 수 있어야."},
+      {id:"bezelSub",lab:"회전 베젤",wt:H,exp:"섭머저블 전용 단방향 회전 베젤(눈금·인덱스 pip)이 또렷한 클릭. 루미노르엔 없는 요소."},
+      {id:"sandwichDial",lab:"샌드위치 다이얼",wt:H,exp:"2겹 깊이감, 인쇄·접착 마커면 이상."},
+      {id:"printing",lab:"다이얼 인쇄",wt:M,exp:"텍스트 얇고 균일."},
+      {id:"movement",lab:"무브(P.시리즈)",wt:M,exp:"레퍼런스에 맞는 P.시리즈."},
+      {id:"serial",lab:"시리얼",wt:M,exp:"케이스백 각인 선명."}],
+      manual:[["베젤 클릭","단방향·백플레이 없음."],["수밀·무게","확인."]]},
+    common:{label:"기타 모델 (브랜드 공통)",spec:{Mode:"Panerai 공통 단서"},common:true,checks:[
+      {id:"printing",lab:"다이얼 인쇄",wt:H,exp:"'PANERAI' 등 텍스트가 얇고 균일하며 정렬 정확. 두껍고 뭉툭하면 가품."},
+      {id:"sandwichDial",lab:"다이얼 구조",wt:H,exp:"샌드위치(2겹) 모델은 숫자가 하부 야광층까지 뚫린 깊이감. 인쇄·접착 마커면 이상."},
+      {id:"movement",lab:"무브",wt:H,exp:"레퍼런스에 맞는 P.시리즈/스위스 무브에 Panerai 각인. 조잡한 클론 무브=가품."},
+      {id:"crystal",lab:"크리스탈",wt:M,exp:"'피시아이' 왜곡 없이 측면에서도 다이얼 또렷."},
+      {id:"serial",lab:"케이스백 시리얼",wt:M,exp:"PAM/BB/OP 각인 선명·깊음."},
+      {id:"modelMatch",lab:"PAM 사양 정합",wt:M,exp:"PAM 번호가 케이스 크기·소재·다이얼·무브와 일치."}],
+      manual:[["크라운 가드 작동","루미노르 계열."],["야광 톤·무게","확인."],["시리얼","대조."]]}
   }},
 
-  rm:{name:"Richard Mille",cap:"RM",slotHint:"무브 입체 스켈레톤·스플라인 스크류가 핵심",models:{
-    tonneau:{label:"RM 토노 (RM011/035 등)",spec:{Case:"토노·Ti/카본",Mvmt:"스켈레톤"},checks:[
+  rm:{name:"Richard Mille",cap:"RM",slotHint:"무브 입체 스켈레톤·스플라인 스크류가 핵심",
+    note:"진품 RM은 티타늄·카본이라 매우 가벼움 — '무거우면 진짜'가 통하지 않는 유일한 브랜드.",models:{
+    tonneau:{label:"RM 토노 (RM011/035 등)",spec:{Case:"토노·Ti/카본"},checks:[
       {id:"movementDepth",lab:"무브 입체 스켈레톤",wt:H,exp:"브리지·기어가 3D로 깊게 스켈레톤. 납작/압축(일반무브+장식판)=가품."},
       {id:"splineScrews",lab:"스플라인 스크류",wt:H,exp:"5점 별 Grade5 티타늄, 모서리 날카롭고 동일 깊이 대칭. 버/뭉갬=가품."},
       {id:"material",lab:"소재·케이스 마감",wt:H,exp:"Ti 무광/카본 TPT(비반복 결). 결이 다른 개체와 똑같으면 가품."},
       {id:"weight",lab:"무게(가벼움)",wt:M,exp:"RM은 매우 가벼움. 스틸처럼 묵직하면 오히려 의심."},
-      {id:"engraving",lab:"레이저 각인",wt:M,exp:"RM 레퍼런스·시리얼 크리스프·정렬. 'RM' 폰트/포맷 어긋나면 이상."},
-      {id:"movementType",lab:"무브 방식 일치",wt:M,exp:"오토/수동이 레퍼런스와 일치. 쿼츠=가품."},
+      {id:"engraving",lab:"레이저 각인",wt:M,exp:"RM 레퍼런스·시리얼 크리스프·정렬."},
+      {id:"movementType",lab:"무브 방식",wt:M,exp:"오토/수동이 레퍼런스와 일치. 쿼츠=가품."},
       {id:"font",lab:"다이얼 폰트",wt:L,exp:"RM 특유 폰트·핸즈 정렬."}],
-      manual:[["서류 홀로그램·시리얼","대조."],["소재 촉감/열전도","카본은 따뜻·가벼움."],["전문가 감정","사진만으론 한계 큼 — 강권."]]}
+      manual:[["서류 홀로그램","대조."],["소재 촉감","카본은 따뜻·가벼움."],["전문가 감정","강권."]]},
+    common:{label:"기타 모델 (브랜드 공통)",spec:{Mode:"RM 공통 단서"},common:true,checks:[
+      {id:"movementDepth",lab:"무브 입체 스켈레톤",wt:H,exp:"층층이 깊은 3D 스켈레톤 구조. 일반 무브 위에 얇은 장식판을 얹어 납작해 보이면 가품."},
+      {id:"splineScrews",lab:"스플라인 스크류",wt:H,exp:"5점 별 Grade5 티타늄 스크류, 모서리 날카롭고 깔끔·대칭."},
+      {id:"material",lab:"소재·마감",wt:H,exp:"Grade5 티타늄/카본 TPT. 카본 결은 개체마다 달라야 함 — 동일 패턴이면 가품."},
+      {id:"weight",lab:"무게(가벼움)",wt:M,exp:"매우 가벼움. 스틸처럼 묵직하면 의심."},
+      {id:"engraving",lab:"레이저 각인",wt:M,exp:"RM 레퍼런스·시리얼 크리스프·정렬."},
+      {id:"movementType",lab:"무브 방식",wt:M,exp:"쿼츠면 가품."}],
+      manual:[["서류·홀로그램","대조."],["전문가 감정","사진 한계 큼 — 강권."]]}
   }},
 
   tag:{name:"TAG Heuer",cap:"TAG",slotHint:"무브·레퍼런스 일치와 각인 품질",
-    note:"케이스백 레퍼런스·무브·다이얼 표기가 서로 일치해야. 'Quartz'인데 CAL(오토) 표기 등 모순=가품.",models:{
-    carrera:{label:"Carrera (Heuer 02)",spec:{Cal:"Heuer 02",Back:"투명(대개)"},checks:[
+    note:"케이스백 레퍼런스·무브·다이얼 표기가 서로 일치해야. 'Quartz'인데 오토 표기 등 모순=가품.",models:{
+    carrera:{label:"Carrera (Heuer 02)",spec:{Cal:"Heuer 02"},checks:[
       {id:"modelMatch",lab:"레퍼런스·무브 일치",wt:H,exp:"케이스백 레퍼런스가 실제 사양과 일치. 표기 모순=가품."},
-      {id:"columnWheel",lab:"컬럼휠·로터",wt:H,exp:"투명백으로 컬럼휠 보임. 로터 'TAG HEUER' 각인·스켈레톤. 안 보이거나 조잡=이상."},
+      {id:"columnWheel",lab:"컬럼휠·로터",wt:H,exp:"투명백으로 컬럼휠 보임. 로터 'TAG HEUER' 각인·스켈레톤."},
       {id:"chronoFn",lab:"크로노 작동",wt:H,exp:"작동, 푸셔 또렷. 미작동=가품."},
-      {id:"dialPrint",lab:"다이얼 인쇄·인덱스",wt:M,exp:"'TAG Heuer'·'CARRERA'·SWISS MADE 예리, 어플라이드 인덱스 고정."},
-      {id:"crownLogo",lab:"크라운 방패 로고",wt:M,exp:"방패 로고가 스틸에 엠보싱(부착/접착 아님)."},
-      {id:"serial",lab:"케이스백 시리얼",wt:M,exp:"깊고 선명(ref WBxxx와 구분). TAG DB 대조."},
+      {id:"dialPrint",lab:"다이얼 인쇄·인덱스",wt:M,exp:"인쇄 예리, 어플라이드 인덱스 고정."},
+      {id:"crownLogo",lab:"크라운 방패 로고",wt:M,exp:"방패 로고가 스틸에 엠보싱(접착 아님)."},
+      {id:"serial",lab:"케이스백 시리얼",wt:M,exp:"깊고 선명. TAG DB 대조."},
       {id:"bezel",lab:"타키미터",wt:L,exp:"각인 간격 균일."}],
-      manual:[["시리얼 TAG DB","조회."],["사파이어·무게","확인."]]},
-    monaco:{label:"Monaco (사각 크로노)",spec:{Case:"사각",Type:"크로노"},checks:[
-      {id:"modelMatch",lab:"레퍼런스·무브 일치",wt:H,exp:"레퍼런스·무브·다이얼 조합 일치. 모순=가품."},
+      manual:[["시리얼 TAG DB","조회."],["무게","확인."]]},
+    monaco:{label:"Monaco (사각 크로노)",spec:{Case:"사각"},checks:[
+      {id:"modelMatch",lab:"레퍼런스·무브 일치",wt:H,exp:"레퍼런스·무브·다이얼 조합 일치."},
       {id:"caseCorners",lab:"사각 모서리",wt:H,exp:"모서리 날카롭고 면 평평. 둥글거나 베젤 유격=가품."},
       {id:"chronoFn",lab:"크로노 작동",wt:H,exp:"작동, 서브다이얼·푸셔 정상."},
-      {id:"dialPrint",lab:"다이얼 인쇄",wt:M,exp:"'MONACO'·로고·서브다이얼 인쇄 예리·정렬."},
+      {id:"dialPrint",lab:"다이얼 인쇄",wt:M,exp:"인쇄 예리·정렬."},
       {id:"crownLogo",lab:"크라운 방패 로고",wt:M,exp:"방패 로고 엠보싱."},
       {id:"serial",lab:"케이스백 시리얼",wt:M,exp:"선명, TAG DB 대조."},
       {id:"crystal",lab:"크리스탈",wt:L,exp:"사파이어."}],
-      manual:[["시리얼 조회","TAG DB."],["무게","확인."]]}
+      manual:[["시리얼","TAG DB."],["무게","확인."]]},
+    aquaracer:{label:"Aquaracer",spec:{Type:"다이버",Bezel:"단방향"},checks:[
+      {id:"modelMatch",lab:"레퍼런스·무브 일치",wt:H,exp:"케이스백 레퍼런스(WAY/WBP 등)가 실제 사양·무브와 일치."},
+      {id:"bezelAction",lab:"단방향 베젤",wt:H,exp:"단방향 회전·또렷한 클릭, 인덱스 정렬 정확."},
+      {id:"dialPrint",lab:"다이얼 인쇄·인덱스",wt:M,exp:"인쇄 예리, 어플라이드 인덱스 고정."},
+      {id:"crownLogo",lab:"크라운 방패 로고",wt:M,exp:"방패 로고 엠보싱."},
+      {id:"movement",lab:"무브",wt:M,exp:"레퍼런스에 맞는 오토/쿼츠. 표기와 모순되면 가품."},
+      {id:"serial",lab:"케이스백 시리얼",wt:M,exp:"깊고 선명."}],
+      manual:[["베젤 클릭","백플레이."],["시리얼","TAG DB."]]},
+    common:{label:"기타 모델 (브랜드 공통)",spec:{Mode:"TAG 공통 단서"},common:true,checks:[
+      {id:"modelMatch",lab:"레퍼런스 정합",wt:H,exp:"케이스백 레퍼런스가 실제 케이스·다이얼·무브와 일치. 'Quartz' 표기인데 오토 사양 등 모순=가품."},
+      {id:"movement",lab:"무브",wt:H,exp:"레퍼런스에 맞는 무브. 투명백 모델은 로터 'TAG HEUER' 각인·마감 정교."},
+      {id:"dialPrint",lab:"다이얼 인쇄·인덱스",wt:M,exp:"'TAG Heuer'·SWISS MADE 인쇄 예리, 어플라이드 인덱스 단단히 고정."},
+      {id:"crownLogo",lab:"크라운 방패 로고",wt:M,exp:"방패 로고가 스틸에 엠보싱. 별도 부착·접착이면 이상."},
+      {id:"serial",lab:"케이스백 시리얼",wt:M,exp:"깊고 선명. 얕은 레이저·인쇄면 이상."},
+      {id:"crystal",lab:"크리스탈·마감",wt:L,exp:"사파이어, 케이스 마감 균일."}],
+      manual:[["시리얼","TAG DB 조회."],["무게","확인."]]}
   }},
 
   tudor:{name:"Tudor",cap:"TUDOR",slotHint:"베젤·크라운(로즈)·다이얼 인쇄, 무브(가능시)",
-    note:"BB/58/GMT/크로노 등 레퍼런스별로 베젤·다이얼·브레이슬릿이 달라야. 다른 ref 디테일이 섞이면 의심.",models:{
-    blackbay:{label:"Black Bay / 58",spec:{Mvmt:"MT56xx / ETA",Type:"다이버"},checks:[
-      {id:"dialPrint",lab:"다이얼 인쇄",wt:H,exp:"'TUDOR'·'GENEVE'·'CHRONOMETER' 텍스트 얇고 크리스프·균일. 두껍고 뭉툭=가품."},
-      {id:"bezelPip",lab:"12시 pip·베젤 숫자",wt:H,exp:"12시 위 pip(야광 점)이 작고 정확히 돔형·경계 안. 크거나 삐져나오면 가품. 숫자 샤프."},
-      {id:"crownRose",lab:"크라운 튜더 로즈",wt:H,exp:"크라운 측면 튜더 로즈 각인이 샤프·깊게 엠보싱. 얇거나 조잡=가품."},
-      {id:"movement",lab:"무브(MT56xx)",wt:M,exp:"인하우스 MT56xx(실리콘 밸런스 스프링)면 강한 진품 신호, 로터 거의 무음. ETA 2824 세대는 무브만으론 판정 약함."},
-      {id:"caseback",lab:"케이스백 각인",wt:M,exp:"튜더 로고·ref·시리얼 정밀. 가품은 더 깊고 작게."},
+    note:"레퍼런스별 베젤·다이얼·브레이슬릿이 달라야. 다른 ref 디테일이 섞이면 의심.",models:{
+    blackbay:{label:"Black Bay / 58",spec:{Mvmt:"MT56xx / ETA"},checks:[
+      {id:"dialPrint",lab:"다이얼 인쇄",wt:H,exp:"'TUDOR'·'GENEVE' 텍스트 얇고 크리스프·균일. 두껍고 뭉툭=가품."},
+      {id:"bezelPip",lab:"12시 pip·베젤 숫자",wt:H,exp:"12시 pip이 작고 정확히 돔형·경계 안. 크거나 삐져나오면 가품."},
+      {id:"crownRose",lab:"크라운 튜더 로즈",wt:H,exp:"크라운 측면 로즈 각인이 샤프·깊게 엠보싱."},
+      {id:"movement",lab:"무브(MT56xx)",wt:M,exp:"인하우스 MT56xx면 강한 진품 신호, 로터 거의 무음."},
+      {id:"caseback",lab:"케이스백 각인",wt:M,exp:"로고·ref·시리얼 정밀."},
       {id:"bezelAction",lab:"베젤 작동·색",wt:M,exp:"단방향·또렷한 클릭·정렬, 인서트 색 정확."},
       {id:"serial",lab:"시리얼",wt:L,exp:"케이스 측면 시리얼 선명."}],
-      manual:[["로터 무음·부드러움","실물."],["무게·시리얼","튜더 조회."],["클라스프 각인","루페."]]},
-    bbgmt:{label:"Black Bay GMT",spec:{Cal:"MT5652",Type:"GMT"},checks:[
-      {id:"dialPrint",lab:"다이얼 인쇄",wt:H,exp:"텍스트 얇고 크리스프·균일. 두껍고 뭉툭=가품."},
-      {id:"bezelGmt",lab:"24시 베젤 색·정렬",wt:H,exp:"펩시 등 색·폰트·정렬 정확. 색 바래거나 어긋나면 가품."},
+      manual:[["로터 무음","실물."],["시리얼","튜더 조회."]]},
+    bbgmt:{label:"Black Bay GMT",spec:{Cal:"MT5652"},checks:[
+      {id:"dialPrint",lab:"다이얼 인쇄",wt:H,exp:"텍스트 얇고 크리스프·균일."},
+      {id:"bezelGmt",lab:"24시 베젤 색·정렬",wt:H,exp:"펩시 등 색·폰트·정렬 정확."},
       {id:"crownRose",lab:"크라운 튜더 로즈",wt:H,exp:"로즈 각인 샤프·엠보싱."},
-      {id:"gmtFn",lab:"GMT 기능",wt:M,exp:"24시침 기능·독립 조정. 미작동=가품."},
+      {id:"gmtFn",lab:"GMT 기능",wt:M,exp:"24시침 기능·조정. 미작동=가품."},
       {id:"movement",lab:"무브(MT5652)",wt:M,exp:"인하우스 MT5652, 로터 무음."},
       {id:"caseback",lab:"케이스백 각인",wt:M,exp:"로고·ref·시리얼 정밀."},
       {id:"serial",lab:"시리얼",wt:L,exp:"선명."}],
-      manual:[["로터·무게","실물."],["시리얼","조회."]]}
+      manual:[["로터·무게","실물."],["시리얼","조회."]]},
+    pelagos:{label:"Pelagos",spec:{Case:"티타늄",Mvmt:"MT5612"},checks:[
+      {id:"titanium",lab:"티타늄 케이스",wt:H,exp:"펠라고스는 티타늄 — 무광 회색빛 톤에 스틸보다 확연히 가벼움. 스틸처럼 무겁고 희면 이상."},
+      {id:"dialPrint",lab:"다이얼 인쇄",wt:H,exp:"텍스트 얇고 크리스프, 스퀘어 마커 야광 충전 균일."},
+      {id:"crownRose",lab:"크라운 로즈·헬륨밸브",wt:H,exp:"크라운 로즈 각인 샤프. 펠라고스는 좌측 헬륨밸브 있음(모델별 확인)."},
+      {id:"movement",lab:"무브(MT5612)",wt:M,exp:"인하우스 MT56xx, 로터 무음."},
+      {id:"claspSpring",lab:"스프링 클라스프",wt:M,exp:"자동 신축 스프링 클라스프 작동(티타늄 모델)."},
+      {id:"caseback",lab:"케이스백 각인",wt:M,exp:"각인 정밀."}],
+      manual:[["무게","티타늄 특유 가벼움."],["시리얼","조회."]]},
+    common:{label:"기타 모델 (브랜드 공통)",spec:{Mode:"Tudor 공통 단서"},common:true,checks:[
+      {id:"dialPrint",lab:"다이얼 인쇄",wt:H,exp:"'TUDOR'·'GENEVE' 등 텍스트가 얇고 크리스프·균일. 두껍고 뭉툭하면 가품."},
+      {id:"crownRose",lab:"크라운 튜더 로즈/방패",wt:H,exp:"크라운의 로즈(또는 방패) 각인이 샤프하고 깊게 엠보싱. 얇거나 조잡=가품."},
+      {id:"movement",lab:"무브",wt:H,exp:"인하우스 MT56xx는 실리콘 밸런스 스프링·거의 무음 로터. ETA 세대는 무브만으론 판정 약함."},
+      {id:"caseback",lab:"케이스백 각인",wt:M,exp:"튜더 로고·ref·시리얼 정밀. 가품은 과하게 깊거나 작게 새김."},
+      {id:"serial",lab:"시리얼",wt:M,exp:"케이스 측면 시리얼 선명."},
+      {id:"modelMatch",lab:"레퍼런스 정합",wt:M,exp:"베젤·다이얼·브레이슬릿이 하나의 ref로 일관."}],
+      manual:[["로터 소음","무음·부드러움."],["무게·시리얼","튜더 조회."]]}
   }},
 
-  breitling:{name:"Breitling",cap:"BRT",slotHint:"슬라이드룰 베젤·서브다이얼·무브(가능시)",
-    note:"모델번호는 문자+5자리(A=스틸). 케이스백 모델·시리얼이 실제 사양과 일치·철자 정확해야.",models:{
+  breitling:{name:"Breitling",cap:"BRT",slotHint:"슬라이드룰 베젤·서브다이얼·무브",
+    note:"모델번호는 문자+5자리(A=스틸). 케이스백 모델·시리얼이 사양과 일치·철자 정확해야.",models:{
     navitimer:{label:"Navitimer",spec:{Cal:"01",Bezel:"슬라이드룰"},checks:[
-      {id:"slideRule",lab:"슬라이드룰 베젤",wt:H,exp:"부드럽게 작동, 해시가 안쪽 스케일과 갭 없이 맞음. 화살표·빨간 '10' 완벽 대칭. 어긋나면 가품."},
-      {id:"subdial",lab:"서브다이얼",wt:H,exp:"균등·비례, 미닛트랙/외곽 인덱스 침범 없음. 마진 인덱스에 붙으면 가품."},
+      {id:"slideRule",lab:"슬라이드룰 베젤",wt:H,exp:"부드럽게 작동, 해시가 안쪽 스케일과 갭 없이 맞음. 빨간 '10' 대칭. 어긋나면 가품."},
+      {id:"subdial",lab:"서브다이얼",wt:H,exp:"균등·비례, 외곽 인덱스 침범 없음."},
       {id:"dateWheel",lab:"데이트 휠",wt:M,exp:"다이얼과 거의 플러시, 숫자 크리스프. '싱크홀'처럼 꺼지면 가품."},
-      {id:"logo",lab:"윙드 앵커 로고",wt:M,exp:"팁에 미세 갭, 깃털선이 날개 끝에 못 미침. 각인 크리스프."},
-      {id:"swissMade",lab:"SWISS MADE",wt:M,exp:"6시 서브다이얼 아래 컴팩트·박스형·중앙. 늘어나거나 눌리면 이상."},
-      {id:"movement",lab:"무브(칼 01)",wt:M,exp:"컬럼휠·버티컬 클러치·COSC·70h, 거의 무음. 쿼츠/시끄러운 똑딱=가품."},
-      {id:"serial",lab:"모델·시리얼",wt:L,exp:"문자+5자리 모델·시리얼 선명, 철자 정확."}],
-      manual:[["슬라이드룰 작동","실물."],["안티글레어·무게","확인."],["시리얼","조회."]]}
+      {id:"logo",lab:"윙드 앵커 로고",wt:M,exp:"팁에 미세 갭, 각인 크리스프."},
+      {id:"swissMade",lab:"SWISS MADE",wt:M,exp:"6시 아래 컴팩트·박스형·중앙."},
+      {id:"movement",lab:"무브(칼 01)",wt:M,exp:"컬럼휠·COSC·70h, 거의 무음. 쿼츠=가품."},
+      {id:"serial",lab:"모델·시리얼",wt:L,exp:"문자+5자리, 철자 정확."}],
+      manual:[["슬라이드룰 작동","실물."],["시리얼","조회."]]},
+    chronomat:{label:"Chronomat",spec:{Bezel:"라이더 탭",Type:"크로노"},checks:[
+      {id:"riderTabs",lab:"라이더 탭 베젤",wt:H,exp:"베젤 위 4개 라이더 탭(15분 간격)이 정확한 위치·형태. 크로노맷 고유 요소."},
+      {id:"subdial",lab:"서브다이얼",wt:H,exp:"균등·비례, 마커 침범 없음."},
+      {id:"chronoFn",lab:"크로노 작동",wt:H,exp:"작동·리셋 정확."},
+      {id:"logo",lab:"윙드 앵커 로고",wt:M,exp:"각인 크리스프, 팁 미세 갭."},
+      {id:"bracelet",lab:"루롤 브레이슬릿",wt:M,exp:"불릿/루롤 링크 마감·유격 없음."},
+      {id:"serial",lab:"모델·시리얼",wt:M,exp:"문자+5자리, 철자 정확."}],
+      manual:[["크로노 작동","실물."],["시리얼","조회."]]},
+    superocean:{label:"Superocean / Avenger",spec:{Type:"다이버",Bezel:"단방향"},checks:[
+      {id:"bezelAction",lab:"단방향 베젤",wt:H,exp:"단방향 회전·또렷한 클릭, 백플레이 없음, 인덱스 정렬."},
+      {id:"logo",lab:"윙드 앵커 로고",wt:H,exp:"각인·인쇄 크리스프, 비례 정확."},
+      {id:"dialPrint",lab:"다이얼 인쇄·야광",wt:M,exp:"인쇄 예리, 야광 충전 균일·경계 깔끔."},
+      {id:"movement",lab:"무브",wt:M,exp:"레퍼런스에 맞는 오토(COSC 다수). 초침 스윕."},
+      {id:"serial",lab:"모델·시리얼",wt:M,exp:"문자+5자리, 철자 정확."},
+      {id:"crown",lab:"크라운·가드",wt:M,exp:"스크류다운 크라운 부드럽게 체결."}],
+      manual:[["베젤 클릭","실물."],["시리얼","조회."]]},
+    common:{label:"기타 모델 (브랜드 공통)",spec:{Mode:"Breitling 공통 단서"},common:true,checks:[
+      {id:"logo",lab:"윙드 앵커 로고",wt:H,exp:"날개 끝 팁에 미세 갭이 있고 깃털선이 날개 끝에 못 미침. 각인·인쇄 크리스프."},
+      {id:"subdial",lab:"서브다이얼 배치",wt:H,exp:"크로노 모델은 서브다이얼이 균등·비례, 외곽 인덱스를 침범하지 않음."},
+      {id:"movement",lab:"무브",wt:H,exp:"레퍼런스에 맞는 무브. 오토 표기인데 쿼츠 똑딱이면 가품."},
+      {id:"swissMade",lab:"SWISS MADE 표기",wt:M,exp:"6시 부근 컴팩트·박스형·중앙 정렬. 늘어나거나 눌리면 이상."},
+      {id:"dateWheel",lab:"데이트 휠",wt:M,exp:"다이얼과 거의 플러시, 숫자 크리스프. 움푹 꺼지면 가품."},
+      {id:"serial",lab:"모델·시리얼",wt:M,exp:"문자+5자리 모델번호와 시리얼이 선명, 철자 정확."}],
+      manual:[["무게·크라운","실물."],["시리얼","브라이틀링 조회."]]}
   }},
 
   iwc:{name:"IWC",cap:"IWC",slotHint:"케이스백 각인·무브·다이얼 정밀도",
-    note:"레퍼런스(IWxxxxxx)가 다이얼·소재·스트랩과 일치해야. 불일치=부품교체/가품.",models:{
-    portugieser:{label:"Portugieser",spec:{Freq:"3Hz(계열)",Back:"투명 다수"},checks:[
-      {id:"dialTicks",lab:"초 트랙 틱 수",wt:H,exp:"마커 사이 3틱(3Hz, 초당 3비트). 4틱이면 무브 불일치=가품."},
-      {id:"casebackEngrave",lab:"케이스백/무브 각인",wt:H,exp:"머신컷으로 균일·깊고 샤프('IWC Schaffhausen','Probus Scafusia'). 레이저로 얕고 납작하면 가품."},
-      {id:"movement",lab:"무브 칼리버",wt:H,exp:"인하우스/개조 스위스, 플레이트 칼리버 각인이 ref와 일치. 조잡한 중국/일제 베이스=가품."},
-      {id:"dialPrint",lab:"다이얼 프린팅",wt:M,exp:"폰트 두께 균일·엣지 깨끗, 서브다이얼(블루) 깊고 균일, 넘버 임보싱."},
+    note:"레퍼런스(IWxxxxxx)가 다이얼·소재·스트랩과 일치해야. 케이스백은 머신컷 각인이며 얕은 레이저가 아님.",models:{
+    portugieser:{label:"Portugieser",spec:{Freq:"3Hz(계열)"},checks:[
+      {id:"dialTicks",lab:"초 트랙 틱 수",wt:H,exp:"마커 사이 3틱(3Hz). 4틱이면 무브 불일치=가품."},
+      {id:"casebackEngrave",lab:"케이스백/무브 각인",wt:H,exp:"머신컷으로 균일·깊고 샤프. 레이저로 얕고 납작하면 가품."},
+      {id:"movement",lab:"무브 칼리버",wt:H,exp:"플레이트 칼리버 각인이 ref와 일치. 조잡한 중국/일제 베이스=가품."},
+      {id:"dialPrint",lab:"다이얼 프린팅",wt:M,exp:"폰트 두께 균일, 서브다이얼 깊고 균일, 넘버 임보싱."},
       {id:"crownLogo",lab:"크라운 로고",wt:M,exp:"IWC 로고, 부드러운 조작."},
-      {id:"serial",lab:"시리얼",wt:M,exp:"케이스백 외링/러그/무브, ref와 별개. 대조."},
+      {id:"serial",lab:"시리얼",wt:M,exp:"케이스백 외링/러그/무브. 대조."},
       {id:"hands",lab:"핸즈·인덱스",wt:L,exp:"정렬·마감 정교."}],
-      manual:[["무브 칼리버 각인","대조."],["금/플래티넘 순도각인","확인."],["무게·시리얼","조회."]]},
-    pilot:{label:"Pilot's Watch / 크로노",spec:{Type:"파일럿",Mvmt:"오토/크로노"},checks:[
-      {id:"numeralAlign",lab:"숫자 정렬(7)",wt:H,exp:"숫자 정렬 — 특히 7의 아랫선이 아워 마커 중앙에 와야. 어긋나면 무브 불일치=가품."},
+      manual:[["칼리버 각인","대조."],["무게·시리얼","조회."]]},
+    pilot:{label:"Pilot's Watch",spec:{Type:"파일럿"},checks:[
+      {id:"numeralAlign",lab:"숫자 정렬(7)",wt:H,exp:"7의 아랫선이 아워 마커 중앙에 와야. 어긋나면 무브 불일치=가품."},
       {id:"casebackEngrave",lab:"케이스백 각인",wt:H,exp:"머신컷 균일·깊음. 레이저 얕음=가품."},
-      {id:"subdialSpacing",lab:"서브다이얼 간격",wt:M,exp:"오토 크로노 간격 넓음. 너무 중앙에 몰리거나 작으면 클론(쿼츠)."},
-      {id:"movement",lab:"무브 칼리버",wt:M,exp:"ref에 맞는 칼리버·각인. 빅파일럿 파워리저브는 실제 동력 연동."},
+      {id:"subdialSpacing",lab:"서브다이얼 간격",wt:M,exp:"오토 크로노 간격 넓음. 중앙에 몰리면 클론(쿼츠)."},
+      {id:"movement",lab:"무브 칼리버",wt:M,exp:"ref에 맞는 칼리버·각인. 파워리저브는 실제 동력 연동."},
       {id:"dialPrint",lab:"다이얼 프린팅",wt:M,exp:"폰트 균일, 인쇄 크리스프."},
       {id:"crownLogo",lab:"크라운 로고",wt:M,exp:"로고·조작."},
       {id:"serial",lab:"시리얼",wt:L,exp:"대조."}],
-      manual:[["무브 각인","대조."],["파워리저브 실동작","확인."],["무게·시리얼","조회."]]}
+      manual:[["파워리저브","실동작."],["무게·시리얼","조회."]]},
+    portofino:{label:"Portofino",spec:{Type:"드레스"},checks:[
+      {id:"casebackEngrave",lab:"케이스백 각인",wt:H,exp:"머신컷 균일·깊고 샤프. 얕은 레이저=가품."},
+      {id:"movement",lab:"무브 칼리버",wt:H,exp:"ref에 맞는 칼리버 각인. 조잡한 베이스 무브=가품."},
+      {id:"dialPrint",lab:"다이얼 프린팅·인덱스",wt:M,exp:"얇은 바 인덱스·로마숫자 정렬 완벽, 인쇄 크리스프."},
+      {id:"hands",lab:"리프 핸즈",wt:M,exp:"포르토피노 특유 얇은 리프 핸즈 마감·정렬."},
+      {id:"crownLogo",lab:"크라운 로고",wt:M,exp:"IWC 로고."},
+      {id:"serial",lab:"시리얼",wt:M,exp:"대조."}],
+      manual:[["칼리버 각인","대조."],["시리얼","조회."]]},
+    common:{label:"기타 모델 (브랜드 공통)",spec:{Mode:"IWC 공통 단서"},common:true,checks:[
+      {id:"casebackEngrave",lab:"케이스백 각인",wt:H,exp:"머신컷으로 균일·깊고 샤프('IWC Schaffhausen','Probus Scafusia'). 얕고 납작한 레이저면 가품."},
+      {id:"movement",lab:"무브 칼리버",wt:H,exp:"인하우스/개조 스위스 무브, 플레이트 칼리버 각인이 ref와 일치. 조잡한 중국·일제 베이스=가품."},
+      {id:"dialPrint",lab:"다이얼 프린팅",wt:M,exp:"폰트 두께 균일, 엣지 깨끗, 서브다이얼 깊이 균일."},
+      {id:"crownLogo",lab:"크라운 로고",wt:M,exp:"IWC 로고 각인, 조작 부드러움."},
+      {id:"serial",lab:"시리얼",wt:M,exp:"케이스백 외링·러그·무브의 시리얼(ref와 별개) 대조."},
+      {id:"modelMatch",lab:"레퍼런스 정합",wt:M,exp:"IWxxxxxx 레퍼런스가 다이얼·소재·스트랩과 일치."}],
+      manual:[["칼리버 각인","대조."],["금속 순도각인","확인."],["시리얼","IWC 조회."]]}
   }},
 
   vacheron:{name:"Vacheron Constantin",cap:"VC",slotHint:"말티즈 크로스·무브 마감·클라스프",
-    note:"레퍼런스별 베젤·다이얼·브레이슬릿 일관. 케이스백 'VACHEROM' 등 철자 오류=명백 가품.",models:{
-    overseas:{label:"Overseas",spec:{Cal:"5100",Case:"41mm·투명백"},checks:[
+    note:"케이스백 철자 오류(예: VACHEROM)는 명백한 가품 신호.",models:{
+    overseas:{label:"Overseas",spec:{Cal:"5100",Case:"41mm"},checks:[
       {id:"maltese",lab:"말티즈 크로스",wt:H,exp:"다이얼·크라운·클라스프·무브의 말티즈 크로스가 샤프·정밀. 흐리거나 두께 불균일=가품."},
-      {id:"movementFinish",lab:"무브 마감·각인",wt:H,exp:"사파이어백으로 무브 마감·각인 정교(일부 제네바 실). 조잡/접착=가품."},
-      {id:"caseFinish",lab:"케이스·베젤",wt:M,exp:"6노치 말티즈 베젤, 브러시+폴리시 대비 정확. 약 41mm×11mm."},
-      {id:"clasp",lab:"클라스프",wt:M,exp:"폴딩 클라스프가 양쪽 버튼 동시로 열림, 링크 각인·시리얼. 뻑뻑/벌크=가품."},
-      {id:"dial",lab:"다이얼",wt:M,exp:"레터링 크리스프, 기요셰는 각인(인쇄 아님), 인덱스 접착 흔적 없음."},
-      {id:"serial",lab:"시리얼",wt:M,exp:"케이스백/러그 시리얼 깊고 균일. 철자·번호 대조."},
+      {id:"movementFinish",lab:"무브 마감·각인",wt:H,exp:"사파이어백으로 무브 마감·각인 정교. 조잡/접착=가품."},
+      {id:"caseFinish",lab:"케이스·베젤",wt:M,exp:"6노치 말티즈 베젤, 브러시+폴리시 대비 정확."},
+      {id:"clasp",lab:"클라스프",wt:M,exp:"폴딩 클라스프가 양쪽 버튼 동시로 열림, 링크 각인·시리얼."},
+      {id:"dial",lab:"다이얼",wt:M,exp:"레터링 크리스프, 기요셰는 각인(인쇄 아님)."},
+      {id:"serial",lab:"시리얼",wt:M,exp:"케이스백/러그 시리얼 깊고 균일."},
       {id:"weight",lab:"무게",wt:L,exp:"브레이슬릿 포함 약 150g, 묵직."}],
-      manual:[["시리얼/디지털 인증서","대조."],["퀵스위치 스트랩","확인."],["무게","묵직."]]}
+      manual:[["디지털 인증서","대조."],["퀵스위치 스트랩","확인."]]},
+    patrimony:{label:"Patrimony / Traditionnelle",spec:{Type:"드레스"},checks:[
+      {id:"maltese",lab:"말티즈 크로스",wt:H,exp:"크라운·무브의 말티즈 크로스가 샤프·정밀."},
+      {id:"movementFinish",lab:"무브 마감·제네바 실",wt:H,exp:"코트 드 제네브·핸드 베벨·폴리시드 나사, 다수 모델에 제네바 실(Poinçon de Genève)."},
+      {id:"proportions",lab:"초박 케이스 비례",wt:H,exp:"파트리모니는 극단적으로 얇고 미니멀. 두껍거나 벌크하면 이상."},
+      {id:"dial",lab:"다이얼·마커",wt:M,exp:"어플라이드 골드 마커·도트 미닛트랙, 접착 흔적 없음."},
+      {id:"hallmark",lab:"금속 각인",wt:M,exp:"Au750/Pt950 등 순도각인·시리얼 선명."},
+      {id:"serial",lab:"시리얼",wt:M,exp:"깊고 균일."}],
+      manual:[["두께 실측","초박."],["인증서","대조."]]},
+    common:{label:"기타 모델 (브랜드 공통)",spec:{Mode:"VC 공통 단서"},common:true,checks:[
+      {id:"maltese",lab:"말티즈 크로스",wt:H,exp:"다이얼·크라운·클라스프·무브의 말티즈 크로스가 샤프·정밀. 흐리거나 두께 불균일=가품."},
+      {id:"movementFinish",lab:"무브 마감·각인",wt:H,exp:"코트 드 제네브·핸드 베벨·폴리시드 나사. 일부 모델은 제네바 실. 조잡하면 가품."},
+      {id:"spelling",lab:"철자·각인 정확도",wt:H,exp:"'VACHERON CONSTANTIN' 철자와 각인 깊이가 정확. 철자 오류는 명백한 가품."},
+      {id:"dial",lab:"다이얼·마커",wt:M,exp:"레터링 크리스프, 기요셰는 각인(인쇄 아님), 접착 흔적 없음."},
+      {id:"serial",lab:"시리얼",wt:M,exp:"케이스백/러그 시리얼 깊고 균일."},
+      {id:"weight",lab:"무게·마감",wt:L,exp:"묵직하고 폴리시/브러시 경계 예리."}],
+      manual:[["시리얼·인증서","대조."],["무게","묵직."]]}
   }},
 
-  lange:{name:"A. Lange & Söhne",cap:"ALS",slotHint:"사파이어백 무브(수공 각인·독일은)가 결정적",
-    note:"대부분 수동와인딩(오디세우스·오토 작소니아 예외). 로터에 스티커/조잡한 로터면 명백 가품.",models:{
+  lange:{name:"A. Lange & Söhne",cap:"ALS",slotHint:"사파이어백 무브(수공 각인·저먼실버)가 결정적",
+    note:"대부분 수동와인딩(오디세우스·오토 작소니아 예외). 로터에 스티커나 조잡한 로터면 명백 가품.",models:{
     lange1:{label:"Lange 1",spec:{Cal:"L121.1",Wind:"수동"},checks:[
       {id:"balanceCock",lab:"밸런스 콕 수공 각인",wt:H,exp:"플로럴 수공 각인(개체마다 미세하게 다름). 기계적/균일하면 가품."},
-      {id:"germanSilver",lab:"저먼실버 3/4 플레이트",wt:H,exp:"저먼실버 3/4 플레이트+글라스휘테 리빙, 미처리라 금빛 파티나. 로듐/거친 리빙=가품."},
-      {id:"movementParts",lab:"샤통·블루 나사·스완넥",wt:H,exp:"골드 샤통(나사고정)+써멀 블루 나사(경면 헤드)+스완넥 레귤레이터. 없거나 조잡=가품."},
-      {id:"outsizeDate",lab:"아웃사이즈 데이트·레이아웃",wt:M,exp:"두 창 플러시·정렬, 판 사이 갭 없음. 시간 오프센터(~7시), 스몰세컨드(~5시)."},
-      {id:"caliberEngrave",lab:"칼리버 각인·시리얼",wt:M,exp:"무브 칼리버 각인(L121.1)·시리얼 깊고 균일. 대조."},
+      {id:"germanSilver",lab:"저먼실버 3/4 플레이트",wt:H,exp:"저먼실버 3/4 플레이트+글라스휘테 리빙, 미처리라 금빛 파티나."},
+      {id:"movementParts",lab:"샤통·블루 나사·스완넥",wt:H,exp:"골드 샤통(나사고정)+써멀 블루 나사+스완넥 레귤레이터."},
+      {id:"outsizeDate",lab:"아웃사이즈 데이트·배치",wt:M,exp:"두 창 플러시·정렬. 시간 오프센터(~7시), 스몰세컨드(~5시)."},
+      {id:"caliberEngrave",lab:"칼리버 각인·시리얼",wt:M,exp:"L121.1 각인·시리얼 깊고 균일."},
       {id:"manualWind",lab:"수동와인딩",wt:M,exp:"로터 없음. 로터/스티커 보이면 명백 가품."},
-      {id:"dialAlign",lab:"다이얼 정렬·마감",wt:L,exp:"인덱스·핸즈 정렬·마감 완벽, 접착 흔적 없음."}],
-      manual:[["시리얼","대조."],["무게(귀금속)","묵직."],["전문가 감정","강권."]]},
-    a1815:{label:"1815",spec:{Wind:"수동",Dial:"레일웨이 트랙"},checks:[
+      {id:"dialAlign",lab:"다이얼 정렬·마감",wt:L,exp:"인덱스·핸즈 정렬 완벽, 접착 흔적 없음."}],
+      manual:[["시리얼","대조."],["전문가 감정","강권."]]},
+    a1815:{label:"1815",spec:{Wind:"수동",Dial:"레일웨이"},checks:[
       {id:"balanceCock",lab:"밸런스 콕 수공 각인",wt:H,exp:"플로럴 수공 각인, 개체별 유니크."},
       {id:"germanSilver",lab:"저먼실버 3/4 플레이트",wt:H,exp:"저먼실버 3/4 플레이트+글라스휘테 리빙, 금빛 파티나."},
-      {id:"movementParts",lab:"샤통·블루 나사·베벨",wt:H,exp:"골드 샤통(시간전용 대개 4개)+블루 나사+핸드 베벨."},
-      {id:"dialDNA",lab:"다이얼 DNA",wt:M,exp:"슈맹 드 페(레일웨이) 분 트랙, 아라비아 숫자, 925 실버 다이얼, 블루/골드 랜싯 핸즈, 스몰세컨드."},
-      {id:"caliberEngrave",lab:"칼리버 각인·시리얼",wt:M,exp:"칼리버 각인(L051/L941 등)·시리얼 대조."},
-      {id:"manualWind",lab:"수동와인딩",wt:M,exp:"수동와인딩. 로터/스티커=가품."},
+      {id:"movementParts",lab:"샤통·블루 나사·베벨",wt:H,exp:"골드 샤통+블루 나사+핸드 베벨."},
+      {id:"dialDNA",lab:"다이얼 DNA",wt:M,exp:"슈맹 드 페(레일웨이) 분 트랙, 아라비아 숫자, 블루/골드 랜싯 핸즈, 스몰세컨드."},
+      {id:"caliberEngrave",lab:"칼리버 각인·시리얼",wt:M,exp:"칼리버 각인·시리얼 대조."},
+      {id:"manualWind",lab:"수동와인딩",wt:M,exp:"로터/스티커=가품."},
       {id:"printing",lab:"인쇄·각인",wt:L,exp:"무결점, 철자 오류 없음."}],
-      manual:[["시리얼","대조."],["무게","묵직."],["전문가 감정","강권."]]}
+      manual:[["시리얼","대조."],["전문가 감정","강권."]]},
+    saxonia:{label:"Saxonia",spec:{Type:"드레스",Wind:"수동/오토"},checks:[
+      {id:"balanceCock",lab:"밸런스 콕 수공 각인",wt:H,exp:"플로럴 수공 각인, 개체별 유니크."},
+      {id:"germanSilver",lab:"저먼실버 3/4 플레이트",wt:H,exp:"저먼실버 플레이트+글라스휘테 리빙."},
+      {id:"movementParts",lab:"샤통·블루 나사",wt:H,exp:"골드 샤통+써멀 블루 나사, 핸드 베벨."},
+      {id:"proportions",lab:"미니멀 비례",wt:M,exp:"작소니아는 극도로 미니멀·얇음. 벌크하면 이상."},
+      {id:"rotor",lab:"로터(오토 모델)",wt:M,exp:"작소니아 오토매틱은 골드/플래티넘 중량추 로터. 스티커·조잡 로터=가품."},
+      {id:"caliberEngrave",lab:"칼리버 각인·시리얼",wt:M,exp:"대조."}],
+      manual:[["시리얼","대조."],["전문가 감정","강권."]]},
+    datograph:{label:"Datograph / Zeitwerk",spec:{Type:"컴플리케이션"},checks:[
+      {id:"balanceCock",lab:"밸런스 콕 수공 각인",wt:H,exp:"플로럴 수공 각인, 개체별 유니크."},
+      {id:"germanSilver",lab:"저먼실버 플레이트",wt:H,exp:"저먼실버+글라스휘테 리빙, 금빛 파티나."},
+      {id:"complicationFn",lab:"복잡기구 실작동",wt:H,exp:"다토그라프 플라이백 크로노/자이트베르크 점핑 디지털이 실제로 작동. 더미면 가품."},
+      {id:"movementParts",lab:"샤통·블루 나사·컬럼휠",wt:H,exp:"골드 샤통·블루 나사·컬럼휠 구조가 보임."},
+      {id:"caliberEngrave",lab:"칼리버 각인·시리얼",wt:M,exp:"대조."},
+      {id:"manualWind",lab:"수동와인딩",wt:M,exp:"로터/스티커=가품."}],
+      manual:[["기능 실작동","확인."],["전문가 감정","강권."]]},
+    common:{label:"기타 모델 (브랜드 공통)",spec:{Mode:"Lange 공통 단서"},common:true,checks:[
+      {id:"balanceCock",lab:"밸런스 콕 수공 각인",wt:H,exp:"밸런스 콕의 플로럴 각인은 손으로 새겨 개체마다 미세하게 다름. 기계적으로 균일하면 가품."},
+      {id:"germanSilver",lab:"저먼실버 3/4 플레이트",wt:H,exp:"미처리 저먼실버 3/4 플레이트에 글라스휘테 리빙, 시간이 지나며 금빛 파티나. 로듐 도금·거친 리빙=가품."},
+      {id:"movementParts",lab:"샤통·블루 나사",wt:H,exp:"나사로 고정한 골드 샤통 + 써멀 블루잉 나사(경면 헤드). 없거나 조잡하면 가품."},
+      {id:"manualWind",lab:"와인딩 방식",wt:H,exp:"대부분 수동와인딩(오디세우스·오토 작소니아 예외). 로터에 스티커가 붙어 있으면 명백 가품."},
+      {id:"caliberEngrave",lab:"칼리버 각인·시리얼",wt:M,exp:"무브 칼리버 각인·시리얼이 깊고 균일."},
+      {id:"printing",lab:"다이얼·철자",wt:M,exp:"인쇄·각인 무결점, 철자 오류 없음."}],
+      manual:[["시리얼","대조."],["무게","귀금속 묵직."],["전문가 감정","강권."]]}
+  }},
+
+  hublot:{name:"Hublot",cap:"HB",slotHint:"베젤 H스크류·케이스백 레이저 각인·무브",
+    note:"레퍼런스 코드(예: 411.NM.1170.RX)가 실제 케이스 크기·소재·다이얼·스트랩과 문법적으로 일치해야 함. 케이스백은 항상 레이저 각인이며 인쇄가 아님. 베젤 스크류 정렬은 서비스 후에도 틀어질 수 있어 약한 단서일 뿐임.",models:{
+    bigbang:{label:"Big Bang",spec:{Bezel:"H스크류 6개",Type:"크로노 다수"},checks:[
+      {id:"refGrammar",lab:"레퍼런스 코드 정합",wt:H,exp:"레이저 각인된 레퍼런스가 실제 시계와 일치해야 함. 예: '411'(빅뱅 우니코 45mm) 코드인데 42mm 케이스거나, 'NM'(티타늄) 코드인데 스틸처럼 무거우면 가품·프랑켄."},
+      {id:"engraveDepth",lab:"케이스백 각인 깊이",wt:H,exp:"모든 표기가 레이저 각인이며 균일·선명. 인쇄되었거나 얕고 뭉개지면 가품."},
+      {id:"rotorEngrave",lab:"로터 'Hublot Genève' 각인",wt:H,exp:"로터에 각인(engraved)되어야 함. 찍어낸 스탬프이거나 글자 간격이 틀리면 가품."},
+      {id:"blueScrews",lab:"무브 내부 파란 나사",wt:H,exp:"위블로는 무브에 블루 나사를 쓴 적이 없음. 파란 나사가 보이면 가품."},
+      {id:"hScrews",lab:"H자 베젤 스크류",wt:M,exp:"6개 H자 스크류가 실제 티타늄 나사이며 베젤과 플러시, 모서리 크리스프. 형태가 일반 나사거나 접착이면 가품. (정렬 자체는 약한 단서)"},
+      {id:"clasp",lab:"클라스프 로고",wt:M,exp:"클라스프의 위블로 로고가 각인(엠보싱). 얕게 에칭·인쇄면 가품."},
+      {id:"dialAlign",lab:"다이얼 정렬·데이트",wt:M,exp:"인덱스·서브다이얼·데이트가 정확히 중앙 정렬. 접착 흔적·글루 잔여 없음."}],
+      manual:[["소재·무게","티타늄/세라믹/카본 촉감·무게."],["푸셔 감","크로노 또렷."],["시리얼","위블로 조회."]]},
+    classicfusion:{label:"Classic Fusion",spec:{Bezel:"H스크류 6개",Type:"슬림"},checks:[
+      {id:"refGrammar",lab:"레퍼런스 코드 정합",wt:H,exp:"레퍼런스 코드가 케이스 크기·소재·다이얼·스트랩과 문법적으로 일치."},
+      {id:"engraveDepth",lab:"케이스백 각인 깊이",wt:H,exp:"레이저 각인 균일·선명. 인쇄·얕음=가품."},
+      {id:"rotorEngrave",lab:"로터 각인",wt:H,exp:"투명백 모델은 로터 'Hublot Genève' 각인(스탬프 아님)."},
+      {id:"hScrews",lab:"H자 베젤 스크류",wt:M,exp:"6개 H자 스크류 형태·마감·플러시 정확."},
+      {id:"proportions",lab:"슬림 비례",wt:M,exp:"클래식 퓨전은 빅뱅보다 확연히 얇음. 두꺼우면 모델 불일치."},
+      {id:"clasp",lab:"클라스프 로고",wt:M,exp:"로고 각인(엠보싱)."}],
+      manual:[["스트랩 질감","러버 이음새·냄새."],["시리얼","조회."]]},
+    common:{label:"기타 모델 (브랜드 공통)",spec:{Mode:"Hublot 공통 단서"},common:true,checks:[
+      {id:"refGrammar",lab:"레퍼런스 코드 정합",wt:H,exp:"레퍼런스 코드가 실제 케이스 크기·소재·다이얼·스트랩과 문법적으로 일치해야 함. 한 부분이라도 모순되면 가품 또는 프랑켄."},
+      {id:"engraveDepth",lab:"케이스백 레이저 각인",wt:H,exp:"위블로 표기는 항상 레이저 각인이며 인쇄가 아님. 얕고 뭉개지거나 인쇄면 가품."},
+      {id:"rotorEngrave",lab:"로터 각인",wt:H,exp:"투명백 모델의 로터 'Hublot Genève'는 각인. 스탬프거나 글자 간격이 틀리면 가품."},
+      {id:"blueScrews",lab:"무브 파란 나사",wt:H,exp:"위블로는 블루 나사를 쓴 적이 없음. 보이면 가품."},
+      {id:"hScrews",lab:"H자 스크류",wt:M,exp:"H자 형태 스크류가 실제 나사이며 플러시·크리스프. 정렬만으로 판단하지 말 것."},
+      {id:"clasp",lab:"클라스프·스트랩",wt:M,exp:"클라스프 로고 각인(엠보싱), 러버 스트랩 이음새·몰드 자국 없음."}],
+      manual:[["소재·무게","티타늄/세라믹/카본."],["스트랩 냄새","싸구려 플라스틱 냄새=가품."],["시리얼","위블로 조회."]]}
+  }},
+
+  jlc:{name:"Jaeger-LeCoultre",cap:"JLC",slotHint:"케이스백 각인·무브 마감이 핵심",
+    note:"JLC는 조립에 접착제를 쓰지 않음 — 글루 잔여물이 보이면 가품. 기계식이 원칙이라 쿼츠면 즉시 의심.",models:{
+    reverso:{label:"Reverso",spec:{Case:"스위블(반전)",Type:"사각"},checks:[
+      {id:"caseSwivel",lab:"스위블 케이스 작동",wt:H,exp:"케이스가 캐리지 안에서 매끄럽게 회전해 반대면이 드러나고, 되돌리면 한 덩어리처럼 플러시하게 안착. 뻑뻑하거나 유격이 있으면 가품."},
+      {id:"gadroons",lab:"가드룬(3줄 홈)",wt:H,exp:"케이스 상·하단에 가로로 난 장식 홈이 3줄. 개수·간격이 다르면 가품."},
+      {id:"proportions",lab:"사각 비례·러그",wt:H,exp:"직사각 라인이 예리하고 러그가 각짐. 모서리가 둥글거나 러그가 작고 뭉툭하면 가품."},
+      {id:"casebackEngrave",lab:"각인 품질",wt:H,exp:"JLC 로고·모델·시리얼 각인이 깊고 샤프. 조잡한 로고 각인은 명백한 가품 신호."},
+      {id:"crownTeeth",lab:"크라운 톱니",wt:M,exp:"레베르소 크라운은 톱니(고들이) 형태로 와인딩. 매끈한 일반 크라운이면 애프터마켓·가품."},
+      {id:"movement",lab:"무브",wt:M,exp:"기계식이어야 함. 쿼츠면 즉시 가품."},
+      {id:"glue",lab:"접착 흔적",wt:L,exp:"JLC는 접착제를 쓰지 않음. 글루 잔여물=가품."}],
+      manual:[["반전 작동감","실물에서 부드러움 확인."],["시리얼","무브 시리얼 대조."]]},
+    master:{label:"Master Control / Ultra Thin",spec:{Type:"드레스",Back:"투명 다수"},checks:[
+      {id:"movement",lab:"무브 마감",wt:H,exp:"코트 드 제네브·베벨·폴리시드 나사, 로터에 JLC 로고 각인. 마감 없는 중국제 에보슈=가품."},
+      {id:"casebackEngrave",lab:"케이스백 각인",wt:H,exp:"로고·모델명·시리얼·방수표기가 깊고 샤프하게 각인. 스탬프·인쇄면 가품."},
+      {id:"sweep",lab:"초침 스윕",wt:H,exp:"부드러운 스윕. 초침이 튀거나 큰 똑딱 소음이면 가품."},
+      {id:"printing",lab:"다이얼 인쇄·인덱스",wt:M,exp:"어플라이드 인덱스 고정, 인쇄 크리스프, 철자 정확."},
+      {id:"glue",lab:"접착 흔적",wt:M,exp:"글루 잔여물 없음. 도금 벗겨져 다른 금속 보이면 가품."},
+      {id:"serial",lab:"시리얼",wt:M,exp:"무브·케이스 시리얼 대조."}],
+      manual:[["로터 소음","덜컹거림 없음."],["시리얼","JLC 조회."]]},
+    common:{label:"기타 모델 (브랜드 공통)",spec:{Mode:"JLC 공통 단서"},common:true,checks:[
+      {id:"movement",lab:"무브·마감",wt:H,exp:"기계식이 원칙 — 쿼츠면 즉시 의심. 코트 드 제네브·베벨·폴리시드 나사, 로터 JLC 각인. 마감 없는 범용 에보슈=가품."},
+      {id:"casebackEngrave",lab:"케이스백 각인",wt:H,exp:"로고·모델·시리얼·방수 표기가 깊고 샤프하게 각인. 스탬프·인쇄·비뚤어짐=가품."},
+      {id:"sweep",lab:"초침 스윕",wt:H,exp:"부드러운 스윕. 튀거나 큰 똑딱 소음이면 가품."},
+      {id:"glue",lab:"접착 흔적·도금",wt:M,exp:"JLC는 접착제를 쓰지 않음. 글루 잔여물, 도금 아래 다른 금속이 비치면 가품."},
+      {id:"printing",lab:"다이얼·철자",wt:M,exp:"인쇄 크리스프, 'Jaeger-LeCoultre' 철자 정확."},
+      {id:"serial",lab:"시리얼",wt:M,exp:"무브 시리얼 대조."}],
+      manual:[["무게·소재","도금 벗겨짐 확인."],["시리얼","JLC 조회."]]}
+  }},
+
+  gs:{name:"Grand Seiko",cap:"GS",slotHint:"자라츠 폴리싱·인덱스·다이얼 질감",
+    note:"자라츠 폴리싱의 왜곡 없는 거울면과 폴리시/브러시 경계의 예리한 능선이 핵심. 챕터링이 어긋나면 분해·프랑켄 신호.",models:{
+    mech:{label:"기계식 9S / 스프링드라이브 9R",spec:{Mvmt:"9S / 9R",Back:"투명 다수"},checks:[
+      {id:"zaratsu",lab:"자라츠 폴리싱",wt:H,exp:"거울면에 소용돌이 자국 없이 왜곡 없는 반사, 폴리시↔브러시 경계에 예리한 능선. 뿌옇거나 소용돌이가 보이면 가품."},
+      {id:"indices",lab:"다면 인덱스",wt:H,exp:"자라츠 마감된 다면 인덱스가 3차원 막대처럼 빛을 튕김. 무디거나 주조된 듯하면 가품."},
+      {id:"movement",lab:"무브(9S/9R/9F)",wt:H,exp:"케이스백 칼리버 표기와 무브 구조 일치. 스프링드라이브(9R)는 초침이 똑딱 없이 완전히 미끄러짐 — 이게 가장 강한 단서."},
+      {id:"dialTexture",lab:"다이얼 질감",wt:H,exp:"스노우플레이크·화이트버치 등 질감이 3차원적이고 각도에 따라 변함. 납작하거나 거칠면 가품."},
+      {id:"chapterRing",lab:"챕터링 정렬",wt:M,exp:"12·3·6·9시 마커가 정확히 정렬. 어긋나면 분해·프랑켄 신호."},
+      {id:"printing",lab:"인쇄·로고",wt:M,exp:"'Grand Seiko' 인쇄가 극도로 크리스프·정렬."},
+      {id:"serial",lab:"시리얼",wt:L,exp:"케이스백 시리얼 깔끔하게 각인, 보증서와 일치."}],
+      manual:[["초침 거동","9R은 완전 글라이드."],["케이스 면 반사","형광등이 왜곡 없이 비침."],["시리얼·보증서","대조."]]},
+    common:{label:"기타 모델 (브랜드 공통)",spec:{Mode:"GS 공통 단서"},common:true,checks:[
+      {id:"zaratsu",lab:"자라츠 폴리싱",wt:H,exp:"왜곡 없는 거울면, 소용돌이 자국 없음, 폴리시/브러시 전환에 예리한 능선. GS의 서명이자 복제가 가장 어려운 부분."},
+      {id:"indices",lab:"다면 인덱스·핸즈",wt:H,exp:"다면 커팅된 인덱스·핸즈가 각도마다 날카롭게 반짝. 무딘 주조 인덱스=가품."},
+      {id:"movement",lab:"무브(9S/9R/9F)",wt:H,exp:"케이스백 칼리버 표기와 실제 무브 일치. 스프링드라이브는 초침 완전 글라이드."},
+      {id:"dialTexture",lab:"다이얼 질감·인쇄",wt:M,exp:"질감 다이얼은 입체적, 인쇄는 극도로 크리스프."},
+      {id:"chapterRing",lab:"챕터링 정렬",wt:M,exp:"마커 정렬 정확. 어긋나면 프랑켄 신호."},
+      {id:"serial",lab:"시리얼",wt:M,exp:"각인 깔끔, 보증서와 일치."}],
+      manual:[["케이스 반사","왜곡 없는지."],["초침 거동","글라이드/스윕."],["보증서","대조."]]}
+  }},
+
+  zenith:{name:"Zenith",cap:"ZEN",slotHint:"엘 프리메로 무브·서브다이얼",
+    note:"엘 프리메로는 36,000vph(10비트/초)로 초침이 유난히 매끄러움 — 복제가 매우 어려운 지점.",models:{
+    chronomaster:{label:"Chronomaster (El Primero)",spec:{Cal:"El Primero",Freq:"36,000vph"},checks:[
+      {id:"elPrimero",lab:"36,000vph 초침",wt:H,exp:"초당 10스텝으로 다른 크로노보다 확연히 매끄럽게 흐름. 초당 6~8스텝으로 보이면 다른 무브=가품."},
+      {id:"movement",lab:"엘 프리메로 무브",wt:H,exp:"컬럼휠·자동로터에 Zenith 각인, 마감 정교. 조잡한 발주 무브면 가품."},
+      {id:"chronoFn",lab:"크로노 작동",wt:H,exp:"작동·리셋 정확, 서브다이얼 연동."},
+      {id:"subdial",lab:"3색 서브다이얼",wt:M,exp:"오버랩된 3색(회색·블루·그레이) 서브다이얼 배치·간격 정확, 인덱스 침범 없음."},
+      {id:"printing",lab:"다이얼 인쇄·별 로고",wt:M,exp:"제니스 별 로고와 인쇄 크리스프·정렬."},
+      {id:"serial",lab:"시리얼·각인",wt:M,exp:"케이스백/무브 시리얼 깊고 선명."}],
+      manual:[["초침 관찰","다른 크로노와 비교."],["푸셔 감","또렷."],["시리얼","조회."]]},
+    common:{label:"기타 모델 (브랜드 공통)",spec:{Mode:"Zenith 공통 단서"},common:true,checks:[
+      {id:"movement",lab:"무브·각인",wt:H,exp:"인하우스 무브(엘 프리메로/엘리트)에 Zenith 각인, 마감 정교. 범용 클론 무브=가품."},
+      {id:"elPrimero",lab:"고진동 초침",wt:H,exp:"엘 프리메로 계열은 36,000vph로 초침이 유난히 매끄러움. 일반적인 흐름이면 다른 무브."},
+      {id:"printing",lab:"별 로고·인쇄",wt:M,exp:"제니스 별 로고와 다이얼 인쇄가 크리스프·정렬, 철자 정확."},
+      {id:"subdial",lab:"서브다이얼 배치",wt:M,exp:"크로노 모델은 서브다이얼 배치·간격 정확, 인덱스 침범 없음."},
+      {id:"serial",lab:"시리얼·각인",wt:M,exp:"케이스백/무브 시리얼 깊고 선명."},
+      {id:"modelMatch",lab:"레퍼런스 정합",wt:M,exp:"다이얼·베젤·무브가 하나의 레퍼런스로 일관."}],
+      manual:[["초침 관찰","고진동 여부."],["시리얼","제니스 조회."]]}
   }}
 };
 
@@ -582,6 +935,12 @@ const MACROS=["macro1","macro2"];
 
 /* 체크포인트 id → 그 근거가 찍혀야 하는 사진 슬롯 */
 const NEEDS={
+  caseArch:"front",dial369:"front",bezelType:"front",complicationFn:"front",bezelInsert:"front",
+  claws:"front",bezelSub:"front",riderTabs:"front",hScrews:"front",glue:"front",indices:"front",
+  dialTexture:"front",chapterRing:"front",elPrimero:"front",
+  casebackStar:"back",spelling:"back",refGrammar:"back",engraveDepth:"back",rotorEngrave:"back",blueScrews:"back",
+  crownGuardArc:"side",titanium:"side",crown:"side",caseSwivel:"side",gadroons:"side",crownTeeth:"side",zaratsu:"side",
+  claspSpring:"clasp",
   rotor:"back",jewels:"back",balance:"back",finish:"back",movement:"back",movementFinish:"back",
   movementDepth:"back",movementParts:"back",movementType:"back",seal:"back",screwsBlued:"back",
   germanSilver:"back",balanceCock:"back",columnWheel:"back",caseback:"back",casebackEngrave:"back",
