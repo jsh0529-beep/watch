@@ -3,7 +3,19 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Watch 진품감정 참조 콘솔 · 13 Brands</title>
+<title>진품감정 참조 콘솔 · 13 Brands</title>
+<meta name="description" content="브랜드·모델을 확정하고 그 레퍼런스 고유의 단서로만 검사하는 사진 기반 진품감정 참조 도구. 13개 브랜드 30개 모델." />
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png" />
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
+<link rel="apple-touch-icon" href="apple-touch-icon.png" />
+<meta name="theme-color" content="#15171B" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="진품감정 참조 콘솔" />
+<meta property="og:description" content="13개 브랜드 30개 모델. 레퍼런스 고유 단서로만 검사하는 사진 기반 보조 판정 도구." />
+<meta property="og:image" content="https://jsh0529-beep.github.io/watch/cover.png" />
+<meta property="og:url" content="https://jsh0529-beep.github.io/watch/" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="https://jsh0529-beep.github.io/watch/cover.png" />
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
   :root{
@@ -53,6 +65,22 @@
   .slot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
   .slot .tag{position:absolute;left:0;right:0;bottom:0;background:rgba(10,11,13,.78);color:var(--ink);font-family:var(--mono);font-size:10px;padding:4px 6px}
   .slot.filled{border-style:solid}
+  .detect{display:flex;align-items:center;gap:13px;flex-wrap:wrap;margin:0 0 12px}
+  .det-btn{appearance:none;cursor:pointer;font-family:var(--disp);font-weight:600;font-size:13.5px;
+    background:transparent;color:var(--gold);border:1px solid var(--gold-soft);border-radius:var(--radius);padding:9px 17px;transition:.15s}
+  .det-btn:hover:not(:disabled){background:rgba(203,163,77,.1)}
+  .det-btn:disabled{color:var(--ink-3);border-color:var(--line);cursor:not-allowed}
+  .det-btn:focus-visible{outline:2px solid var(--steel);outline-offset:2px}
+  .det-hint{font-family:var(--mono);font-size:11.5px;color:var(--ink-3)}
+  .det-result{display:none;margin:0 0 13px;border:1px solid var(--gold-soft);border-left-width:2px;border-radius:var(--radius);
+    background:linear-gradient(90deg,rgba(203,163,77,.07),transparent 65%);padding:13px 15px}
+  .det-result.show{display:block}
+  .det-result.miss{border-color:var(--line);background:none}
+  .det-r1{font-family:var(--disp);font-weight:600;font-size:14px;margin:0 0 4px}
+  .det-r1 b{color:var(--gold)}
+  .det-r2{font-size:12.5px;color:var(--ink-2);margin:0 0 6px}
+  .det-conf{font-family:var(--mono);font-size:11px;color:var(--ink-3)}
+  .det-warn{font-size:11.5px;color:var(--ink-3);margin:7px 0 0;border-top:1px dashed var(--line-soft);padding-top:7px}
   .coverage{display:none;margin-top:14px;border:1px solid var(--line);border-radius:var(--radius);padding:13px 15px;background:var(--bg2)}
   .coverage.show{display:block}
   .cov-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
@@ -125,6 +153,7 @@
   .seal .lean{font-family:var(--disp);font-weight:700;font-size:14px;color:var(--seal-c,var(--steel));padding:0 10px;line-height:1.15}
   .seal .conf{font-family:var(--mono);font-size:11px;color:var(--ink-2);margin-top:5px}.seal .conf b{color:var(--ink);font-size:15px}
   .vref{font-family:var(--mono);font-size:12px;color:var(--gold);letter-spacing:.05em;margin:0 0 8px}
+  .vstate{font-family:var(--disp);font-weight:700;font-size:19px;margin:0 0 7px;letter-spacing:-.01em}
   .vsum{font-size:14px;color:var(--ink);margin:0 0 12px}
   .tallies{display:flex;gap:8px;flex-wrap:wrap}
   .tally{font-family:var(--mono);font-size:11px;padding:3px 9px;border-radius:20px;border:1px solid var(--line)}
@@ -159,15 +188,20 @@
   </header>
 
   <section class="step">
-    <div class="step-h"><span class="step-n">01</span><h2 class="step-t">브랜드 · 모델 확정</h2><span class="step-d">잘못 고르면 정상 사양을 가품으로 오판</span></div>
-    <div class="chips" id="brands"></div>
-    <div class="chips" id="models"></div>
-    <div class="specbar" id="specbar"></div>
+    <div class="step-h"><span class="step-n">01</span><h2 class="step-t">사진 업로드</h2><span class="step-d" id="slotHint">다이얼 정면 · 케이스백이 가장 중요</span></div>
+    <div class="slots" id="slots"></div>
   </section>
 
   <section class="step">
-    <div class="step-h"><span class="step-n">02</span><h2 class="step-t">사진 업로드</h2><span class="step-d" id="slotHint"></span></div>
-    <div class="slots" id="slots"></div>
+    <div class="step-h"><span class="step-n">02</span><h2 class="step-t">브랜드 · 모델 확정</h2><span class="step-d">잘못 고르면 정상 사양을 가품으로 오판</span></div>
+    <div class="detect">
+      <button class="det-btn" id="detect" disabled>사진으로 자동 판별</button>
+      <span class="det-hint" id="dethint">사진을 먼저 올리면 사용할 수 있습니다</span>
+    </div>
+    <div class="det-result" id="detresult"></div>
+    <div class="chips" id="brands"></div>
+    <div class="chips" id="models"></div>
+    <div class="specbar" id="specbar"></div>
     <div class="coverage" id="coverage"></div>
   </section>
 
@@ -180,7 +214,7 @@
   <section class="results" id="results">
     <div class="verdict">
       <div class="seal-wrap"><div class="seal" id="seal"><div class="lean" id="lean">—</div><div class="conf" id="conf"></div></div><div class="seal-ring" id="sealring"></div></div>
-      <div><p class="vref" id="vref"></p><p class="vsum" id="vsum"></p><div class="tallies" id="tallies"></div></div>
+      <div><p class="vref" id="vref"></p><p class="vstate" id="vstate"></p><p class="vsum" id="vsum"></p><div class="tallies" id="tallies"></div></div>
     </div>
     <div class="scorepanel" id="scorepanel"></div>
     <div class="checks" id="checks"></div>
@@ -605,7 +639,7 @@ async function onFile(e,s){
   slot.querySelector('.ph')?.remove();slot.querySelector('img')?.remove();
   const img=new Image();img.src=o.url;slot.appendChild(img);
   let tag=slot.querySelector('.tag');if(!tag){tag=document.createElement('span');tag.className='tag';slot.appendChild(tag);}
-  tag.textContent=s.lab;coverage();refreshRun();
+  tag.textContent=s.lab;coverage();refreshRun();refreshDetect();
 }
 
 /* ---------- 사전 커버리지: 지금 사진으로 몇 개나 볼 수 있나 ---------- */
@@ -641,6 +675,64 @@ function coverage(){
 const runBtn=document.getElementById('run'),runHint=document.getElementById('runhint');
 function refreshRun(){const ok=brandKey&&modelKey&&Object.keys(imgs).length>0;runBtn.disabled=!ok;
   runHint.textContent=ok?`${DATA[brandKey].name} · ${Object.keys(imgs).length}장 준비됨`:'브랜드·모델 선택 + 사진 1장 이상';}
+
+/* ---------- 사진으로 브랜드·모델 자동 판별 ---------- */
+const detBtn=document.getElementById('detect'),detHint=document.getElementById('dethint'),detRes=document.getElementById('detresult');
+
+function catalog(){
+  let out=[];
+  Object.keys(DATA).forEach(bk=>Object.keys(DATA[bk].models).forEach(mk=>{
+    if(DATA[bk].models[mk].detect)return;           /* 자동추정 프로필은 후보에서 제외 */
+    out.push(`${bk}/${mk} = ${DATA[bk].name} ${DATA[bk].models[mk].label}`);
+  }));
+  return out.join('\n');
+}
+function refreshDetect(){
+  const n=Object.keys(imgs).length;
+  detBtn.disabled=n===0;
+  detHint.textContent=n?`사진 ${n}장으로 판별`:'사진을 먼저 올리면 사용할 수 있습니다';
+}
+
+detBtn.addEventListener('click',async()=>{
+  detBtn.disabled=true;const o=detBtn.textContent;detBtn.innerHTML='<span class="spinner"></span> 판별 중…';
+  detRes.className='det-result';
+  const prompt=`너는 시계 사진을 보고 브랜드와 모델을 식별하는 도구다.\n\n`+
+    `아래 후보 목록 중에서 가장 일치하는 항목 하나를 고르라. 후보에 없는 시계이거나 확신이 서지 않으면 brand와 model을 빈 문자열로 두라.\n\n`+
+    `[후보]\n${catalog()}\n\n`+
+    `케이스 형태, 베젤, 다이얼 패턴·레이아웃, 로고, 무브먼트(보이면), 브레이슬릿을 근거로 판단하라. `+
+    `특히 같은 브랜드 안에서 세대·칼리버가 다른 항목(예: 로터가 솔리드인지 투각인지)은 신중히 구분하라.\n\n`+
+    `오직 아래 JSON만 출력(코드펜스 금지).\n`+
+    `{"brand":"<후보의 brand키 또는 빈문자열>","model":"<후보의 model키 또는 빈문자열>","name":"<사람이 읽는 이름>","confidence":0,"why":"<한국어 1~2문장 근거>"}`;
+  const content=[{type:"text",text:prompt}];
+  SLOTS.forEach(sl=>{if(imgs[sl.id]){content.push({type:"text",text:`[사진: ${sl.lab}]`});
+    content.push({type:"image",source:{type:"base64",media_type:imgs[sl.id].media,data:imgs[sl.id].b64}});}});
+  try{
+    const res=await fetch(API_ENDPOINT,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},
+      body:JSON.stringify({model:MODEL,max_tokens:600,messages:[{role:"user",content}]})});
+    if(!res.ok)throw new Error("API 오류 ("+res.status+")");
+    const data=await res.json();
+    const raw=(data.content||[]).filter(b=>b.type==="text").map(b=>b.text).join("\n");
+    const r=JSON.parse(raw.replace(/```json/g,'').replace(/```/g,'').trim());
+    const cf=Math.max(0,Math.min(100,parseInt(r.confidence)||0));
+
+    if(r.brand&&r.model&&DATA[r.brand]&&DATA[r.brand].models[r.model]){
+      selectBrand(r.brand);selectModel(r.model);
+      detRes.className='det-result show';
+      detRes.innerHTML=`<p class="det-r1">판별 결과 · <b>${DATA[r.brand].name} ${DATA[r.brand].models[r.model].label}</b></p>
+        <p class="det-r2">${r.why||''}</p>
+        <p class="det-conf">식별 확신도 ${cf}/100 · 아래에서 자동 선택됐습니다</p>
+        <p class="det-warn">식별이 틀리면 잘못된 기준으로 검사하게 됩니다. 아는 모델이면 아래 버튼으로 직접 바로잡아 주세요.</p>`;
+    }else{
+      detRes.className='det-result show miss';
+      detRes.innerHTML=`<p class="det-r1">후보에서 특정하지 못했습니다</p>
+        <p class="det-r2">${r.why||'사진만으로는 모델을 좁히기 어렵습니다.'}</p>
+        <p class="det-warn">아래에서 직접 선택하시거나, 다이얼 정면과 케이스백을 더 선명하게 찍어 다시 시도해 보세요.</p>`;
+    }
+  }catch(err){
+    detRes.className='det-result show miss';
+    detRes.innerHTML=`<p class="det-r1">판별 실패</p><p class="det-r2">${err.message}</p>`;
+  }finally{detBtn.disabled=false;detBtn.textContent=o;refreshDetect();}
+});
 
 /* ---------- 프롬프트 ---------- */
 function buildPrompt(prof,activeChecks,skipped){
@@ -741,16 +833,26 @@ function render(prof,p,skipped){
   const posP=pct(posW),negP=pct(negW),uncP=pct(uncW);
   const PHOTO_CAP=85; /* 사진만으로 도달 가능한 정합 상한 — 슈퍼클론은 외형·무브 상당수를 복제함 */
 
-  let lean,color;
-  if(highFlag){lean="가품 지표";color="var(--flag)";}
-  else if(weakFlagHigh||flag>0){lean="주의 · 부분 불일치";color="var(--amber)";}
-  else if(posP>=55){lean="진품 정합 (참조)";color="var(--gold)";}
-  else{lean="판정 보류";color="var(--steel)";}
+  let lean,leanFull,color;
+  if(highFlag){
+    lean="정품과 거리가 있음";
+    leanFull="정품과 거리가 있습니다.";color="var(--flag)";
+  } else if(weakFlagHigh||flag>0){
+    lean="정품과 다소 거리";
+    leanFull="정품과 다소 거리가 있습니다.";color="var(--amber)";
+  } else if(posP>=55){
+    lean="정품에 가까움";
+    leanFull="정품에 가까워 보입니다.";color="var(--gold)";
+  } else {
+    lean="근거 부족";
+    leanFull="판단할 근거가 부족합니다.";color="var(--steel)";
+  }
   document.getElementById('lean').textContent=lean;document.getElementById('lean').style.color=color;
   document.getElementById('sealring').style.setProperty('--seal-c',color);
   const conf=Math.max(0,Math.min(100,parseInt(p.confidence)||0));
   document.getElementById('conf').innerHTML=`<b>${conf}</b> / 100 근거충실도`;
   document.getElementById('vref').textContent=`${DATA[brandKey].name}  ·  ${p.reference||prof.label}`;
+  const vs=document.getElementById('vstate');vs.textContent=leanFull;vs.style.color=color;
   document.getElementById('vsum').textContent=p.summary||'';
   document.getElementById('tallies').innerHTML=`<span class="tally p">정합 ${pass}</span><span class="tally f">이상 ${flag}</span><span class="tally u">불명 ${unc}</span>`;
 
