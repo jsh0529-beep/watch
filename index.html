@@ -50,8 +50,24 @@
   .chip:focus-visible{outline:2px solid var(--steel);outline-offset:2px}
   .chip .cap{font-family:var(--mono);font-weight:400;font-size:10.5px;color:var(--ink-3);margin-left:6px}
   .chip[aria-pressed="true"] .cap{color:var(--gold)}
-  #models{margin-top:10px;display:none}#models.show{display:flex}
-  .specbar{margin-top:11px;border:1px dashed var(--line);border-radius:var(--radius);padding:11px 14px;display:none;flex-wrap:wrap;gap:6px 22px}
+  .pick-lab{display:flex;align-items:center;gap:8px;font-family:var(--disp);font-weight:600;font-size:12px;
+    letter-spacing:.02em;color:var(--ink-3);text-transform:none;margin:0 0 9px}
+  .pick-n{display:inline-flex;align-items:center;justify-content:center;width:17px;height:17px;border-radius:50%;
+    background:var(--line);color:var(--ink-2);font-family:var(--mono);font-size:10px;line-height:1}
+  .pick-lab em{font-style:normal;font-family:var(--mono);font-size:11.5px;color:var(--gold);margin-left:2px}
+  .pick-lab.sub .pick-n{background:var(--gold-soft);color:#1a1400}
+
+  .submodel{display:none;position:relative;margin:16px 0 0 13px;padding:15px 0 3px 19px;
+    border-left:2px solid var(--gold-soft)}
+  .submodel.show{display:block;animation:fade .28s ease}
+  .submodel::before{content:"";position:absolute;left:-2px;top:0;width:15px;height:2px;background:var(--gold-soft)}
+
+  /* 세부 기종 칩은 알약 모양 — 브랜드 칩(사각)과 형태로 구분 */
+  .chips.models .chip{border-radius:20px;font-weight:500;font-size:13px;padding:8px 15px;background:transparent}
+  .chips.models .chip:hover{background:var(--panel)}
+  .chips.models .chip[aria-pressed="true"]{background:rgba(203,163,77,.13);border-color:var(--gold);color:var(--gold)}
+  #models{display:none}#models.show{display:flex}
+  .specbar{margin-top:12px;border:1px dashed var(--line);border-radius:var(--radius);padding:11px 14px;display:none;flex-wrap:wrap;gap:6px 22px}
   .specbar.show{display:flex}
   .spec .k{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;color:var(--ink-3);text-transform:uppercase;display:block}
   .spec .v{color:var(--ink);font-family:var(--mono);font-size:13px}
@@ -65,14 +81,15 @@
   .slot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
   .slot .tag{position:absolute;left:0;right:0;bottom:0;background:rgba(10,11,13,.78);color:var(--ink);font-family:var(--mono);font-size:10px;padding:4px 6px}
   .slot.filled{border-style:solid}
-  .detect{display:flex;align-items:center;gap:13px;flex-wrap:wrap;margin:0 0 12px}
-  .det-btn{appearance:none;cursor:pointer;font-family:var(--disp);font-weight:600;font-size:13.5px;
-    background:transparent;color:var(--gold);border:1px solid var(--gold-soft);border-radius:var(--radius);padding:9px 17px;transition:.15s}
-  .det-btn:hover:not(:disabled){background:rgba(203,163,77,.1)}
+  .detect{display:flex;align-items:center;gap:11px;flex-wrap:wrap;margin:14px 0 0;padding-top:13px;border-top:1px dashed var(--line-soft)}
+  .det-lead{font-size:12.5px;color:var(--ink-3)}
+  .det-btn{appearance:none;cursor:pointer;font-family:var(--body);font-size:12.5px;
+    background:transparent;color:var(--ink-2);border:1px solid var(--line);border-radius:var(--radius);padding:6px 13px;transition:.15s}
+  .det-btn:hover:not(:disabled){border-color:var(--gold-soft);color:var(--gold)}
   .det-btn:disabled{color:var(--ink-3);border-color:var(--line);cursor:not-allowed}
   .det-btn:focus-visible{outline:2px solid var(--steel);outline-offset:2px}
   .det-hint{font-family:var(--mono);font-size:11.5px;color:var(--ink-3)}
-  .det-result{display:none;margin:0 0 13px;border:1px solid var(--gold-soft);border-left-width:2px;border-radius:var(--radius);
+  .det-result{display:none;margin:12px 0 0;border:1px solid var(--gold-soft);border-left-width:2px;border-radius:var(--radius);
     background:linear-gradient(90deg,rgba(203,163,77,.07),transparent 65%);padding:13px 15px}
   .det-result.show{display:block}
   .det-result.miss{border-color:var(--line);background:none}
@@ -188,21 +205,27 @@
   </header>
 
   <section class="step">
-    <div class="step-h"><span class="step-n">01</span><h2 class="step-t">사진 업로드</h2><span class="step-d" id="slotHint">다이얼 정면 · 케이스백이 가장 중요</span></div>
-    <div class="slots" id="slots"></div>
+    <div class="step-h"><span class="step-n">01</span><h2 class="step-t">브랜드 · 모델 확정</h2><span class="step-d">잘못 고르면 정상 사양을 가품으로 오판</span></div>
+    <p class="pick-lab"><span class="pick-n">1</span>브랜드</p>
+    <div class="chips" id="brands"></div>
+
+    <div class="submodel" id="submodel">
+      <p class="pick-lab sub"><span class="pick-n">2</span>세부 기종<em id="subBrand"></em></p>
+      <div class="chips models" id="models"></div>
+      <div class="specbar" id="specbar"></div>
+    </div>
+    <div class="det-result" id="detresult"></div>
   </section>
 
   <section class="step">
-    <div class="step-h"><span class="step-n">02</span><h2 class="step-t">브랜드 · 모델 확정</h2><span class="step-d">잘못 고르면 정상 사양을 가품으로 오판</span></div>
-    <div class="detect">
-      <button class="det-btn" id="detect" disabled>사진으로 자동 판별</button>
-      <span class="det-hint" id="dethint">사진을 먼저 올리면 사용할 수 있습니다</span>
-    </div>
-    <div class="det-result" id="detresult"></div>
-    <div class="chips" id="brands"></div>
-    <div class="chips" id="models"></div>
-    <div class="specbar" id="specbar"></div>
+    <div class="step-h"><span class="step-n">02</span><h2 class="step-t">사진 업로드</h2><span class="step-d" id="slotHint">다이얼 정면 · 케이스백이 가장 중요</span></div>
+    <div class="slots" id="slots"></div>
     <div class="coverage" id="coverage"></div>
+    <div class="detect">
+      <span class="det-lead">기종을 모르시겠나요?</span>
+      <button class="det-btn" id="detect" disabled>사진으로 추정해 보기</button>
+      <span class="det-hint" id="dethint">사진을 올리면 사용할 수 있습니다</span>
+    </div>
   </section>
 
   <section class="step">
@@ -590,11 +613,13 @@ const brandsEl=document.getElementById('brands');
 Object.keys(DATA).forEach(k=>{const b=document.createElement('button');b.className='chip';b.setAttribute('aria-pressed','false');b.dataset.k=k;
   b.innerHTML=`${DATA[k].name}<span class="cap">${DATA[k].cap}</span>`;b.onclick=()=>selectBrand(k);brandsEl.appendChild(b);});
 const modelsEl=document.getElementById('models'),specbar=document.getElementById('specbar'),slotHintEl=document.getElementById('slotHint');
+const subPanel=document.getElementById('submodel'),subBrand=document.getElementById('subBrand');
 
 function selectBrand(k){
   brandKey=k;modelKey=null;
   [...brandsEl.children].forEach(c=>c.setAttribute('aria-pressed',c.dataset.k===k?'true':'false'));
-  slotHintEl.textContent=DATA[k].slotHint;modelsEl.innerHTML='';modelsEl.className='chips show';
+  slotHintEl.textContent=DATA[k].slotHint;modelsEl.innerHTML='';modelsEl.className='chips models show';
+  subPanel.className='submodel show';subBrand.textContent='· '+DATA[k].name;
   const ms=DATA[k].models;
   Object.keys(ms).forEach(mk=>{const b=document.createElement('button');b.className='chip';b.setAttribute('aria-pressed','false');b.dataset.k=mk;
     b.textContent=ms[mk].label;b.onclick=()=>selectModel(mk);modelsEl.appendChild(b);});
@@ -690,7 +715,7 @@ function catalog(){
 function refreshDetect(){
   const n=Object.keys(imgs).length;
   detBtn.disabled=n===0;
-  detHint.textContent=n?`사진 ${n}장으로 판별`:'사진을 먼저 올리면 사용할 수 있습니다';
+  detHint.textContent=n?`사진 ${n}장 기준 · 추정은 참고용입니다`:'사진을 올리면 사용할 수 있습니다';
 }
 
 detBtn.addEventListener('click',async()=>{
@@ -718,15 +743,16 @@ detBtn.addEventListener('click',async()=>{
     if(r.brand&&r.model&&DATA[r.brand]&&DATA[r.brand].models[r.model]){
       selectBrand(r.brand);selectModel(r.model);
       detRes.className='det-result show';
-      detRes.innerHTML=`<p class="det-r1">판별 결과 · <b>${DATA[r.brand].name} ${DATA[r.brand].models[r.model].label}</b></p>
+      detRes.scrollIntoView({behavior:'smooth',block:'center'});
+      detRes.innerHTML=`<p class="det-r1">추정 · <b>${DATA[r.brand].name} ${DATA[r.brand].models[r.model].label}</b></p>
         <p class="det-r2">${r.why||''}</p>
-        <p class="det-conf">식별 확신도 ${cf}/100 · 아래에서 자동 선택됐습니다</p>
-        <p class="det-warn">식별이 틀리면 잘못된 기준으로 검사하게 됩니다. 아는 모델이면 아래 버튼으로 직접 바로잡아 주세요.</p>`;
+        <p class="det-conf">추정 확신도 ${cf}/100 · 위에서 임시로 선택해 두었습니다</p>
+        <p class="det-warn">이건 추정일 뿐입니다. 추정이 틀리면 그 모델의 정상 사양을 이상으로 잘못 판정하게 됩니다. <b>맞는지 위에서 반드시 확인하고, 다르면 직접 골라 주세요.</b></p>`;
     }else{
       detRes.className='det-result show miss';
-      detRes.innerHTML=`<p class="det-r1">후보에서 특정하지 못했습니다</p>
+      detRes.innerHTML=`<p class="det-r1">특정하지 못했습니다</p>
         <p class="det-r2">${r.why||'사진만으로는 모델을 좁히기 어렵습니다.'}</p>
-        <p class="det-warn">아래에서 직접 선택하시거나, 다이얼 정면과 케이스백을 더 선명하게 찍어 다시 시도해 보세요.</p>`;
+        <p class="det-warn">위에서 직접 선택해 주세요. 추측으로 고르는 것보다 정확합니다.</p>`;
     }
   }catch(err){
     detRes.className='det-result show miss';
