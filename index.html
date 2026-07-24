@@ -81,6 +81,13 @@
   .slot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
   .slot .tag{position:absolute;left:0;right:0;bottom:0;background:rgba(10,11,13,.78);color:var(--ink);font-family:var(--mono);font-size:10px;padding:4px 6px}
   .slot.filled{border-style:solid}
+  .eraRow{display:none;margin-top:14px}
+  .eraRow.show{display:block}
+  .era-opt{font-style:normal;font-family:var(--mono);font-size:10.5px;color:var(--ink-3);margin-left:6px}
+  .chips.era .chip{border-radius:20px;font-weight:500;font-size:12.5px;padding:7px 13px;background:transparent}
+  .chips.era .chip[aria-pressed="true"]{background:rgba(110,143,180,.13);border-color:var(--steel);color:var(--steel)}
+  .era-note{font-size:11.5px;color:var(--ink-3);margin:8px 0 0}
+  .era-note b{color:var(--steel)}
   .detect{display:flex;align-items:center;gap:11px;flex-wrap:wrap;margin:14px 0 0;padding-top:13px;border-top:1px dashed var(--line-soft)}
   .det-lead{font-size:12.5px;color:var(--ink-3)}
   .det-btn{appearance:none;cursor:pointer;font-family:var(--body);font-size:12.5px;
@@ -171,7 +178,8 @@
   .seal .conf{font-family:var(--mono);font-size:11px;color:var(--ink-2);margin-top:5px}.seal .conf b{color:var(--ink);font-size:15px}
   .vref{font-family:var(--mono);font-size:12px;color:var(--gold);letter-spacing:.05em;margin:0 0 8px}
   .vstate{font-family:var(--disp);font-weight:700;font-size:19px;margin:0 0 7px;letter-spacing:-.01em}
-  .vsum{font-size:14px;color:var(--ink);margin:0 0 12px}
+  .vsum{font-size:14px;color:var(--ink);margin:0 0 8px}
+  .vasm{display:none;font-size:12.5px;color:var(--amber);border:1px dashed var(--line);border-radius:var(--radius);padding:8px 11px;margin:0 0 12px}
   .tallies{display:flex;gap:8px;flex-wrap:wrap}
   .tally{font-family:var(--mono);font-size:11px;padding:3px 9px;border-radius:20px;border:1px solid var(--line)}
   .tally.p{color:var(--pass);border-color:#33573f}.tally.f{color:var(--flag);border-color:#5c322e}.tally.u{color:var(--steel);border-color:#33465a}
@@ -192,6 +200,25 @@
   .spinner{width:15px;height:15px;border:2px solid var(--ink-3);border-top-color:var(--gold);border-radius:50%;display:inline-block;animation:spin .7s linear infinite;vertical-align:-2px}
   @keyframes spin{to{transform:rotate(360deg)}}
   @media(max-width:680px){.slots{grid-template-columns:repeat(2,1fr)}.verdict{grid-template-columns:1fr;justify-items:center;text-align:center}.tallies{justify-content:center}.step-d{display:none}}
+  .res-actions{display:flex;justify-content:flex-end;margin:0 0 10px}
+  .save-btn{appearance:none;cursor:pointer;font-family:var(--body);font-size:12.5px;background:transparent;
+    color:var(--ink-2);border:1px solid var(--line);border-radius:var(--radius);padding:7px 14px;transition:.15s}
+  .save-btn:hover{border-color:var(--gold-soft);color:var(--gold)}
+  .print-meta{display:none;font-family:var(--mono);font-size:11px;color:var(--ink-3);margin:0 0 12px}
+  @media print{
+    :root{--bg:#fff;--bg2:#fff;--panel:#fff;--line:#bbb;--line-soft:#ddd;
+      --ink:#111;--ink-2:#444;--ink-3:#777;--gold:#8a6d1f;--gold-soft:#a8894f;
+      --pass:#1e7a46;--flag:#b3362c;--amber:#9a6d10;--steel:#3f6591}
+    *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    body{background:#fff;background-image:none}
+    header,.step,.res-actions,.retake{display:none!important}
+    .results{display:block!important;margin-top:0}
+    .print-meta{display:block}
+    .seal{background:#f4f4f4}
+    .verdict,.checks,.manual,.scorepanel{break-inside:avoid-page}
+    .g-bar{border-color:#ccc;background:#eee}
+    .g-bar i.unr{background:repeating-linear-gradient(45deg,#ccc 0 5px,#e2e2e2 5px 10px)}
+  }
   @media(prefers-reduced-motion:reduce){*{animation:none!important}}
 </style>
 </head>
@@ -213,6 +240,11 @@
       <p class="pick-lab sub"><span class="pick-n">2</span>세부 기종<em id="subBrand"></em></p>
       <div class="chips models" id="models"></div>
       <div class="specbar" id="specbar"></div>
+      <div class="eraRow" id="eraRow">
+        <p class="pick-lab sub"><span class="pick-n">3</span>생산 시기<em class="era-opt">모르면 '현행' 유지</em></p>
+        <div class="chips era" id="eraChips"></div>
+        <p class="era-note" id="eraNote"></p>
+      </div>
     </div>
     <div class="det-result" id="detresult"></div>
   </section>
@@ -235,9 +267,11 @@
   </section>
 
   <section class="results" id="results">
+    <div class="res-actions"><button class="save-btn" id="saveBtn">결과 저장 · PDF</button></div>
+    <p class="print-meta" id="printMeta"></p>
     <div class="verdict">
       <div class="seal-wrap"><div class="seal" id="seal"><div class="lean" id="lean">—</div><div class="conf" id="conf"></div></div><div class="seal-ring" id="sealring"></div></div>
-      <div><p class="vref" id="vref"></p><p class="vstate" id="vstate"></p><p class="vsum" id="vsum"></p><div class="tallies" id="tallies"></div></div>
+      <div><p class="vref" id="vref"></p><p class="vstate" id="vstate"></p><p class="vsum" id="vsum"></p><p class="vasm" id="vasm"></p><div class="tallies" id="tallies"></div></div>
     </div>
     <div class="scorepanel" id="scorepanel"></div>
     <div class="checks" id="checks"></div>
@@ -251,6 +285,7 @@
 /* ===== GAS 릴레이 연결 완료 (API 키는 GAS 스크립트 속성에 보관) ===== */
 const API_ENDPOINT="https://script.google.com/macros/s/AKfycby8q_S2MZjnoQXB0NjB35GQzH82wXItxFG2IDe4RNcM_USV0TQCZUvaCcI_IdH_wV8LGA/exec";
 const MODEL="claude-sonnet-4-6";
+const ACCESS_TOKEN="wa-8k2p-7f9x-3mzq";  /* GAS 스크립트 속성 ACCESS_TOKEN 과 동일해야 함 */
 const H="high",M="med",L="low";
 
 /* 브랜드 → 모델 → tell 세트. note: 레퍼런스 정합용 참고 문구(선택) */
@@ -320,17 +355,17 @@ const DATA={
   rolex:{name:"Rolex",cap:"ROLEX",slotHint:"크리스탈·레하우트·사이클롭스가 핵심(솔리드백)",
     note:"현행 로렉스는 전부 솔리드 케이스백. 투명백이면 가품. 결정적 단서 다수가 브랜드 공통(6시 크리스탈 왕관 각인·레하우트 각인).",models:{
     sub:{label:"Submariner",spec:{Back:"솔리드",Mvmt:"3230/3235"},checks:[
-      {id:"crownEtch",lab:"크리스탈 왕관 각인",wt:H,exp:"6시 크리스탈 미세 코로넷 각인(2002~), 루페로만 보임."},
+      {id:"crownEtch",since:2002,lab:"크리스탈 왕관 각인",wt:H,exp:"6시 크리스탈 미세 코로넷 각인(2002~), 루페로만 보임."},
       {id:"cyclops",lab:"사이클롭스",wt:H,exp:"데이트 모델은 2.5배 확대·창을 채움. 노데이트(124060)는 사이클롭스·데이트 없음."},
-      {id:"rehaut",lab:"레하우트 각인",wt:H,exp:"'ROLEX' 반복+6시 시리얼(2008~), 날카롭고 정렬 정확."},
+      {id:"rehaut",since:2008,lab:"레하우트 각인",wt:H,exp:"'ROLEX' 반복+6시 시리얼(2008~), 날카롭고 정렬 정확."},
       {id:"noDisplayBack",lab:"솔리드 케이스백",wt:H,exp:"투명백/케이스백 각인 보이면 가품."},
       {id:"serial",lab:"시리얼",wt:M,exp:"깊고 선명, 빛에 반짝."},
       {id:"sweep",lab:"초침 스윕",wt:M,exp:"자동 부드러운 스윕. 똑딱=쿼츠=가품."},
-      {id:"bezelLume",lab:"베젤·야광",wt:L,exp:"세라크롬 베젤 색·크로마라이트 블루."}],
+      {id:"bezelLume",since:2008,lab:"베젤·야광",wt:L,exp:"세라크롬 베젤 색·크로마라이트 블루."}],
       manual:[["베젤 클릭","백플레이 없음."],["무게·시리얼","Rolex 조회."]]},
     gmt:{label:"GMT-Master II",spec:{Back:"솔리드",Cal:"3285"},checks:[
-      {id:"crownEtch",lab:"크리스탈 왕관 각인",wt:H,exp:"6시 크리스탈 미세 왕관 각인(2002~)."},
-      {id:"rehaut",lab:"레하우트 각인",wt:H,exp:"'ROLEX' 반복+시리얼, 정렬 정확."},
+      {id:"crownEtch",since:2002,lab:"크리스탈 왕관 각인",wt:H,exp:"6시 크리스탈 미세 왕관 각인(2002~)."},
+      {id:"rehaut",since:2008,lab:"레하우트 각인",wt:H,exp:"'ROLEX' 반복+시리얼, 정렬 정확."},
       {id:"noDisplayBack",lab:"솔리드 케이스백",wt:H,exp:"투명백 보이면 가품."},
       {id:"bezelGmt",lab:"24시 세라크롬 베젤",wt:H,exp:"펩시/배트맨 등 색 전환 자연, 폰트·정렬 정확."},
       {id:"gmt24",lab:"24시침 독립 조정",wt:M,exp:"24시침 독립 조정 가능. 안 되면 가품."},
@@ -338,9 +373,9 @@ const DATA={
       {id:"sweep",lab:"초침 스윕",wt:L,exp:"부드러운 스윕."}],
       manual:[["베젤 클릭·24시침","독립 조정."],["시리얼","조회."]]},
     dj:{label:"Datejust·Day-Date",spec:{Back:"솔리드",Mvmt:"자동"},checks:[
-      {id:"crownEtch",lab:"크리스탈 왕관 각인",wt:H,exp:"6시 크리스탈 미세 왕관 각인."},
+      {id:"crownEtch",since:2002,lab:"크리스탈 왕관 각인",wt:H,exp:"6시 크리스탈 미세 왕관 각인."},
       {id:"cyclops",lab:"사이클롭스",wt:H,exp:"날짜 2.5배 확대·창을 채움. ~1.5배면 가품."},
-      {id:"rehaut",lab:"레하우트 각인",wt:H,exp:"'ROLEX' 반복+시리얼, 정렬 정확."},
+      {id:"rehaut",since:2008,lab:"레하우트 각인",wt:H,exp:"'ROLEX' 반복+시리얼, 정렬 정확."},
       {id:"serial",lab:"시리얼",wt:M,exp:"깊고 선명."},
       {id:"dialText",lab:"요일/날짜 폰트",wt:M,exp:"인덱스·요일 디스크 폰트 완벽, 정렬 정확."},
       {id:"bracelet",lab:"브레이슬릿·베젤",wt:L,exp:"쥬빌리/프레지던트 마감, 플루티드 베젤 정밀."}],
@@ -349,30 +384,30 @@ const DATA={
       {id:"subdial",lab:"서브다이얼 배치",wt:H,exp:"3·6·9시 균등·동일 크기, 마커 침범 없음. 너무 벌어지면 클론."},
       {id:"chronoFn",lab:"크로노 작동·리셋",wt:H,exp:"작동+리셋 시 초침 정확히 12시 복귀. 미작동/오정렬=가품."},
       {id:"noDisplayBack",lab:"솔리드·무각인 백",wt:H,exp:"데이토나는 솔리드백·무각인. 투명백=가품."},
-      {id:"crownEtch",lab:"크리스탈 왕관 각인",wt:M,exp:"6시 크리스탈 왕관 각인(2002~)."},
+      {id:"crownEtch",since:2002,lab:"크리스탈 왕관 각인",wt:M,exp:"6시 크리스탈 왕관 각인(2002~)."},
       {id:"bezelTachy",lab:"타키미터 베젤",wt:M,exp:"타키 폰트 두께 정확(가품은 두꺼움), 세라믹 충전 깔끔."},
       {id:"pusher",lab:"푸셔 감",wt:M,exp:"컬럼휠 특유의 또렷한 푸셔."},
       {id:"serial",lab:"시리얼",wt:L,exp:"러그 사이 시리얼 선명."}],
       manual:[["크로노 리셋","0점 복귀."],["푸셔·무게","실물."],["시리얼","조회."]]},
     explorer:{label:"Explorer I·II",spec:{Back:"솔리드",Dial:"3·6·9 숫자"},note:"익스플로러 I은 날짜·사이클롭스 없음. 날짜창이 있으면 II이거나 다른 모델.",checks:[
-      {id:"crownEtch",lab:"크리스탈 왕관 각인",wt:H,exp:"6시 크리스탈 미세 왕관 각인(2002~)."},
-      {id:"rehaut",lab:"레하우트 각인",wt:H,exp:"'ROLEX' 반복+시리얼, 정렬 정확."},
+      {id:"crownEtch",since:2002,lab:"크리스탈 왕관 각인",wt:H,exp:"6시 크리스탈 미세 왕관 각인(2002~)."},
+      {id:"rehaut",since:2008,lab:"레하우트 각인",wt:H,exp:"'ROLEX' 반복+시리얼, 정렬 정확."},
       {id:"noDisplayBack",lab:"솔리드 케이스백",wt:H,exp:"투명백 보이면 가품."},
       {id:"dial369",lab:"3·6·9 숫자 조형",wt:H,exp:"익스플로러 특유 3·6·9 아라비아 숫자가 야광 충전·정렬 정확. 익스플로러 I은 날짜 없음."},
       {id:"serial",lab:"시리얼",wt:M,exp:"깊고 선명."},
       {id:"sweep",lab:"초침 스윕",wt:M,exp:"부드러운 스윕."}],
       manual:[["무게·시리얼","조회."],["II는 24시침","작동 확인."]]},
     ymsd:{label:"Yacht-Master·Sea-Dweller",spec:{Back:"솔리드",Type:"다이버"},checks:[
-      {id:"crownEtch",lab:"크리스탈 왕관 각인",wt:H,exp:"6시 크리스탈 미세 왕관 각인."},
-      {id:"rehaut",lab:"레하우트 각인",wt:H,exp:"'ROLEX' 반복+시리얼, 정렬 정확."},
+      {id:"crownEtch",since:2002,lab:"크리스탈 왕관 각인",wt:H,exp:"6시 크리스탈 미세 왕관 각인."},
+      {id:"rehaut",since:2008,lab:"레하우트 각인",wt:H,exp:"'ROLEX' 반복+시리얼, 정렬 정확."},
       {id:"noDisplayBack",lab:"솔리드 케이스백",wt:H,exp:"투명백=가품."},
       {id:"bezelType",lab:"베젤 사양",wt:H,exp:"요트마스터=양방향 회전 양각 숫자 베젤, 씨드웰러=단방향 세라크롬. 사양이 뒤바뀌면 이상."},
       {id:"cyclops",lab:"사이클롭스",wt:M,exp:"씨드웰러 43mm(126600~)는 사이클롭스 있음. 구형 딥씨/씨드웰러는 없음 — 레퍼런스 확인."},
       {id:"serial",lab:"시리얼",wt:M,exp:"깊고 선명."}],
       manual:[["헬륨밸브","씨드웰러 좌측 확인."],["시리얼","조회."]]},
     common:{label:"기타 모델 (브랜드 공통)",spec:{Mode:"Rolex 공통 단서"},common:true,checks:[
-      {id:"crownEtch",lab:"크리스탈 왕관 각인",wt:H,exp:"2002년 이후 전 모델 6시 사파이어에 미세 코로넷 레이저 각인. 루페로만 보이며 복제 거의 불가."},
-      {id:"rehaut",lab:"레하우트 각인",wt:H,exp:"2008년 이후 'ROLEX' 반복 각인+6시 시리얼. 날카롭고 마커와 정렬."},
+      {id:"crownEtch",since:2002,lab:"크리스탈 왕관 각인",wt:H,exp:"2002년 이후 전 모델 6시 사파이어에 미세 코로넷 레이저 각인. 루페로만 보이며 복제 거의 불가."},
+      {id:"rehaut",since:2008,lab:"레하우트 각인",wt:H,exp:"2008년 이후 'ROLEX' 반복 각인+6시 시리얼. 날카롭고 마커와 정렬."},
       {id:"noDisplayBack",lab:"솔리드 케이스백",wt:H,exp:"현행 로렉스는 솔리드백. 투명백이면 가품."},
       {id:"cyclops",lab:"사이클롭스",wt:M,exp:"날짜 모델은 2.5배 확대로 창을 채움. ~1.5배면 가품."},
       {id:"sweep",lab:"초침 스윕",wt:M,exp:"자동무브 부드러운 스윕. 똑딱=쿼츠=가품."},
@@ -442,16 +477,16 @@ const DATA={
     note:"코액시얼 무브의 밸런스 휠은 검정. 크리스탈 중앙에 오메가 로고 각인이 있는 세대가 다수.",models:{
     seamaster:{label:"Seamaster Diver 300M",spec:{Mvmt:"2500/8800/8900",Valve:"헬륨밸브 10시"},checks:[
       {id:"heliumValve",lab:"헬륨밸브 위치",wt:H,exp:"밸브 하단(왼쪽) 가장자리가 10시 마커와 정렬. 10시 중앙/아래면 가품 다수."},
-      {id:"crystalEtch",lab:"크리스탈 로고 각인",wt:H,exp:"크리스탈 중앙 오메가 로고 각인. 대부분 복제품엔 없음."},
-      {id:"balanceWheel",lab:"밸런스 휠 색상",wt:H,exp:"코액시얼 밸런스 휠 검정. 은/회색이면 진품 아님."},
+      {id:"crystalEtch",since:2000,lab:"크리스탈 로고 각인",wt:H,exp:"크리스탈 중앙 오메가 로고 각인. 대부분 복제품엔 없음."},
+      {id:"balanceWheel",since:2000,lab:"밸런스 휠 색상",wt:H,exp:"코액시얼 밸런스 휠 검정. 은/회색이면 진품 아님."},
       {id:"movement",lab:"무브·초침",wt:M,exp:"코액시얼 마스터 크로노미터. 스윕(쿼츠 똑딱=가품)."},
       {id:"wavePattern",lab:"웨이브 다이얼",wt:M,exp:"눌러 찍은 촘촘·균일 웨이브. 인쇄된 듯 거칠면 이상."},
       {id:"serial",lab:"시리얼",wt:M,exp:"7~8자리 러그/케이스백 선명."},
       {id:"printing",lab:"프린팅 품질",wt:L,exp:"무결점, 오타 없음."}],
       manual:[["밸브 작동","부드럽게."],["워런티 카드","홀로그램/QR."]]},
     planetocean:{label:"Planet Ocean",spec:{Mvmt:"8900/9900",Valve:"헬륨밸브"},checks:[
-      {id:"crystalEtch",lab:"크리스탈 로고 각인",wt:H,exp:"크리스탈 중앙 오메가 로고 각인."},
-      {id:"balanceWheel",lab:"밸런스 휠 색상",wt:H,exp:"코액시얼 밸런스 휠 검정."},
+      {id:"crystalEtch",since:2000,lab:"크리스탈 로고 각인",wt:H,exp:"크리스탈 중앙 오메가 로고 각인."},
+      {id:"balanceWheel",since:2000,lab:"밸런스 휠 색상",wt:H,exp:"코액시얼 밸런스 휠 검정."},
       {id:"bezelInsert",lab:"세라믹 베젤·야광 pip",wt:H,exp:"세라믹 인서트에 리퀴드메탈/세라믹 충전 숫자, 12시 야광 pip 경계 안. 도장처럼 보이면 이상."},
       {id:"movement",lab:"무브·초침",wt:M,exp:"코액시얼 마스터 크로노미터, 스윕."},
       {id:"heliumValve",lab:"헬륨밸브",wt:M,exp:"좌측 헬륨밸브 위치·작동 정확."},
@@ -460,14 +495,14 @@ const DATA={
     speedmaster:{label:"Speedmaster (크로노)",spec:{Cal:"3861/1861"},checks:[
       {id:"subdialSpacing",lab:"서브다이얼 간격",wt:H,exp:"간격 정확 — 너무 벌어져 3·9시 마커 자르면 가품(ST19/Valjoux 클론)."},
       {id:"movement",lab:"무브·크로노",wt:H,exp:"정품 칼리버, 크로노 정상 작동."},
-      {id:"crystalEtch",lab:"크리스탈 로고 각인",wt:M,exp:"크리스탈 중앙 오메가 로고 각인."},
+      {id:"crystalEtch",since:2000,lab:"크리스탈 로고 각인",wt:M,exp:"크리스탈 중앙 오메가 로고 각인."},
       {id:"casebackEmboss",lab:"케이스백 해마",wt:M,exp:"히포캄푸스 엠보싱·각인 선명."},
       {id:"printing",lab:"다이얼 프린팅",wt:M,exp:"정밀, 오타 없음."},
       {id:"serial",lab:"시리얼",wt:L,exp:"위치·폰트 정확."}],
       manual:[["크로노 작동","정상."],["워런티·무게","확인."]]},
     aquaterra:{label:"Aqua Terra",spec:{Mvmt:"8800/8900",Valve:"없음"},checks:[
-      {id:"crystalEtch",lab:"크리스탈 로고 각인",wt:H,exp:"크리스탈 중앙 오메가 로고 각인."},
-      {id:"balanceWheel",lab:"밸런스 휠 색상",wt:H,exp:"코액시얼 밸런스 휠 검정."},
+      {id:"crystalEtch",since:2000,lab:"크리스탈 로고 각인",wt:H,exp:"크리스탈 중앙 오메가 로고 각인."},
+      {id:"balanceWheel",since:2000,lab:"밸런스 휠 색상",wt:H,exp:"코액시얼 밸런스 휠 검정."},
       {id:"teakDial",lab:"티크 다이얼 패턴",wt:H,exp:"수직 '티크' 라인이 촘촘·균일·정밀. 거칠면 이상."},
       {id:"movement",lab:"무브·초침",wt:M,exp:"코액시얼 마스터 크로노미터, 스윕."},
       {id:"noValve",lab:"헬륨밸브 부재",wt:M,exp:"아쿠아테라엔 헬륨밸브 없음. 밸브 있으면 모델 불일치."},
@@ -476,15 +511,15 @@ const DATA={
       manual:[["워런티 카드","홀로그램/QR."],["무게","묵직."]]},
     constellation:{label:"Constellation",spec:{Type:"드레스",Case:"클로 케이스"}, checks:[
       {id:"claws",lab:"그리페(클로) 구조",wt:H,exp:"케이스 좌우 4개 발톱(그리페)이 베젤을 물고 있는 구조가 정확·대칭. 장식만 붙은 형태면 이상."},
-      {id:"crystalEtch",lab:"크리스탈 로고 각인",wt:H,exp:"크리스탈 중앙 오메가 로고 각인(해당 세대)."},
-      {id:"balanceWheel",lab:"밸런스 휠 색상",wt:H,exp:"코액시얼 모델은 밸런스 휠 검정."},
+      {id:"crystalEtch",since:2000,lab:"크리스탈 로고 각인",wt:H,exp:"크리스탈 중앙 오메가 로고 각인(해당 세대)."},
+      {id:"balanceWheel",since:2000,lab:"밸런스 휠 색상",wt:H,exp:"코액시얼 모델은 밸런스 휠 검정."},
       {id:"casebackStar",lab:"케이스백 천문대",wt:M,exp:"제네바 천문대와 8개 별 메달리온 엠보싱 정교."},
       {id:"printing",lab:"다이얼·인덱스",wt:M,exp:"어플라이드 인덱스·로고, 인쇄 무결점."},
       {id:"serial",lab:"시리얼",wt:M,exp:"선명."}],
       manual:[["워런티","확인."],["무게","묵직."]]},
     common:{label:"기타 모델 (브랜드 공통)",spec:{Mode:"Omega 공통 단서"},common:true,checks:[
-      {id:"crystalEtch",lab:"크리스탈 로고 각인",wt:H,exp:"다수 현행 모델은 사파이어 크리스탈 중앙에 오메가 로고 각인. 복제품엔 대개 없음."},
-      {id:"balanceWheel",lab:"밸런스 휠 색상",wt:H,exp:"코액시얼 무브는 밸런스 휠이 검정. 은/회색이면 진품 아님."},
+      {id:"crystalEtch",since:2000,lab:"크리스탈 로고 각인",wt:H,exp:"다수 현행 모델은 사파이어 크리스탈 중앙에 오메가 로고 각인. 복제품엔 대개 없음."},
+      {id:"balanceWheel",since:2000,lab:"밸런스 휠 색상",wt:H,exp:"코액시얼 무브는 밸런스 휠이 검정. 은/회색이면 진품 아님."},
       {id:"movement",lab:"무브·초침",wt:H,exp:"코액시얼/마스터 크로노미터 구조. 초침 부드러운 스윕(쿼츠 똑딱=가품, 쿼츠 모델 제외)."},
       {id:"printing",lab:"다이얼 프린팅",wt:M,exp:"인쇄·각인 무결점, 오타 없음, 어플라이드 로고 고정."},
       {id:"serial",lab:"시리얼 각인",wt:M,exp:"7~8자리 시리얼이 러그/케이스백에 선명, 위치·폰트 정확."},
@@ -988,7 +1023,7 @@ function selectModel(mk){
   modelKey=mk;[...modelsEl.children].forEach(c=>c.setAttribute('aria-pressed',c.dataset.k===mk?'true':'false'));
   const sp=DATA[brandKey].models[mk].spec;specbar.className='specbar show';
   specbar.innerHTML=Object.keys(sp).map(key=>`<div class="spec"><span class="k">${key}</span><span class="v">${sp[key]}</span></div>`).join('');
-  coverage();refreshRun();
+  eraRowEl.className='eraRow show';eraNote();coverage();refreshRun();
 }
 
 /* ---------- 사진 업로드 ---------- */
@@ -1026,6 +1061,26 @@ async function onFile(e,s){
   tag.textContent=s.lab;coverage();refreshRun();refreshDetect();
 }
 
+/* ---------- 생산 시기 ---------- */
+const ERAS=[{k:'now',lab:'2010~현재',y:2015},{k:'00s',lab:'2000~2009',y:2005},{k:'90s',lab:'1990년대',y:1995},{k:'vintage',lab:'1989년 이전',y:1985}];
+let eraYear=2015,eraLab='2010~현재';
+const eraChipsEl=document.getElementById('eraChips'),eraNoteEl=document.getElementById('eraNote'),eraRowEl=document.getElementById('eraRow');
+ERAS.forEach(e=>{const b=document.createElement('button');b.className='chip';b.dataset.y=e.y;
+  b.setAttribute('aria-pressed',e.k==='now'?'true':'false');b.textContent=e.lab;
+  b.onclick=()=>{eraYear=e.y;eraLab=e.lab;
+    [...eraChipsEl.children].forEach(c=>c.setAttribute('aria-pressed',c===b?'true':'false'));
+    eraNote();coverage();};
+  eraChipsEl.appendChild(b);});
+const eraOK=c=>!(c.since&&c.since>eraYear);
+function eraNote(){
+  if(!brandKey||!modelKey){eraNoteEl.textContent='';return;}
+  const prof=DATA[brandKey].models[modelKey];
+  const ex=prof.checks.filter(c=>!eraOK(c));
+  eraNoteEl.innerHTML=ex.length
+    ? `이 시기엔 없던 사양이라 <b>${ex.map(c=>c.lab).join(' · ')}</b> 항목은 검사에서 제외됩니다. (없어도 이상이 아님)`
+    : '이 시기 개체는 모든 체크포인트를 그대로 적용합니다.';
+}
+
 /* ---------- 사전 커버리지: 지금 사진으로 몇 개나 볼 수 있나 ---------- */
 const covEl=document.getElementById('coverage');
 function coverage(){
@@ -1033,13 +1088,14 @@ function coverage(){
   const prof=DATA[brandKey].models[modelKey];
   const have=new Set(Object.keys(imgs));
   const hasMacro=MACROS.some(m=>have.has(m));
+  const list=prof.checks.filter(eraOK);
   const missing={};let ok=0;
-  prof.checks.forEach(c=>{
+  list.forEach(c=>{
     const n=needOf(c.id);
     if(have.has(n)||hasMacro)ok++;
     else (missing[n]=missing[n]||[]).push(c);
   });
-  const total=prof.checks.length,pct=Math.round(ok/total*100);
+  const total=list.length,pct=total?Math.round(ok/total*100):0;
   let html=`<div class="cov-head"><span class="cov-t">사전 커버리지</span><span class="cov-n">${ok}/${total} 항목 · ${pct}%</span></div>`;
   html+=`<div class="bar"><i style="width:${pct}%"></i></div>`;
   const keys=Object.keys(missing);
@@ -1092,7 +1148,7 @@ detBtn.addEventListener('click',async()=>{
     content.push({type:"image",source:{type:"base64",media_type:imgs[sl.id].media,data:imgs[sl.id].b64}});}});
   try{
     const res=await fetch(API_ENDPOINT,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},
-      body:JSON.stringify({model:MODEL,max_tokens:600,messages:[{role:"user",content}]})});
+      body:JSON.stringify({_token:ACCESS_TOKEN,model:MODEL,max_tokens:600,messages:[{role:"user",content}]})});
     if(!res.ok)throw new Error("API 오류 ("+res.status+")");
     const data=await res.json();
     const raw=(data.content||[]).filter(b=>b.type==="text").map(b=>b.text).join("\n");
@@ -1126,6 +1182,9 @@ function buildPrompt(prof,activeChecks,skipped){
   p+=`[대상] ${brand} · ${prof.label}\n`;
   if(prof.detect)p+=`먼저 다이얼·케이스백으로 세부 레퍼런스/칼리버를 추정하고 그 기준으로 판단하라.\n`;
   p+=`반드시 이 브랜드/모델 고유 기준으로만 판단하라. 다른 모델 기준을 섞지 마라.\n`;
+  p+=`[생산 시기] 이 개체는 ${eraLab} 생산으로 감정한다. 이 시기에 존재하지 않던 사양의 부재를 이상으로 판정하지 마라.\n`;
+  if(eraYear<=1995)p+=`[빈티지 주의] 트리튬 야광의 파티나(크림·황변)는 정상이며 가품 신호가 아니다. 서비스 교체 부품(핸즈·크리스탈·베젤 인서트)이 흔하므로 교체 흔적 자체는 이상이 아니라 assembly 평가에 반영하라. 반대로 연식과 맞지 않는 현행 사양(세라믹 베젤·최신 야광·현행 각인)이 보이면 flag하라.\n`;
+  p+=`[조립 정합(프랑켄) 평가] 케이스·다이얼·핸즈·베젤·무브·브레이슬릿이 같은 레퍼런스·같은 시대의 조합인지 평가하라. 개별 부품은 진품처럼 보여도 조합이 어긋나면(예: 진품 케이스+애프터마켓 다이얼, 다른 세대 핸즈·베젤) assembly를 "franken_suspected"로 표시하고 근거를 assembly_note에 한국어 1~2문장으로 써라. 일관되면 "consistent", 판단 불가면 "unknown".\n`;
   p+=`[레퍼런스 정합] 다이얼·베젤·무브·브레이슬릿이 하나의 레퍼런스로 일관되는지 보고, 서로 다른 레퍼런스 디테일이 섞였으면 해당 체크포인트를 이상으로 반영하라.\n`;
   if(brandNote)p+=`[브랜드 참고] ${brandNote}\n`;
   if(prof.note)p+=`[모델 참고] ${prof.note}\n`;
@@ -1141,7 +1200,7 @@ function buildPrompt(prof,activeChecks,skipped){
   const ids=activeChecks.map(c=>c.id);
   p+=`\nverdict는 다음 중 하나: pass(정상 사양과 일치) / weak_pass(대체로 일치하나 확신 부족) / weak_flag(어긋나 보이나 확신 부족) / flag(명확히 불일치·이상) / uncertain(근거 전무).\n`;
   p+=`체크포인트 id: ${ids.join(', ')}\n\n오직 아래 JSON만 출력(코드펜스·군더더기 금지). observation은 한국어 1~2문장. summary는 2~3문장 종합 참조 의견. confidence는 사진 근거 충실도 0~100 정수.\n`;
-  p+=`{"reference":"<추정/확정 모델>","checkpoints":[`+ids.map(id=>`{"id":"${id}","verdict":"pass|weak_pass|weak_flag|flag|uncertain","reason":"no_photo|low_res|not_photographable|","observation":"..."}`).join(',')+`],"summary":"...","confidence":0}`;
+  p+=`{"reference":"<추정/확정 모델>","assembly":"consistent|franken_suspected|unknown","assembly_note":"...","checkpoints":[`+ids.map(id=>`{"id":"${id}","verdict":"pass|weak_pass|weak_flag|flag|uncertain","reason":"no_photo|low_res|not_photographable|","observation":"..."}`).join(',')+`],"summary":"...","confidence":0}`;
   return p;
 }
 
@@ -1152,14 +1211,15 @@ runBtn.addEventListener('click',async()=>{
   const prof=DATA[brandKey].models[modelKey];
   const have=new Set(Object.keys(imgs)),hasMacro=MACROS.some(m=>have.has(m));
   /* 근거 부위가 아예 안 찍힌 항목은 질의에서 빼고, 결과에선 '미촬영'으로 따로 안내 */
-  const active=prof.checks.filter(c=>have.has(needOf(c.id))||hasMacro);
-  const skipped=prof.checks.filter(c=>!(have.has(needOf(c.id))||hasMacro));
+  const eraValid=prof.checks.filter(eraOK);
+  const active=eraValid.filter(c=>have.has(needOf(c.id))||hasMacro);
+  const skipped=eraValid.filter(c=>!(have.has(needOf(c.id))||hasMacro));
   if(!active.length){errEl.textContent="업로드한 사진으로 볼 수 있는 체크포인트가 없습니다. 다이얼 정면이나 케이스백 사진을 추가하세요.";errEl.className='err show';
     runBtn.disabled=false;runBtn.textContent=orig;refreshRun();return;}
   const content=[{type:"text",text:buildPrompt(prof,active,skipped)}];
   SLOTS.forEach(s=>{if(imgs[s.id]){content.push({type:"text",text:`[사진: ${s.lab}]`});content.push({type:"image",source:{type:"base64",media_type:imgs[s.id].media,data:imgs[s.id].b64}});}});
   try{
-    const res=await fetch(API_ENDPOINT,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({model:MODEL,max_tokens:2400,messages:[{role:"user",content}]})});
+    const res=await fetch(API_ENDPOINT,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({_token:ACCESS_TOKEN,model:MODEL,max_tokens:2400,messages:[{role:"user",content}]})});
     if(!res.ok)throw new Error("API 응답 오류 ("+res.status+")");
     const data=await res.json();
     const raw=(data.content||[]).filter(b=>b.type==="text").map(b=>b.text).join("\n");
@@ -1172,11 +1232,14 @@ runBtn.addEventListener('click',async()=>{
 function render(prof,p,skipped){
   const byId={};(p.checkpoints||[]).forEach(c=>byId[c.id]=c);
   const skipIds=new Set(skipped.map(c=>c.id));
+  const eraExcluded=prof.checks.filter(c=>!eraOK(c));
+  const eraIds=new Set(eraExcluded.map(c=>c.id));
   const checksEl=document.getElementById('checks');checksEl.innerHTML='';
   let pass=0,flag=0,unc=0,highFlag=false,weakFlagHigh=false;
   const retake={},scored={},reasons={};
 
   prof.checks.forEach(def=>{
+    if(eraIds.has(def.id))return;
     let c,v,reason='';
     if(skipIds.has(def.id)){v='uncertain';reason='no_photo';c={observation:`${slotLab(needOf(def.id))} 사진이 없어 판정하지 못했습니다.`};}
     else{c=byId[def.id]||{verdict:'uncertain',reason:'no_photo',observation:'판단할 사진 근거 없음.'};v=c.verdict||'uncertain';reason=c.reason||'';}
@@ -1208,6 +1271,7 @@ function render(prof,p,skipped){
   let posW=0,negW=0,maxW=0,uncW=0;
   const unresolved=[];
   prof.checks.forEach(def=>{
+    if(eraIds.has(def.id))return;
     const w=WVAL[def.wt];maxW+=w;
     const r=scored[def.id];
     if(r==='pass')posW+=w; else if(r==='weak_pass')posW+=w*0.5;
@@ -1218,10 +1282,24 @@ function render(prof,p,skipped){
   const posP=pct(posW),negP=pct(negW),uncP=pct(uncW);
   const PHOTO_CAP=85; /* 사진만으로 도달 가능한 정합 상한 — 슈퍼클론은 외형·무브 상당수를 복제함 */
 
+  eraExcluded.forEach(def=>{
+    const row=document.createElement('div');row.className='crow era-ex';
+    row.innerHTML=`<span class="dot uncertain" style="opacity:.35"></span>
+      <div><p class="lab">${def.lab} <span class="rtag">연식 제외 — ${def.since}년 이후 사양</span></p>
+      <p class="exp">기준: ${def.exp}</p>
+      <p class="obs">선택한 생산 시기(${eraLab})에는 없던 사양이라 검사하지 않았습니다. 없어도 이상이 아닙니다.</p></div>
+      <span class="wt">제외</span>`;
+    checksEl.appendChild(row);
+  });
+
+  const franken=p.assembly==='franken_suspected';
   let lean,leanFull,color;
   if(highFlag){
     lean="정품과 거리가 있음";
     leanFull="정품과 거리가 있습니다.";color="var(--flag)";
+  } else if(franken){
+    lean="부품 혼합 의심";
+    leanFull="정품·비정품 부품이 섞였을 가능성(프랑켄)이 있습니다.";color="var(--amber)";
   } else if(weakFlagHigh||flag>0){
     lean="정품과 다소 거리";
     leanFull="정품과 다소 거리가 있습니다.";color="var(--amber)";
@@ -1239,6 +1317,10 @@ function render(prof,p,skipped){
   document.getElementById('vref').textContent=`${DATA[brandKey].name}  ·  ${p.reference||prof.label}`;
   const vs=document.getElementById('vstate');vs.textContent=leanFull;vs.style.color=color;
   document.getElementById('vsum').textContent=p.summary||'';
+  const va=document.getElementById('vasm');
+  if(franken&&p.assembly_note){va.textContent='조립 평가: '+p.assembly_note;va.style.display='block';}
+  else if(p.assembly==='consistent'&&p.assembly_note){va.textContent='조립 평가: '+p.assembly_note;va.style.display='block';}
+  else va.style.display='none';
   document.getElementById('tallies').innerHTML=`<span class="tally p">정합 ${pass}</span><span class="tally f">이상 ${flag}</span><span class="tally u">불명 ${unc}</span>`;
 
   /* ----- 근거 무게 패널 ----- */
@@ -1294,9 +1376,13 @@ function render(prof,p,skipped){
 
   const mEl=document.getElementById('manual');mEl.innerHTML='';
   prof.manual.forEach(([k,v])=>{const li=document.createElement('li');li.innerHTML=`<b>${k}</b> — ${v}`;mEl.appendChild(li);});
+  document.getElementById('printMeta').textContent=
+    `진품감정 참조 콘솔 · ${DATA[brandKey].name} ${prof.label} · 생산시기 ${eraLab} · ${new Date().toLocaleDateString('ko-KR')} · 사진 기반 참조용, 공식 감정 아님`;
   drawScrews();
   const results=document.getElementById('results');results.className='results show';results.scrollIntoView({behavior:'smooth',block:'start'});
 }
+document.getElementById('saveBtn').addEventListener('click',()=>window.print());
+
 function drawScrews(){const seal=document.getElementById('seal');if(seal.querySelector('.screw'))return;const R=58;
   for(let i=0;i<8;i++){const ang=(i/8)*2*Math.PI-Math.PI/2+Math.PI/8;const s=document.createElement('span');s.className='screw';s.style.transform=`translate(${Math.cos(ang)*R}px,${Math.sin(ang)*R}px)`;seal.appendChild(s);}}
 </script>
